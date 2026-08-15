@@ -14,15 +14,19 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Serve static frontend files from 'public' directory
+// Serve static frontend files
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Initialize Gemini Client
+// Initialize Google GenAI Client
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
 app.post('/api/gemini', async (req, res) => {
     try {
         const { userPrompt, engineState } = req.body;
+
+        if (!process.env.GEMINI_API_KEY) {
+            return res.status(500).json({ error: "GEMINI_API_KEY is not configured in environment variables." });
+        }
 
         const systemInstruction = `
             You are an expert Digital Logic Assistant built into a Digital Logic CAD Engine web application.
@@ -31,7 +35,7 @@ app.post('/api/gemini', async (req, res) => {
             MAYANK     CO26BTECH11016
             SHIVANSI   CO26BTECH11027
             ANUSHKA    CO26BTECH11030
-                        
+            
             Current CAD Engine Application State:
             - Logic Expression: ${engineState?.expression || 'N/A'}
             - Minimal SOP: ${engineState?.sop || 'N/A'}
@@ -44,6 +48,7 @@ app.post('/api/gemini', async (req, res) => {
             3. Answer digital electronics theory questions concisely.
         `;
 
+        // Updated model to gemini-3.5-flash
         const response = await ai.models.generateContent({
             model: 'gemini-3.5-flash',
             contents: [{ role: 'user', parts: [{ text: userPrompt }] }],
@@ -56,16 +61,22 @@ app.post('/api/gemini', async (req, res) => {
         res.json({ reply: response.text });
     } catch (error) {
         console.error("Gemini API Error:", error);
-        res.status(500).json({ error: "Failed to communicate with Gemini API." });
+        res.status(500).json({ error: error.message || "Failed to communicate with Gemini API." });
     }
 });
 
-// Fallback to index.html for any other route
+// Fallback to index.html for root requests
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
+// For local testing
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Server listening on port ${PORT}`);
-});
+if (process.env.NODE_ENV !== 'production') {
+    app.listen(PORT, () => {
+        console.log(`Server listening on port ${PORT}`);
+    });
+}
+
+// Required for Vercel Serverless
+export default app;

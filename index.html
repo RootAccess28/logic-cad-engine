@@ -1119,44 +1119,53 @@
         }
 
         async function sendGeminiQuery() {
-            const inputField = document.getElementById('userChatInput');
-            const msgBox = document.getElementById('chatMessages');
-            const prompt = inputField.value.trim();
+    const inputField = document.getElementById('userChatInput');
+    const msgBox = document.getElementById('chatMessages');
+    const prompt = inputField.value.trim();
 
-            if (!prompt) return;
+    if (!prompt) return;
 
-            // Render User Message
-            msgBox.innerHTML += `<div class="chat-msg user">${prompt}</div>`;
-            inputField.value = '';
-            msgBox.scrollTop = msgBox.scrollHeight;
+    // Render User Message
+    msgBox.innerHTML += `<div class="chat-msg user">${prompt}</div>`;
+    inputField.value = '';
+    msgBox.scrollTop = msgBox.scrollHeight;
 
-            // Render Loading State
-            const loadingId = `load-${Date.now()}`;
-            msgBox.innerHTML += `<div class="chat-msg ai" id="${loadingId}">Analyzing circuit state...</div>`;
-            msgBox.scrollTop = msgBox.scrollHeight;
+    // Render Loading State
+    const loadingId = `load-${Date.now()}`;
+    msgBox.innerHTML += `<div class="chat-msg ai" id="${loadingId}">Analyzing circuit state...</div>`;
+    msgBox.scrollTop = msgBox.scrollHeight;
 
-            // Capture Current Workspace CAD Engine State
-            const engineState = {
-                expression: document.getElementById('exprInput')?.value || '',
-                sop: document.getElementById('minimizedExpr')?.innerText || '',
-                verilog: document.getElementById('verilogOutput')?.innerText || ''
-            };
+    // Capture Current Workspace CAD Engine State
+    const engineState = {
+        expression: document.getElementById('exprInput')?.value || '',
+        sop: document.getElementById('minimizedExpr')?.innerText || '',
+        verilog: document.getElementById('verilogOutput')?.innerText || ''
+    };
 
-            try {
-                const response = await fetch('/api/gemini', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ userPrompt: prompt, engineState })
-                });
+    try {
+        const response = await fetch('/api/gemini', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userPrompt: prompt, engineState })
+        });
 
-                const data = await response.json();
-                document.getElementById(loadingId).innerText = data.reply || "No response received.";
-            } catch (err) {
-                document.getElementById(loadingId).innerText = "Error communicating with Gemini backend service.";
-            }
-
-            msgBox.scrollTop = msgBox.scrollHeight;
+        const data = await response.json();
+        const loadElem = document.getElementById(loadingId);
+        
+        if (data.reply) {
+            loadElem.innerText = data.reply;
+        } else if (data.error) {
+            loadElem.innerText = `API Error: ${data.error}`;
+        } else {
+            loadElem.innerText = "No response generated.";
         }
+    } catch (err) {
+        const loadElem = document.getElementById(loadingId);
+        if (loadElem) loadElem.innerText = `Network Error: ${err.message}`;
+    }
+
+    msgBox.scrollTop = msgBox.scrollHeight;
+}
 
         // Init
         synthesizePipeline();

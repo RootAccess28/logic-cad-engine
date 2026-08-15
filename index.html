@@ -7,15 +7,22 @@
     <title>Digital Logic CAD Engine</title>
     <style>
         :root {
-            --bg: #0b0f19;
-            --panel: rgba(22, 30, 46, 0.85);
-            --border: #2a364f;
+            /* Vibrant & Soft Modern Indigo/Violet Dark Palette */
+            --bg: #0f172a;
+            --panel: rgba(30, 41, 59, 0.88);
+            --border: #334155;
+            --border-subtle: #475569;
             --accent-cyan: #38bdf8;
-            --accent-green: #34d399;
-            --accent-purple: #c084fc;
+            --accent-teal: #2dd4bf;
+            --accent-green: #4ade80;
+            --accent-purple: #818cf8;
             --accent-pink: #f472b6;
-            --text-main: #f1f5f9;
-            --text-sub: #94a3b8;
+            --accent-coral: #fb7185;
+            --accent-amber: #fcd34d;
+            --code-text: #fef08a;
+            --text-main: #f8fafc;
+            --text-sub: #cbd5e1;
+            --glass-bg: rgba(15, 23, 42, 0.7);
         }
 
         * { box-sizing: border-box; }
@@ -26,9 +33,10 @@
             overflow-x: hidden;
             margin: 0;
             padding: 16px;
-            background: var(--bg);
+            background: radial-gradient(circle at 15% 15%, #1e1b4b 0%, var(--bg) 55%, #090d16 100%);
             color: var(--text-main);
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            min-height: 100vh;
         }
 
         .container {
@@ -40,27 +48,28 @@
         /* Top Centered Banner Header with Team Dropdown */
         .project-badge {
             text-align: center;
-            background: linear-gradient(135deg, rgba(56, 189, 248, 0.1), rgba(192, 132, 252, 0.1));
-            border: 1px solid var(--accent-cyan);
-            border-radius: 8px;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.18), rgba(236, 72, 153, 0.15));
+            border: 1px solid rgba(129, 140, 248, 0.5);
+            border-radius: 12px;
             padding: 10px 18px;
             margin: 0 auto 16px auto;
             max-width: 520px;
-            box-shadow: 0 0 12px rgba(56, 189, 248, 0.15);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.2);
         }
         .project-badge .project-title {
-            font-size: 0.8rem;
+            font-size: 0.82rem;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 1.2px;
             color: var(--accent-cyan);
-            font-weight: 700;
+            font-weight: 800;
         }
         .team-toggle-btn {
-            background: transparent;
-            border: 1px solid var(--accent-cyan);
-            color: var(--accent-cyan);
-            padding: 4px 12px;
-            border-radius: 4px;
+            background: rgba(99, 102, 241, 0.15);
+            border: 1px solid var(--accent-purple);
+            color: #c7d2fe;
+            padding: 5px 14px;
+            border-radius: 6px;
             cursor: pointer;
             font-size: 0.8rem;
             font-weight: 600;
@@ -68,14 +77,15 @@
             transition: all 0.2s ease;
         }
         .team-toggle-btn:hover {
-            background: var(--accent-cyan);
-            color: #000;
+            background: var(--accent-purple);
+            color: #0f172a;
+            box-shadow: 0 0 12px rgba(129, 140, 248, 0.4);
         }
         .team-list-card {
             display: none;
             margin-top: 10px;
             padding-top: 8px;
-            border-top: 1px dashed var(--border);
+            border-top: 1px dashed var(--border-subtle);
             text-align: left;
         }
         .team-list-card.active {
@@ -85,12 +95,13 @@
             font-size: 0.85rem;
             display: flex;
             justify-content: space-between;
-            padding: 3px 6px;
+            padding: 4px 8px;
             color: var(--text-main);
-            border-radius: 4px;
+            border-radius: 6px;
+            margin-bottom: 2px;
         }
         .team-member:nth-child(even) {
-            background: rgba(255, 255, 255, 0.03);
+            background: rgba(255, 255, 255, 0.05);
         }
         .team-member .roll {
             color: var(--accent-pink);
@@ -101,240 +112,307 @@
         header {
             margin-bottom: 20px;
             border-bottom: 1px solid var(--border);
-            padding-bottom: 12px;
+            padding-bottom: 14px;
             text-align: center;
         }
-        h1 { margin: 0 0 6px 0; color: var(--accent-cyan); font-weight: 700; font-size: 1.6rem; }
-        p.subtitle { margin: 0; color: var(--text-sub); font-size: 0.9rem; }
+        h1 { 
+            margin: 0 0 6px 0; 
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple), var(--accent-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800; 
+            font-size: 1.75rem; 
+        }
+        p.subtitle { margin: 0; color: var(--text-sub); font-size: 0.92rem; font-weight: 450; }
 
         /* Navigation Tabs */
-        .tabs { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; justify-content: center; }
+        .tabs { display: flex; gap: 10px; margin-bottom: 18px; flex-wrap: wrap; justify-content: center; }
         .tab-btn {
             background: var(--panel);
             border: 1px solid var(--border);
             color: var(--text-sub);
-            padding: 8px 16px;
+            padding: 9px 18px;
             cursor: pointer;
-            border-radius: 6px;
+            border-radius: 8px;
             font-weight: 600;
             font-size: 0.9rem;
-            transition: all 0.2s ease;
+            transition: all 0.25s ease;
+            backdrop-filter: blur(8px);
         }
-        .tab-btn:hover { color: var(--text-main); border-color: var(--accent-cyan); }
-        .tab-btn.active {
-            background: var(--accent-cyan);
-            color: #000;
+        .tab-btn:hover { 
+            color: var(--text-main); 
             border-color: var(--accent-cyan);
-            box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+            transform: translateY(-1px);
+        }
+        .tab-btn.active {
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            color: #0f172a;
+            border-color: transparent;
+            font-weight: 700;
+            box-shadow: 0 4px 14px rgba(56, 189, 248, 0.35);
         }
 
         /* Control Cards */
         .input-card {
             background: var(--panel);
             border: 1px solid var(--border);
-            padding: 16px;
-            border-radius: 10px;
-            margin-bottom: 20px;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 22px;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
         }
         .mode-panel { display: none; }
         .mode-panel.active { display: block; }
 
         .syntax-guide {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
             gap: 8px;
-            background: rgba(6, 9, 17, 0.6);
-            padding: 10px;
-            border-radius: 6px;
+            background: rgba(15, 23, 42, 0.6);
+            padding: 12px;
+            border-radius: 8px;
             border: 1px dashed var(--border);
-            margin: 10px 0;
+            margin: 12px 0;
         }
-        .syntax-item { font-size: 0.8rem; color: var(--text-sub); }
-        .syntax-item code { color: var(--accent-pink); font-weight: bold; background: rgba(244, 114, 182, 0.1); padding: 1px 4px; border-radius: 3px; }
+        .syntax-item { font-size: 0.82rem; color: var(--text-sub); }
+        .syntax-item code { color: var(--accent-pink); font-weight: bold; background: rgba(244, 114, 182, 0.14); padding: 2px 5px; border-radius: 4px; }
 
         input[type="text"], select {
             width: 100%;
-            padding: 10px;
-            background: #060911;
+            padding: 11px;
+            background: var(--glass-bg);
             border: 1px solid var(--border);
             color: var(--text-main);
-            border-radius: 6px;
+            border-radius: 8px;
             font-family: inherit;
-            font-size: 0.9rem;
-            margin-top: 4px;
+            font-size: 0.92rem;
+            margin-top: 5px;
+            transition: all 0.2s ease;
         }
-        input[type="text"]:focus, select:focus { border-color: var(--accent-cyan); outline: none; }
+        input[type="text"]:focus, select:focus { 
+            border-color: var(--accent-cyan); 
+            outline: none; 
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+        }
 
         .btn-action {
-            background: linear-gradient(135deg, var(--accent-cyan), #0284c7);
-            color: #000;
+            background: linear-gradient(135deg, var(--accent-teal), #0284c7);
+            color: #04131f;
             border: none;
-            padding: 10px 20px;
+            padding: 11px 22px;
             font-weight: 700;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
-            margin-top: 10px;
+            margin-top: 12px;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(45, 212, 191, 0.3);
+        }
+        .btn-action:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(45, 212, 191, 0.45);
         }
 
         /* Pipeline Grid */
         .pipeline-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 16px;
+            gap: 18px;
             width: 100%;
         }
 
         .card {
             background: var(--panel);
             border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 14px;
+            border-radius: 12px;
+            padding: 16px;
             display: flex;
             flex-direction: column;
             min-width: 0;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
         }
-        .card h3 { margin: 0 0 10px 0; font-size: 1rem; color: var(--accent-cyan); }
+        .card h3 { 
+            margin: 0 0 12px 0; 
+            font-size: 1.02rem; 
+            color: var(--accent-cyan); 
+            display: flex; 
+            align-items: center;
+            gap: 6px;
+        }
 
-        .table-wrapper { max-height: 220px; overflow-y: auto; border: 1px solid var(--border); border-radius: 6px; }
+        .table-wrapper { max-height: 230px; overflow-y: auto; border: 1px solid var(--border); border-radius: 8px; }
         table { width: 100%; border-collapse: collapse; text-align: center; }
-        th, td { padding: 6px; border-bottom: 1px solid var(--border); font-size: 0.85rem; }
-        th { background: #060911; color: var(--accent-cyan); position: sticky; top: 0; }
+        th, td { padding: 8px; border-bottom: 1px solid var(--border); font-size: 0.86rem; }
+        th { background: rgba(15, 23, 42, 0.95); color: var(--accent-cyan); position: sticky; top: 0; }
 
-        .kmap-container { display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 8px 0; }
-        .kmap-grid { display: grid; gap: 3px; background: var(--border); padding: 3px; border-radius: 6px; }
+        .kmap-container { display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 10px 0; }
+        .kmap-grid { display: grid; gap: 4px; background: var(--border); padding: 4px; border-radius: 8px; }
         .kmap-cell {
-            background: #060911;
+            background: rgba(15, 23, 42, 0.9);
             padding: 10px;
             text-align: center;
             font-weight: bold;
-            font-size: 0.85rem;
-            border-radius: 3px;
+            font-size: 0.88rem;
+            border-radius: 5px;
+            transition: all 0.2s ease;
         }
         .kmap-cell.active {
-            background: rgba(52, 211, 153, 0.15);
+            background: rgba(74, 222, 128, 0.2);
             color: var(--accent-green);
             border: 1px solid var(--accent-green);
+            box-shadow: inset 0 0 8px rgba(74, 222, 128, 0.2);
         }
         
         /* Interactive K-Map Input Cells */
         .kmap-input-cell select {
-            background: #060911;
+            background: rgba(15, 23, 42, 0.85);
             color: var(--accent-cyan);
             border: 1px solid var(--border);
             padding: 4px;
             font-weight: bold;
             text-align: center;
-            border-radius: 4px;
+            border-radius: 6px;
             cursor: pointer;
             margin-top: 0;
         }
 
         pre {
-            background: #060911;
-            padding: 10px;
-            border-radius: 6px;
+            background: rgba(15, 23, 42, 0.9);
+            padding: 12px;
+            border-radius: 8px;
             border: 1px solid var(--border);
-            color: var(--accent-purple);
+            color: var(--code-text);
             font-family: monospace;
-            font-size: 0.8rem;
+            font-size: 0.82rem;
             overflow-x: auto;
             margin: 0;
             white-space: pre-wrap;
             word-break: break-word;
+            line-height: 1.45;
         }
 
         .gate-row {
             display: flex;
-            gap: 6px;
+            gap: 8px;
             align-items: center;
-            background: #060911;
-            padding: 6px;
-            border-radius: 6px;
-            margin-bottom: 6px;
+            background: rgba(15, 23, 42, 0.7);
+            padding: 8px 10px;
+            border-radius: 8px;
+            margin-bottom: 8px;
             border: 1px solid var(--border);
         }
-        .gate-row select, .gate-row input { margin: 0; padding: 4px; }
+        .gate-row select, .gate-row input { margin: 0; padding: 6px; }
 
         /* Floating AI Widget Styles */
         .ai-widget-btn {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
-            color: #fff;
+            bottom: 24px;
+            right: 24px;
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
+            color: #ffffff;
             border: none;
             border-radius: 50px;
-            padding: 12px 20px;
-            font-weight: bold;
+            padding: 12px 22px;
+            font-weight: 700;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            box-shadow: 0 6px 20px rgba(129, 140, 248, 0.4);
             z-index: 1000;
+            transition: all 0.2s ease;
+        }
+        .ai-widget-btn:hover {
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 8px 25px rgba(244, 114, 182, 0.5);
         }
 
         .ai-chat-drawer {
             position: fixed;
-            bottom: 80px;
-            right: 20px;
-            width: 360px;
-            height: 480px;
-            background: #0b0f19;
-            border: 1px solid var(--border);
-            border-radius: 12px;
+            bottom: 86px;
+            right: 24px;
+            width: 375px;
+            height: 490px;
+            background: #0f172a;
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
             display: none;
             flex-direction: column;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
             z-index: 1000;
             overflow: hidden;
         }
 
         .ai-chat-header {
-            background: var(--panel);
-            padding: 12px;
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.95));
+            padding: 14px 16px;
             border-bottom: 1px solid var(--border);
-            font-weight: bold;
+            font-weight: 700;
             color: var(--accent-cyan);
             display: flex;
             justify-content: space-between;
+            align-items: center;
         }
 
         .ai-chat-messages {
             flex: 1;
-            padding: 12px;
+            padding: 14px;
             overflow-y: auto;
-            font-size: 0.85rem;
+            font-size: 0.88rem;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 10px;
         }
 
         .chat-msg {
-            padding: 8px 12px;
-            border-radius: 8px;
+            padding: 10px 14px;
+            border-radius: 12px;
             max-width: 85%;
             word-break: break-word;
+            line-height: 1.45;
         }
-        .chat-msg.user { background: #0284c7; color: #fff; align-self: flex-end; }
-        .chat-msg.ai { background: var(--panel); color: var(--text-main); border: 1px solid var(--border); align-self: flex-start; }
+        .chat-msg.user { 
+            background: linear-gradient(135deg, #0284c7, #2563eb); 
+            color: #ffffff; 
+            align-self: flex-end; 
+            border-bottom-right-radius: 4px;
+            box-shadow: 0 2px 8px rgba(2, 132, 199, 0.3);
+        }
+        .chat-msg.ai { 
+            background: rgba(30, 41, 59, 0.9); 
+            color: var(--text-main); 
+            border: 1px solid var(--border); 
+            align-self: flex-start; 
+            border-bottom-left-radius: 4px;
+        }
 
         .ai-chat-input {
             display: flex;
             border-top: 1px solid var(--border);
-            background: #060911;
+            background: #090d16;
+            padding: 6px;
         }
         .ai-chat-input input {
             flex: 1;
             border: none;
             background: transparent;
-            padding: 10px;
+            padding: 10px 12px;
             color: #fff;
+            margin-top: 0;
+        }
+        .ai-chat-input input:focus {
+            box-shadow: none;
         }
         .ai-chat-input button {
-            background: var(--accent-cyan);
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
             border: none;
-            color: #000;
-            font-weight: bold;
-            padding: 0 15px;
+            color: #0f172a;
+            font-weight: 700;
+            padding: 0 16px;
+            border-radius: 6px;
             cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .ai-chat-input button:hover {
+            opacity: 0.95;
         }
     </style>
 </head>
@@ -370,7 +448,7 @@
         <!-- Mode 1 Panel -->
         <div id="mode-expr" class="input-card mode-panel active">
             <label style="font-size: 0.9rem;"><b>Enter Boolean Logic Expression:</b></label>
-            <input type="text" id="exprInput" value="(A &amp; B) | (~A &amp; C)">
+            <input type="text" id="exprInput" placeholder="Enter Your Expression Here" value="">
             
             <div class="syntax-guide">
                 <div class="syntax-item"><b>AND:</b> <code>&amp;</code> <code>&amp;&amp;</code></div>
@@ -450,7 +528,7 @@
                 <p style="margin: 0 0 2px 0; font-size: 0.8rem;"><b>Synthesizable Structural Verilog:</b></p>
                 <pre id="verilogOutput">// Verilog Code</pre>
                 <p style="margin: 8px 0 4px 0; font-size: 0.8rem;"><b>Gate-Level Schematic Netlist:</b></p>
-                <div id="schematicContainer" style="background:#ffffff; border:1px solid #cbd5e1; border-radius:6px; padding:6px; width:100%; overflow:hidden;"></div>
+                <div id="schematicContainer" style="background:#ffffff; border:1px solid #cbd5e1; border-radius:8px; padding:8px; width:100%; overflow:hidden;"></div>
             </div>
         </div>
     </div>
@@ -493,7 +571,8 @@
 
         // 1. EXPRESSION PARSER
         function parseAndEvalExpression() {
-            const raw = document.getElementById('exprInput').value;
+            const raw = document.getElementById('exprInput').value.trim();
+            if(!raw) throw new Error("Expression is empty");
             const vars = Array.from(new Set(raw.match(/[A-Za-z0-9_]+/g) || [])).filter(v => !['NAND','NOR','AND','OR','NOT','XOR'].includes(v)).sort();
             if(!vars.length) throw new Error("No variables found");
 
@@ -1120,53 +1199,55 @@
         }
 
         async function sendGeminiQuery() {
-    const inputField = document.getElementById('userChatInput');
-    const msgBox = document.getElementById('chatMessages');
-    const prompt = inputField.value.trim();
+            const inputField = document.getElementById('userChatInput');
+            const msgBox = document.getElementById('chatMessages');
+            const prompt = inputField.value.trim();
 
-    if (!prompt) return;
+            if (!prompt) return;
 
-    msgBox.innerHTML += `<div class="chat-msg user">${prompt}</div>`;
-    inputField.value = '';
-    msgBox.scrollTop = msgBox.scrollHeight;
+            msgBox.innerHTML += `<div class="chat-msg user">${prompt}</div>`;
+            inputField.value = '';
+            msgBox.scrollTop = msgBox.scrollHeight;
 
-    const loadingId = `load-${Date.now()}`;
-    msgBox.innerHTML += `<div class="chat-msg ai" id="${loadingId}">Analyzing circuit state...</div>`;
-    msgBox.scrollTop = msgBox.scrollHeight;
+            const loadingId = `load-${Date.now()}`;
+            msgBox.innerHTML += `<div class="chat-msg ai" id="${loadingId}">Analyzing circuit state...</div>`;
+            msgBox.scrollTop = msgBox.scrollHeight;
 
-    const engineState = {
-        expression: document.getElementById('exprInput')?.value || '',
-        sop: document.getElementById('minimizedExpr')?.innerText || '',
-        verilog: document.getElementById('verilogOutput')?.innerText || ''
-    };
+            const engineState = {
+                expression: document.getElementById('exprInput')?.value || '',
+                sop: document.getElementById('minimizedExpr')?.innerText || '',
+                verilog: document.getElementById('verilogOutput')?.innerText || ''
+            };
 
-    try {
-        const response = await fetch('/api/gemini', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ userPrompt: prompt, engineState })
-        });
+            try {
+                const response = await fetch('/api/gemini', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userPrompt: prompt, engineState })
+                });
 
-        const data = await response.json();
-        const loadElem = document.getElementById(loadingId);
-        
-        if (data.reply) {
-            loadElem.innerHTML = typeof marked !== 'undefined' ? marked.parse(data.reply) : data.reply;
-        } else if (data.error) {
-            loadElem.innerText = `API Error: ${data.error}`;
-        } else {
-            loadElem.innerText = "No response generated.";
+                const data = await response.json();
+                const loadElem = document.getElementById(loadingId);
+                
+                if (data.reply) {
+                    loadElem.innerHTML = typeof marked !== 'undefined' ? marked.parse(data.reply) : data.reply;
+                } else if (data.error) {
+                    loadElem.innerText = `API Error: ${data.error}`;
+                } else {
+                    loadElem.innerText = "No response generated.";
+                }
+            } catch (err) {
+                const loadElem = document.getElementById(loadingId);
+                if (loadElem) loadElem.innerText = `Network Error: ${err.message}`;
+            }
+
+            msgBox.scrollTop = msgBox.scrollHeight;
         }
-    } catch (err) {
-        const loadElem = document.getElementById(loadingId);
-        if (loadElem) loadElem.innerText = `Network Error: ${err.message}`;
-    }
 
-    msgBox.scrollTop = msgBox.scrollHeight;
-}
-
-        // Init
-        synthesizePipeline();
+        // Init: Set up mode without throwing errors on empty initial expression
+        renderTTInputGrid();
+        renderKMapInputGrid();
+        setupDefaultCircuit();
     </script>
 </body>
 </html>

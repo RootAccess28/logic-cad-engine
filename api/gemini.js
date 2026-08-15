@@ -12,7 +12,7 @@ export default async function handler(req, res) {
         const { userPrompt, engineState } = req.body || {};
 
         const promptWithContext = `
-You are an expert Digital Logic CAD Assistant for student Roll No: CO26BTECH11021.
+You are an expert Digital Logic CAD Assistant. Address the user simply as "Hello User". Do not include or mention any student roll numbers or IDs.
 
 CURRENT WORKSPACE CAD CONTEXT:
 - Logic Expression: ${engineState?.expression || 'N/A'}
@@ -23,7 +23,10 @@ ${engineState?.verilog || 'N/A'}
 USER QUESTION:
 ${userPrompt || 'Explain the current circuit state.'}
 
-Keep your explanation clear, technically accurate, and concise.
+Formatting Guidelines:
+- Keep the response clean, scannable, and natural.
+- Avoid raw LaTeX syntax (e.g., avoid $\\sum m$ or $Y = AB + C$). Use plain text or standard notation (e.g., Σm(1, 3, 5, 6, 7) or Y = AB + C).
+- Format headers and code blocks cleanly for display.
         `.trim();
 
         const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent?key=${apiKey}`;

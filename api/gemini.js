@@ -11,37 +11,38 @@ export default async function handler(req, res) {
         const { userPrompt, engineState } = req.body || {};
 
         if (!process.env.GEMINI_API_KEY) {
-            return res.status(500).json({ error: 'GEMINI_API_KEY is not set in Vercel Environment Variables.' });
+            return res.status(500).json({ error: 'GEMINI_API_KEY environment variable is missing.' });
         }
 
-        const systemInstruction = `
-            You are an expert Digital Logic Assistant built into a Digital Logic CAD Engine web application.
-            Student Roll No: CO26BTECH11021.
-            
-            Current CAD Engine Application State:
-            - Logic Expression: ${engineState?.expression || 'N/A'}
-            - Minimal SOP: ${engineState?.sop || 'N/A'}
-            - Generated Verilog:
-            ${engineState?.verilog || 'N/A'}
+        const promptText = `
+Workspace Context:
+- Logic Expression: ${engineState?.expression || 'N/A'}
+- Minimal SOP: ${engineState?.sop || 'N/A'}
+- Verilog: ${engineState?.verilog || 'N/A'}
 
-            Your Goal:
-            1. Explain Boolean minimization steps (K-Maps, Quine-McCluskey).
-            2. Troubleshoot circuit syntax or hardware mapping (2-input NAND, NOR, XOR).
-            3. Answer digital electronics theory questions concisely.
-        `;
+User Query: ${userPrompt}
+        `.trim();
 
         const response = await ai.models.generateContent({
             model: 'gemini-2.5-flash',
-            contents: userPrompt,
+            contents: promptText,
             config: {
-                systemInstruction: systemInstruction,
-                temperature: 0.3
+                systemInstruction: "You are an expert digital logic design assistant. Keep explanations concise, scannable, and helpful."
             }
         });
 
-        return res.status(200).json({ reply: response.text });
+        // Safe extraction across SDK variations
+        const outputText = response.text || 
+                           response.candidates?.[0]?.content?.parts?.[0]?.text || 
+                           (typeof response === 'string' ? response : null);
+
+        if (!outputText) {
+            return res.status(500).json({ error: 'Model generated an empty response.' });
+        }
+
+        return res.status(200).json({ reply: outputText });
     } catch (error) {
-        console.error("Gemini Serverless Error:", error);
-        return res.status(500).json({ error: error.message || 'Gemini API request failed.' });
+        console.error("Gemini API Error:", error);
+        return res.status(500).json({ error: error.message || 'Error processing request.' });
     }
 }

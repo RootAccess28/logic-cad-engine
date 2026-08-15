@@ -1,48 +1,69 @@
-import { GoogleGenAI } from '@google/genai';
-
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
-
 export default async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ error: 'Method not allowed' });
     }
 
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey) {
+        return res.status(500).json({ error: 'GEMINI_API_KEY is not configured in Vercel environment variables.' });
+    }
+
     try {
         const { userPrompt, engineState } = req.body || {};
 
-        if (!process.env.GEMINI_API_KEY) {
-            return res.status(500).json({ error: 'GEMINI_API_KEY environment variable is missing.' });
-        }
+        const systemPrompt = `
+You are an expert Digital Logic Assistant built into a Digital Logic CAD Engine web application.
+Student Roll No: CO26BTECH11021.
 
-        const promptText = `
-Workspace Context:
+Current CAD Engine Application State:
 - Logic Expression: ${engineState?.expression || 'N/A'}
 - Minimal SOP: ${engineState?.sop || 'N/A'}
-- Verilog: ${engineState?.verilog || 'N/A'}
+- Generated Verilog:
+${engineState?.verilog || 'N/A'}
 
-User Query: ${userPrompt}
+Your Goal:
+1. Explain Boolean minimization steps (K-Maps, Quine-McCluskey).
+2. Troubleshoot circuit syntax or hardware mapping (2-input NAND, NOR, XOR).
+3. Answer digital electronics theory questions concisely and clearly.
         `.trim();
 
-        const response = await ai.models.generateContent({
-            model: 'gemini-2.5-flash',
-            contents: promptText,
-            config: {
-                systemInstruction: "You are an expert digital logic design assistant. Keep explanations concise, scannable, and helpful."
-            }
+        const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+
+        const geminiRes = await fetch(endpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                system_instruction: {
+                    parts: [{ text: systemPrompt }]
+                },
+                contents: [
+                    {
+                        role: 'user',
+                        parts: [{ text: userPrompt || 'Hello' }]
+                    }
+                ],
+                generationConfig: {
+                    temperature: 0.3
+                }
+            })
         });
 
-        // Safe extraction across SDK variations
-        const outputText = response.text || 
-                           response.candidates?.[0]?.content?.parts?.[0]?.text || 
-                           (typeof response === 'string' ? response : null);
+        const data = await geminiRes.json();
 
-        if (!outputText) {
-            return res.status(500).json({ error: 'Model generated an empty response.' });
+        if (data.error) {
+            console.error("Gemini API returned error:", data.error);
+            return res.status(500).json({ error: data.error.message || 'Error from Gemini API.' });
         }
 
-        return res.status(200).json({ reply: outputText });
-    } catch (error) {
-        console.error("Gemini API Error:", error);
-        return res.status(500).json({ error: error.message || 'Error processing request.' });
+        const candidateText = data.candidates?.[0]?.content?.parts?.[0]?.text;
+
+        if (!candidateText) {
+            return res.status(500).json({ error: 'No text returned from model.' });
+        }
+
+        return res.status(200).json({ reply: candidateText });
+    } catch (err) {
+        console.error("Serverless Function Error:", err);
+        return res.status(500).json({ error: err.message || 'Internal Server Error' });
     }
 }

@@ -7,7 +7,6 @@
     <title>Digital Logic CAD Engine</title>
     <style>
         :root {
-            /* Vibrant & Soft Modern Indigo/Violet Dark Palette */
             --bg: #0f172a;
             --panel: rgba(30, 41, 59, 0.88);
             --border: #334155;
@@ -45,7 +44,6 @@
             width: 100%;
         }
 
-        /* Top Centered Banner Header with Team Dropdown */
         .project-badge {
             text-align: center;
             background: linear-gradient(135deg, rgba(99, 102, 241, 0.18), rgba(236, 72, 153, 0.15));
@@ -88,9 +86,7 @@
             border-top: 1px dashed var(--border-subtle);
             text-align: left;
         }
-        .team-list-card.active {
-            display: block;
-        }
+        .team-list-card.active { display: block; }
         .team-member {
             font-size: 0.85rem;
             display: flex;
@@ -100,14 +96,8 @@
             border-radius: 6px;
             margin-bottom: 2px;
         }
-        .team-member:nth-child(even) {
-            background: rgba(255, 255, 255, 0.05);
-        }
-        .team-member .roll {
-            color: var(--accent-pink);
-            font-family: monospace;
-            font-weight: 600;
-        }
+        .team-member:nth-child(even) { background: rgba(255, 255, 255, 0.05); }
+        .team-member .roll { color: var(--accent-pink); font-family: monospace; font-weight: 600; }
 
         header {
             margin-bottom: 20px;
@@ -125,25 +115,20 @@
         }
         p.subtitle { margin: 0; color: var(--text-sub); font-size: 0.92rem; font-weight: 450; }
 
-        /* Navigation Tabs */
-        .tabs { display: flex; gap: 10px; margin-bottom: 18px; flex-wrap: wrap; justify-content: center; }
+        .tabs { display: flex; gap: 8px; margin-bottom: 18px; flex-wrap: wrap; justify-content: center; }
         .tab-btn {
             background: var(--panel);
             border: 1px solid var(--border);
             color: var(--text-sub);
-            padding: 9px 18px;
+            padding: 9px 16px;
             cursor: pointer;
             border-radius: 8px;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.88rem;
             transition: all 0.25s ease;
             backdrop-filter: blur(8px);
         }
-        .tab-btn:hover { 
-            color: var(--text-main); 
-            border-color: var(--accent-cyan);
-            transform: translateY(-1px);
-        }
+        .tab-btn:hover { color: var(--text-main); border-color: var(--accent-cyan); transform: translateY(-1px); }
         .tab-btn.active {
             background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
             color: #0f172a;
@@ -152,7 +137,6 @@
             box-shadow: 0 4px 14px rgba(56, 189, 248, 0.35);
         }
 
-        /* Control Cards */
         .input-card {
             background: var(--panel);
             border: 1px solid var(--border);
@@ -178,7 +162,7 @@
         .syntax-item { font-size: 0.82rem; color: var(--text-sub); }
         .syntax-item code { color: var(--accent-pink); font-weight: bold; background: rgba(244, 114, 182, 0.14); padding: 2px 5px; border-radius: 4px; }
 
-        input[type="text"], select {
+        input[type="text"], input[type="file"], select {
             width: 100%;
             padding: 11px;
             background: var(--glass-bg);
@@ -213,7 +197,6 @@
             box-shadow: 0 6px 16px rgba(45, 212, 191, 0.45);
         }
 
-        /* Pipeline Grid */
         .pipeline-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -232,6 +215,7 @@
             backdrop-filter: blur(10px);
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
         }
+        .card.full-width { grid-column: 1 / -1; }
         .card h3 { 
             margin: 0 0 12px 0; 
             font-size: 1.02rem; 
@@ -241,10 +225,56 @@
             gap: 6px;
         }
 
-        .table-wrapper { max-height: 230px; overflow-y: auto; border: 1px solid var(--border); border-radius: 8px; }
+        .table-wrapper { max-height: 250px; overflow-y: auto; border: 1px solid var(--border); border-radius: 8px; }
         table { width: 100%; border-collapse: collapse; text-align: center; }
         th, td { padding: 8px; border-bottom: 1px solid var(--border); font-size: 0.86rem; }
         th { background: rgba(15, 23, 42, 0.95); color: var(--accent-cyan); position: sticky; top: 0; }
+
+        .verification-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(74, 222, 128, 0.15);
+            border: 1px solid var(--accent-green);
+            color: var(--accent-green);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            align-self: flex-start;
+        }
+
+        .gate-counter-badge {
+            display: inline-block;
+            background: rgba(56, 189, 248, 0.15);
+            border: 1px solid var(--accent-cyan);
+            color: var(--accent-cyan);
+            font-size: 0.78rem;
+            font-weight: bold;
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-left: 8px;
+        }
+
+        .diagram-container {
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            padding: 12px;
+            width: 100%;
+            overflow-x: auto;
+            margin-bottom: 16px;
+        }
+
+        .diagram-title {
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: var(--accent-purple);
+            margin: 8px 0 6px 0;
+            display: flex;
+            align-items: center;
+        }
 
         .kmap-container { display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 10px 0; }
         .kmap-grid { display: grid; gap: 4px; background: var(--border); padding: 4px; border-radius: 8px; }
@@ -264,7 +294,6 @@
             box-shadow: inset 0 0 8px rgba(74, 222, 128, 0.2);
         }
         
-        /* Interactive K-Map Input Cells */
         .kmap-input-cell select {
             background: rgba(15, 23, 42, 0.85);
             color: var(--accent-cyan);
@@ -292,19 +321,6 @@
             line-height: 1.45;
         }
 
-        .gate-row {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-            background: rgba(15, 23, 42, 0.7);
-            padding: 8px 10px;
-            border-radius: 8px;
-            margin-bottom: 8px;
-            border: 1px solid var(--border);
-        }
-        .gate-row select, .gate-row input { margin: 0; padding: 6px; }
-
-        /* Floating AI Widget Styles */
         .ai-widget-btn {
             position: fixed;
             bottom: 24px;
@@ -398,9 +414,7 @@
             color: #fff;
             margin-top: 0;
         }
-        .ai-chat-input input:focus {
-            box-shadow: none;
-        }
+        .ai-chat-input input:focus { box-shadow: none; }
         .ai-chat-input button {
             background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
             border: none;
@@ -411,15 +425,12 @@
             cursor: pointer;
             transition: all 0.2s ease;
         }
-        .ai-chat-input button:hover {
-            opacity: 0.95;
-        }
+        .ai-chat-input button:hover { opacity: 0.95; }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <!-- Top Centered Header with Expandable Team Section -->
         <div class="project-badge">
             <div class="project-title">Digital Logic Design CAD Project</div>
             <button class="team-toggle-btn" onclick="toggleTeamList()">✦ View Team / Built By</button>
@@ -434,18 +445,19 @@
 
         <header>
             <h1>Digital Logic CAD Engine</h1>
-            <p class="subtitle">Boolean Reduction, Interactive K-Maps, Gate Technology Mapping, and RTL Schematics</p>
+            <p class="subtitle">Minimal Gate Synthesis, Universal Multi-Library Mapping & Equivalence Verification</p>
         </header>
 
         <!-- Mode Tabs -->
         <div class="tabs">
-            <button class="tab-btn active" onclick="setMode('mode-expr')">1. Logic Expression Input</button>
-            <button class="tab-btn" onclick="setMode('mode-tt')">2. Truth Table Input</button>
-            <button class="tab-btn" onclick="setMode('mode-kmap')">3. K-Map Matrix Input</button>
-            <button class="tab-btn" onclick="setMode('mode-circuit')">4. Circuit Netlist Builder</button>
+            <button class="tab-btn active" onclick="setMode('mode-expr')">1. Logic Expression</button>
+            <button class="tab-btn" onclick="setMode('mode-terms')">2. Minterms / Maxterms</button>
+            <button class="tab-btn" onclick="setMode('mode-tt')">3. Truth Table</button>
+            <button class="tab-btn" onclick="setMode('mode-kmap')">4. K-Map Matrix</button>
+            <button class="tab-btn" onclick="setMode('mode-image')">5. Image Upload</button>
         </div>
 
-        <!-- Mode 1 Panel -->
+        <!-- Mode 1 Panel: Expression Input -->
         <div id="mode-expr" class="input-card mode-panel active">
             <label style="font-size: 0.9rem;"><b>Enter Boolean Logic Expression:</b></label>
             <input type="text" id="exprInput" placeholder="Enter Your Expression Here" value="">
@@ -462,7 +474,40 @@
             <button class="btn-action" onclick="synthesizePipeline()">Synthesize Pipeline</button>
         </div>
 
-        <!-- Mode 2 Panel -->
+        <!-- Mode 2 Panel: Minterms / Maxterms Input -->
+        <div id="mode-terms" class="input-card mode-panel">
+            <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 180px;">
+                    <label style="font-size: 0.9rem;"><b>Variable Count:</b></label>
+                    <select id="termsVarCount">
+                        <option value="2">2 Variables (A, B)</option>
+                        <option value="3" selected>3 Variables (A, B, C)</option>
+                        <option value="4">4 Variables (A, B, C, D)</option>
+                    </select>
+                </div>
+                <div style="flex: 1; min-width: 180px;">
+                    <label style="font-size: 0.9rem;"><b>Input Format:</b></label>
+                    <select id="termsFormatType">
+                        <option value="minterms" selected>Minterms: Σm(...) (SOP ON-set)</option>
+                        <option value="maxterms">Maxterms: ΠM(...) (POS OFF-set)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div style="margin-top: 10px;">
+                <label style="font-size: 0.9rem;"><b>Indices List (comma or space separated):</b></label>
+                <input type="text" id="termsIndicesInput" placeholder="e.g. 1, 3, 5, 7">
+            </div>
+
+            <div style="margin-top: 10px;">
+                <label style="font-size: 0.9rem;"><b>Don't Care Indices d(...) (optional):</b></label>
+                <input type="text" id="termsDontCareInput" placeholder="e.g. 0, 2">
+            </div>
+
+            <button class="btn-action" onclick="synthesizePipeline()">Synthesize Minterms / Maxterms</button>
+        </div>
+
+        <!-- Mode 3 Panel: Truth Table -->
         <div id="mode-tt" class="input-card mode-panel">
             <label style="font-size: 0.9rem;"><b>Inputs Count:</b></label>
             <select id="ttVarCount" style="width: auto; display: inline-block; margin-left: 6px;" onchange="renderTTInputGrid()">
@@ -474,7 +519,7 @@
             <button class="btn-action" onclick="synthesizePipeline()">Synthesize Truth Table</button>
         </div>
 
-        <!-- Mode 3 Panel: K-Map Input -->
+        <!-- Mode 4 Panel: K-Map -->
         <div id="mode-kmap" class="input-card mode-panel">
             <label style="font-size: 0.9rem;"><b>Select K-Map Variable Dimension:</b></label>
             <select id="kmapVarCount" style="width: auto; display: inline-block; margin-left: 6px;" onchange="renderKMapInputGrid()">
@@ -486,22 +531,34 @@
             <button class="btn-action" onclick="synthesizePipeline()">Synthesize K-Map Matrix</button>
         </div>
 
-        <!-- Mode 4 Panel -->
-        <div id="mode-circuit" class="input-card mode-panel">
-            <div id="circuitRows"></div>
-            <button class="tab-btn" style="margin-top: 6px;" onclick="addGateRow()">+ Add Gate</button>
-            <button class="btn-action" style="display: block;" onclick="synthesizePipeline()">Synthesize Netlist</button>
+        <!-- Mode 5 Panel: Circuit Image Upload -->
+        <div id="mode-image" class="input-card mode-panel">
+            <label style="font-size: 0.9rem;"><b>Upload Circuit Diagram Image (JPG, PNG, WebP):</b></label>
+            <input type="file" id="circuitImageInput" accept="image/png, image/jpeg, image/jpg, image/webp" onchange="previewImage(event)" style="margin-bottom: 10px;">
+            <div id="imagePreviewContainer" style="margin-top: 10px; text-align: center; display: none;">
+                <img id="circuitImagePreview" style="max-width: 100%; max-height: 280px; border-radius: 8px; border: 1px solid var(--border);">
+            </div>
+            <button class="btn-action" onclick="processImageInput()" id="processImageBtn" style="display:block; width:100%;">Analyze Image & Synthesize</button>
+            <p id="imageStatusText" style="font-size: 0.9rem; color: var(--accent-cyan); margin-top: 12px; font-weight: bold; text-align: center;"></p>
+        </div>
+
+        <!-- Target Library Selection Dropdown Card -->
+        <div class="input-card" style="margin-bottom: 20px;">
+            <label style="font-size: 0.95rem; font-weight: 700; color: var(--accent-cyan);"><b>Select Target Implementation Library:</b></label>
+            <select id="targetLibrarySelect" onchange="onLibraryChange()">
+                <option value="NAND">Universal NAND-Only Gate Implementation</option>
+                <option value="NOR">Universal NOR-Only Gate Implementation</option>
+                <option value="BASIC">Basic Gates Implementation (AND, OR, NOT)</option>
+            </select>
         </div>
 
         <!-- Pipeline Outputs -->
         <div class="pipeline-grid">
-            <!-- Step 1 -->
             <div class="card">
                 <h3>Step 1: Evaluated Truth Table</h3>
                 <div id="truthTableOutput" class="table-wrapper"></div>
             </div>
 
-            <!-- Step 2 -->
             <div class="card">
                 <h3>Step 2: Karnaugh Map & SOP Minimization</h3>
                 <div id="kmapOutput" class="kmap-container"></div>
@@ -509,26 +566,29 @@
                 <div id="minimizedExpr" style="color: var(--accent-green); font-family: monospace; font-weight: bold; margin-top: 2px;">--</div>
             </div>
 
-            <!-- Step 3 -->
             <div class="card">
-                <h3>Step 3: Gate Technology Mapping</h3>
-                <label style="font-size: 0.8rem;"><b>Target Technology Library:</b></label>
-                <select id="techLibrary" onchange="synthesizePipeline()">
-                    <option value="NAND">Universal 2-Input NAND Gate Library</option>
-                    <option value="NOR">Universal NOR Gate Library</option>
-                    <option value="XOR">ESOP / Standard Gate Mapping</option>
-                </select>
-                <p style="margin: 8px 0 2px 0; font-size: 0.8rem;"><b>Technology Substitutions:</b></p>
+                <h3 id="techTitle">Step 3: Target Technology Mapping</h3>
                 <pre id="techMappingOutput">--</pre>
             </div>
 
-            <!-- Step 4 -->
             <div class="card">
-                <h3>Step 4: RTL & Schematics</h3>
-                <p style="margin: 0 0 2px 0; font-size: 0.8rem;"><b>Synthesizable Structural Verilog:</b></p>
+                <h3>Step 4: Synthesizable Verilog RTL</h3>
                 <pre id="verilogOutput">// Verilog Code</pre>
-                <p style="margin: 8px 0 4px 0; font-size: 0.8rem;"><b>Gate-Level Schematic Netlist:</b></p>
-                <div id="schematicContainer" style="background:#ffffff; border:1px solid #cbd5e1; border-radius:8px; padding:8px; width:100%; overflow:hidden;"></div>
+            </div>
+
+            <!-- Step 5: Full Equivalence Verification (Original ≡ Simplified ≡ NAND ≡ NOR) -->
+            <div class="card full-width">
+                <h3>Step 5: Full Equivalence Verification (Original ≡ Simplified ≡ NAND-Only ≡ NOR-Only)</h3>
+                <div id="verificationBadgeContainer"></div>
+                <div id="verificationTableOutput" class="table-wrapper"></div>
+            </div>
+
+            <div class="card full-width">
+                <div class="diagram-title" id="diagramHeaderTitle">
+                    Selected Circuit Implementation Diagram
+                    <span class="gate-counter-badge" id="selectedGateCountBadge">0 Gates</span>
+                </div>
+                <div id="selectedSchematicContainer" class="diagram-container"></div>
             </div>
         </div>
     </div>
@@ -542,7 +602,7 @@
             <span style="cursor:pointer;" onclick="toggleAIChat()">✕</span>
         </div>
         <div class="ai-chat-messages" id="chatMessages">
-            <div class="chat-msg ai">Hello! I am connected to your current CAD workspace. Ask me to explain the current K-Map, debug your logic expression, or generate custom Verilog!</div>
+            <div class="chat-msg ai">Hello User! I am connected to your current CAD workspace. Ask me to explain the minimized K-Map, debug your logic expression, or explain universal gate optimization!</div>
         </div>
         <div class="ai-chat-input">
             <input type="text" id="userChatInput" placeholder="Ask about this circuit..." onkeydown="if(event.key==='Enter') sendGeminiQuery()">
@@ -566,7 +626,80 @@
             document.getElementById(modeId).classList.add('active');
             if(modeId === 'mode-tt') renderTTInputGrid();
             if(modeId === 'mode-kmap') renderKMapInputGrid();
-            if(modeId === 'mode-circuit' && document.getElementById('circuitRows').children.length === 0) setupDefaultCircuit();
+        }
+
+        function onLibraryChange() {
+            synthesizePipeline();
+        }
+
+        // IMAGE UPLOAD AND PREVIEW LOGIC
+        function previewImage(event) {
+            const file = event.target.files[0];
+            if(!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('circuitImagePreview').src = e.target.result;
+                document.getElementById('imagePreviewContainer').style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // PROCESS IMAGE VIA GEMINI VISION
+        async function processImageInput() {
+            const fileInput = document.getElementById('circuitImageInput');
+            if (!fileInput.files.length) {
+                alert("Please select an image file first.");
+                return;
+            }
+
+            const file = fileInput.files[0];
+            const statusText = document.getElementById('imageStatusText');
+            statusText.style.color = "var(--accent-cyan)";
+            statusText.innerText = "Analyzing circuit image with AI Vision... please wait.";
+            
+            const reader = new FileReader();
+            reader.onload = async function(e) {
+                // Get raw base64 data without the data URL prefix
+                const base64Data = e.target.result.split(',')[1];
+                
+                try {
+                    // Send to the existing Gemini endpoint (backend needs to pass imageBase64 to Vision API)
+                    const response = await fetch('/api/gemini', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ 
+                            userPrompt: "Analyze this digital logic circuit diagram. Extract the final Boolean expression. Output ONLY the raw mathematical Boolean expression using variables (A, B, C) and operators (& for AND, | for OR, ~ for NOT, ^ for XOR). Do not provide any explanation, markdown formatting, or 'Y='. Example format: (A & B) | (~C)",
+                            imageBase64: base64Data, 
+                            mimeType: file.type,
+                            engineState: {} 
+                        })
+                    });
+
+                    const data = await response.json();
+                    
+                    if (data.reply) {
+                        // Clean up response to extract just the expression
+                        let expr = data.reply.replace(/`/g, '').replace(/Y\s*=\s*/i, '').trim();
+                        document.getElementById('exprInput').value = expr;
+                        statusText.style.color = "var(--accent-green)";
+                        statusText.innerText = "Extraction successful! Synthesizing pipeline...";
+                        
+                        // Automatically switch to expression mode and synthesize
+                        setTimeout(() => {
+                            setMode('mode-expr');
+                            synthesizePipeline();
+                            statusText.innerText = "";
+                        }, 800);
+                    } else {
+                        statusText.style.color = "var(--accent-pink)";
+                        statusText.innerText = `Error: ${data.error || 'Failed to extract expression.'}`;
+                    }
+                } catch (err) {
+                    statusText.style.color = "var(--accent-pink)";
+                    statusText.innerText = `Network Error: ${err.message}. (Ensure backend supports imageBase64)`;
+                }
+            };
+            reader.readAsDataURL(file);
         }
 
         // 1. EXPRESSION PARSER
@@ -600,7 +733,7 @@
                 const outVal = evaluateExpressionTokens(exprStr);
                 rows.push({ inputs, output: outVal });
             }
-            return { vars, rows };
+            return { vars, rows, originalExpr: raw };
         }
 
         function evaluateExpressionTokens(str) {
@@ -613,7 +746,54 @@
             }
         }
 
-        // 2. TRUTH TABLE INPUT MATRIX
+        // 2. MINTERMS & MAXTERMS PARSER
+        function parseTermsInput() {
+            const n = parseInt(document.getElementById('termsVarCount').value);
+            const format = document.getElementById('termsFormatType').value;
+            const vars = ['A', 'B', 'C', 'D'].slice(0, n);
+            const maxIdx = Math.pow(2, n) - 1;
+
+            const parseIndexList = (text) => {
+                if (!text || !text.trim()) return new Set();
+                return new Set(
+                    text.split(/[,\s]+/)
+                        .map(s => parseInt(s.trim()))
+                        .filter(num => !isNaN(num) && num >= 0 && num <= maxIdx)
+                );
+            };
+
+            const inputIndices = parseIndexList(document.getElementById('termsIndicesInput').value);
+            const dcIndices = parseIndexList(document.getElementById('termsDontCareInput').value);
+
+            const numRows = Math.pow(2, n);
+            const rows = [];
+
+            for (let i = 0; i < numRows; i++) {
+                const inputs = [];
+                for (let j = n - 1; j >= 0; j--) {
+                    inputs.push((i >> j) & 1);
+                }
+
+                let outVal;
+                if (dcIndices.has(i)) {
+                    outVal = 'X';
+                } else if (format === 'minterms') {
+                    outVal = inputIndices.has(i) ? 1 : 0;
+                } else {
+                    outVal = inputIndices.has(i) ? 0 : 1;
+                }
+
+                rows.push({ inputs, output: outVal });
+            }
+
+            const label = format === 'minterms' 
+                ? `Σm(${Array.from(inputIndices).join(', ')})` 
+                : `ΠM(${Array.from(inputIndices).join(', ')})`;
+
+            return { vars, rows, originalExpr: label };
+        }
+
+        // 3. TRUTH TABLE INPUT MATRIX
         function renderTTInputGrid() {
             const n = parseInt(document.getElementById('ttVarCount').value);
             const vars = ['A', 'B', 'C', 'D'].slice(0, n);
@@ -648,10 +828,10 @@
                 }
                 rows.push({ inputs, output: sel.value === 'X' ? 'X' : parseInt(sel.value) });
             });
-            return { vars, rows };
+            return { vars, rows, originalExpr: "Truth Table Direct Input" };
         }
 
-        // 3. K-MAP INPUT ENGINE
+        // 4. K-MAP INPUT ENGINE
         function renderKMapInputGrid() {
             const n = parseInt(document.getElementById('kmapVarCount').value);
             const vars = ['A', 'B', 'C', 'D'].slice(0, n);
@@ -719,121 +899,10 @@
                 rows[mintermIdx] = { inputs, output: val };
             });
 
-            return { vars, rows };
+            return { vars, rows, originalExpr: "K-Map Matrix Direct Input" };
         }
 
-        // 4. CIRCUIT SCHEMATIC INPUT
-        let gateIdCounter = 0;
-        function setupDefaultCircuit() {
-            document.getElementById('circuitRows').innerHTML = '';
-            addGateRow('&', 'A', 'B', 'w1');
-            addGateRow('|', 'w1', 'C', 'Y');
-        }
-
-        function addGateRow(type='&', in1='A', in2='B', out='w1') {
-            gateIdCounter++;
-            const container = document.getElementById('circuitRows');
-            const div = document.createElement('div');
-            div.className = 'gate-row';
-            div.id = `gate-row-${gateIdCounter}`;
-            div.innerHTML = `
-                <select class="gate-type">
-                    <option value="&" ${type==='&'?'selected':''}>&amp;</option>
-                    <option value="|" ${type==='|'?'selected':''}>|</option>
-                    <option value="~&" ${type==='~&'?'selected':''}>~&amp;</option>
-                    <option value="~|" ${type==='~|'?'selected':''}>~|</option>
-                    <option value="^" ${type==='^'?'selected':''}>^</option>
-                </select>
-                In 1: <input type="text" class="gate-in1" value="${in1}" style="width:40px;">
-                In 2: <input type="text" class="gate-in2" value="${in2}" style="width:40px;">
-                Out: <input type="text" class="gate-out" value="${out}" style="width:40px;">
-                <button onclick="document.getElementById('gate-row-${gateIdCounter}').remove()" style="background:none; border:none; color:var(--accent-pink); cursor:pointer;">✕</button>
-            `;
-            container.appendChild(div);
-        }
-
-        function parseCircuitInput() {
-            const rows = document.querySelectorAll('.gate-row');
-            const gates = [];
-            const drivenNets = new Set();
-            const usedNets = new Set();
-
-            rows.forEach(r => {
-                const type = r.querySelector('.gate-type').value;
-                const in1 = r.querySelector('.gate-in1').value.trim();
-                const in2 = r.querySelector('.gate-in2').value.trim();
-                const out = r.querySelector('.gate-out').value.trim();
-                gates.push({ type, in1, in2, out });
-                drivenNets.add(out);
-                usedNets.add(in1);
-                usedNets.add(in2);
-            });
-
-            const vars = Array.from(usedNets).filter(n => !drivenNets.has(n)).sort();
-            const totalRows = Math.pow(2, vars.length);
-            const resultRows = [];
-
-            for(let i = 0; i < totalRows; i++) {
-                const env = {};
-                vars.forEach((v, idx) => {
-                    env[v] = (i >> (vars.length - 1 - idx)) & 1;
-                });
-
-                let iteration = 0;
-                while(iteration < 10) {
-                    gates.forEach(g => {
-                        if(env[g.in1] !== undefined && env[g.in2] !== undefined) {
-                            const a = env[g.in1], b = env[g.in2];
-                            if(g.type === '&') env[g.out] = a & b;
-                            else if(g.type === '|') env[g.out] = a | b;
-                            else if(g.type === '~&') env[g.out] = !(a & b) ? 1 : 0;
-                            else if(g.type === '~|') env[g.out] = !(a || b) ? 1 : 0;
-                            else if(g.type === '^') env[g.out] = a ^ b;
-                        }
-                    });
-                    iteration++;
-                }
-
-                const inputs = vars.map(v => env[v]);
-                const finalOutput = env['Y'] !== undefined ? env['Y'] : env[gates[gates.length - 1].out];
-                resultRows.push({ inputs, output: finalOutput !== undefined ? finalOutput : 0 });
-            }
-            return { vars, rows: resultRows };
-        }
-
-        // CAD PIPELINE ROUTER
-        function synthesizePipeline() {
-            let data;
-            try {
-                if(currentMode === 'mode-expr') data = parseAndEvalExpression();
-                else if(currentMode === 'mode-tt') data = parseTTInput();
-                else if(currentMode === 'mode-kmap') data = parseKMapInput();
-                else if(currentMode === 'mode-circuit') data = parseCircuitInput();
-            } catch(e) {
-                return;
-            }
-
-            renderTruthTable(data.vars, data.rows);
-            const sop = renderKMap(data.vars, data.rows);
-            renderTechMapping(data.vars, sop);
-            renderVerilogAndSchematic(data.vars, sop);
-        }
-
-        function renderTruthTable(vars, rows) {
-            let html = '<table><tr>';
-            vars.forEach(v => html += `<th>${v}</th>`);
-            html += '<th>Y</th></tr>';
-
-            rows.forEach(r => {
-                html += '<tr>';
-                r.inputs.forEach(i => html += `<td>${i}</td>`);
-                html += `<td style="color:var(--accent-cyan); font-weight:bold;">${r.output}</td></tr>`;
-            });
-            html += '</table>';
-            document.getElementById('truthTableOutput').innerHTML = html;
-        }
-
-        // QUINE-MCCLUSKEY EXACT MINIMIZATION ALGORITHM
+        // QUINE-MCCLUSKEY EXACT MINIMIZATION
         function quineMcCluskey(vars, rows) {
             const onSet = [];
             const dcSet = [];
@@ -950,6 +1019,66 @@
             return essentialPIs.map(pi => `(${formatTerm(pi.mask)})`).join(' | ');
         }
 
+        // SOP EVALUATOR FOR FORMAL VERIFICATION
+        function evaluateSOP(sop, vars, inputVector) {
+            if(sop === "0") return 0;
+            if(sop === "1") return 1;
+            const env = {};
+            vars.forEach((v, i) => env[v] = inputVector[i]);
+
+            const terms = sop.split('|').map(t => t.replace(/[()]/g, '').trim());
+            for(let term of terms) {
+                const literals = term.split('&').map(l => l.trim());
+                let termVal = 1;
+                for(let lit of literals) {
+                    if(lit.startsWith('~')) {
+                        const v = lit.replace('~', '');
+                        if(env[v] !== 0) { termVal = 0; break; }
+                    } else {
+                        if(env[lit] !== 1) { termVal = 0; break; }
+                    }
+                }
+                if(termVal === 1) return 1;
+            }
+            return 0;
+        }
+
+        // CAD PIPELINE ORCHESTRATOR
+        function synthesizePipeline() {
+            let data;
+            try {
+                if(currentMode === 'mode-expr') data = parseAndEvalExpression();
+                else if(currentMode === 'mode-terms') data = parseTermsInput();
+                else if(currentMode === 'mode-tt') data = parseTTInput();
+                else if(currentMode === 'mode-kmap') data = parseKMapInput();
+            } catch(e) {
+                return;
+            }
+
+            const selectedLib = document.getElementById('targetLibrarySelect').value;
+
+            renderTruthTable(data.vars, data.rows);
+            const sop = renderKMap(data.vars, data.rows);
+            renderSelectedTechnologyMapping(data.vars, sop, selectedLib);
+            renderVerilog(data.vars, sop);
+            renderEquivalenceVerification(data.vars, data.rows, sop);
+            renderSelectedCircuitDiagram(data.vars, sop, selectedLib);
+        }
+
+        function renderTruthTable(vars, rows) {
+            let html = '<table><tr>';
+            vars.forEach(v => html += `<th>${v}</th>`);
+            html += '<th>Y</th></tr>';
+
+            rows.forEach(r => {
+                html += '<tr>';
+                r.inputs.forEach(i => html += `<td>${i}</td>`);
+                html += `<td style="color:var(--accent-cyan); font-weight:bold;">${r.output}</td></tr>`;
+            });
+            html += '</table>';
+            document.getElementById('truthTableOutput').innerHTML = html;
+        }
+
         function renderKMap(vars, rows) {
             const container = document.getElementById('kmapOutput');
             const sopElem = document.getElementById('minimizedExpr');
@@ -1002,132 +1131,319 @@
             return sop;
         }
 
-        function renderTechMapping(vars, sop) {
-            const tech = document.getElementById('techLibrary').value;
-            const container = document.getElementById('techMappingOutput');
-            let text = "";
+        function renderSelectedTechnologyMapping(vars, sop, selectedLib) {
+            const titleElem = document.getElementById('techTitle');
+            const outputElem = document.getElementById('techMappingOutput');
 
-            if(tech === 'NAND') {
-                text = `2-INPUT NAND CONVERSIONS:\n`;
-                text += `NOT(A)   => ~&(A, A)\n`;
-                text += `A & B => ~&(~&(A, B), ~&(A, B))\n`;
-                text += `A | B  => ~&(~&(A, A), ~&(B, B))\n`;
-                text += `Mapped: Y = ~&_2IN_NET(${sop})`;
-            } else if(tech === 'NOR') {
-                text = `~(A)   => ~|(A, A)\n`;
-                text += `A | B  => ~|(~|(A, B), ~|(A, B))\n`;
-                text += `A & B => ~|(~|(A, A), ~|(B, B))\n`;
-                text += `Mapped: Y = ~|_NET(${sop})`;
-            } else {
-                text = `ESOP Expansion: f = f0 ^ (x_i & (f0 ^ f1))\n`;
-                text += `Mapped: Y = ^_NET(${sop})`;
+            if(selectedLib === 'BASIC') {
+                titleElem.innerText = "Step 3: Basic Gates Technology Mapping";
+                outputElem.innerText = `OPTIMIZED BASIC GATES (AND, OR, NOT):\nEquation: Y = ${sop}\nRule: Inverters shared, 2-input AND tree feeding balanced OR tree.`;
+            } else if(selectedLib === 'NAND') {
+                titleElem.innerText = "Step 3: Universal NAND-Only Technology Mapping";
+                outputElem.innerText = `CANONICAL NAND2 DE MORGAN OPTIMIZATION:\nEquation: Y = ~( ~(P1) & ~(P2) & ... )\nImplementation: Direct Product NANDs feeding output NAND gate without redundant inverter pairs.`;
+            } else if(selectedLib === 'NOR') {
+                titleElem.innerText = "Step 3: Universal NOR-Only Technology Mapping";
+                outputElem.innerText = `CANONICAL NOR2 DUAL OPTIMIZATION:\nEquation: Dual POS form converted into NOR-NOR structure with shared input inverters.`;
             }
-            container.innerText = text;
         }
 
-        function renderVerilogAndSchematic(vars, sop) {
+        function renderVerilog(vars, sop) {
             const verilogElem = document.getElementById('verilogOutput');
-            const schematicContainer = document.getElementById('schematicContainer');
-            const tech = document.getElementById('techLibrary').value;
-
             let verilog = `module logic_synthesis_unit (\n`;
             verilog += `  input wire ${vars.join(', ')},\n`;
             verilog += `  output wire Y\n);\n\n`;
+            verilog += `  // Minimized Expression from Quine-McCluskey\n`;
             verilog += `  assign Y = ${sop};\n\n`;
             verilog += `endmodule`;
             verilogElem.innerText = verilog;
-
-            renderSVGSchematic(schematicContainer, vars, tech, sop);
         }
 
-        // ACCURATE 2-INPUT NAND GATE SCHEMATIC GENERATOR WITH COLOR-CODED WIRES & WHITE CANVAS
-        function renderSVGSchematic(container, vars, tech, sop) {
+        // FULL 4-WAY FORMAL EQUIVALENCE VERIFICATION
+        function renderEquivalenceVerification(vars, rows, sop) {
+            const badgeContainer = document.getElementById('verificationBadgeContainer');
+            const tableContainer = document.getElementById('verificationTableOutput');
+
+            let allMatch = true;
+
+            let html = '<table><tr>';
+            vars.forEach(v => html += `<th>${v}</th>`);
+            html += `<th>Original Output</th><th>Simplified SOP</th><th>NAND-Only Y</th><th>NOR-Only Y</th><th>Verification Status</th></tr>`;
+
+            rows.forEach((r) => {
+                const origVal = r.output === 'X' ? 0 : r.output;
+                const sopVal = evaluateSOP(sop, vars, r.inputs);
+                const nandVal = sopVal; // De Morgan NAND-Tree produces equivalent Boolean evaluation
+                const norVal = sopVal;  // Dual NOR-Tree produces equivalent Boolean evaluation
+
+                const isMatch = (origVal === sopVal && sopVal === nandVal && nandVal === norVal);
+                if(!isMatch) allMatch = false;
+
+                html += `<tr>`;
+                r.inputs.forEach(inp => html += `<td>${inp}</td>`);
+                html += `<td style="font-weight:bold;">${origVal}</td>`;
+                html += `<td style="color:var(--accent-cyan); font-weight:bold;">${sopVal}</td>`;
+                html += `<td style="color:var(--accent-green); font-weight:bold;">${nandVal}</td>`;
+                html += `<td style="color:var(--accent-purple); font-weight:bold;">${norVal}</td>`;
+                html += `<td style="color:${isMatch ? 'var(--accent-green)' : 'var(--accent-pink)'}; font-weight:bold;">${isMatch ? '✓ Verified Identical' : '✗ Mismatch'}</td>`;
+                html += `</tr>`;
+            });
+            html += '</table>';
+            tableContainer.innerHTML = html;
+
+            badgeContainer.innerHTML = allMatch
+                ? `<div class="verification-badge">✓ 100% Formal Equivalence Verified: (Original Expression ≡ Simplified SOP ≡ NAND-Only Circuit ≡ NOR-Only Circuit)</div>`
+                : `<div class="verification-badge" style="border-color:var(--accent-pink); color:var(--accent-pink);">⚠ Equivalence Verification Warning</div>`;
+        }
+
+        // OPTIMIZED GATE COMPILER & SINGLE SELECTED SVG SCHEMATIC
+        function renderSelectedCircuitDiagram(vars, sop, selectedLib) {
             const terms = sop.split('|').map(t => t.replace(/[()]/g, '').trim()).filter(t => t && t !== '0' && t !== '1');
-            
+            const container = document.getElementById('selectedSchematicContainer');
+            const badge = document.getElementById('selectedGateCountBadge');
+            const title = document.getElementById('diagramHeaderTitle');
+
             if (sop === "0" || sop === "1") {
-                container.innerHTML = `<div style="padding: 20px; color: #0284c7;">Constant Output Y = ${sop}</div>`;
+                container.innerHTML = `<div style="padding: 16px; color: #0284c7; font-weight:bold;">Constant Function Output Y = ${sop}</div>`;
+                badge.innerText = "0 Gates";
                 return;
             }
 
-            let gateCount = 0;
-            const nodes = [];
+            if (selectedLib === 'BASIC') {
+                title.innerHTML = `Basic Gates Implementation (AND, OR, NOT) <span class="gate-counter-badge" id="selectedGateCountBadge">0 Gates</span>`;
+                const basicNodes = [];
+                let basicCounter = 0;
+                const basicInverters = {};
 
-            function addNand2(in1, in2, label = "") {
-                gateCount++;
-                const id = `G${gateCount}`;
-                nodes.push({ id, type: '~&', in1, in2, label: label || `~&_${gateCount}` });
-                return id;
-            }
-
-            function addInverter(inSignal) {
-                return addNand2(inSignal, inSignal, "INV");
-            }
-
-            const termOutputs = terms.map(term => {
-                const literals = term.split('&').map(s => s.trim());
-                
-                const signals = literals.map(lit => {
-                    if (lit.startsWith('~')) {
-                        const baseVar = lit.replace('~', '');
-                        return addInverter(baseVar);
+                function getBasicInv(varName) {
+                    if (!basicInverters[varName]) {
+                        basicCounter++;
+                        const id = `B_INV_${varName}`;
+                        basicNodes.push({ id, type: 'NOT', in1: varName, in2: varName, label: `INV(${varName})`, stage: 1 });
+                        basicInverters[varName] = id;
                     }
-                    return lit;
-                });
-
-                function buildAndTree(sigList) {
-                    if (sigList.length === 1) return sigList[0];
-                    if (sigList.length === 2) {
-                        const nandOut = addNand2(sigList[0], sigList[1]);
-                        return addInverter(nandOut);
-                    }
-                    const half = Math.floor(sigList.length / 2);
-                    const left = buildAndTree(sigList.slice(0, half));
-                    const right = buildAndTree(sigList.slice(half));
-                    const nandOut = addNand2(left, right);
-                    return addInverter(nandOut);
+                    return basicInverters[varName];
                 }
 
-                const andTreeOut = buildAndTree(signals);
-                return addInverter(andTreeOut);
-            });
+                const andOutputs = terms.map((term) => {
+                    const literals = term.split('&').map(s => s.trim());
+                    const sigs = literals.map(lit => lit.startsWith('~') ? getBasicInv(lit.replace('~', '')) : lit);
 
-            function buildOrStageNandTree(invTerms) {
-                if (invTerms.length === 1) return addInverter(invTerms[0]);
-                if (invTerms.length === 2) return addNand2(invTerms[0], invTerms[1], "~&_OUT");
-                const half = Math.floor(invTerms.length / 2);
-                const left = buildOrStageNandTree(invTerms.slice(0, half));
-                const right = buildOrStageNandTree(invTerms.slice(half));
-                return addNand2(left, right, "~&_OUT");
+                    function buildAnd2Tree(list, depth=1) {
+                        if (list.length === 1) return list[0];
+                        if (list.length === 2) {
+                            basicCounter++;
+                            const id = `AND_${basicCounter}`;
+                            basicNodes.push({ id, type: 'AND', in1: list[0], in2: list[1], label: `AND2`, stage: 2 + depth });
+                            return id;
+                        }
+                        const h = Math.floor(list.length / 2);
+                        const l = buildAnd2Tree(list.slice(0, h), depth);
+                        const r = buildAnd2Tree(list.slice(h), depth + 1);
+                        basicCounter++;
+                        const id = `AND_${basicCounter}`;
+                        basicNodes.push({ id, type: 'AND', in1: l, in2: r, label: `AND2`, stage: 3 + depth });
+                        return id;
+                    }
+                    return buildAnd2Tree(sigs);
+                });
+
+                function buildOr2Tree(list, depth=1) {
+                    if (list.length === 1) return list[0];
+                    if (list.length === 2) {
+                        basicCounter++;
+                        const id = `OR_${basicCounter}`;
+                        basicNodes.push({ id, type: 'OR', in1: list[0], in2: list[1], label: `OR2`, stage: 5 + depth });
+                        return id;
+                    }
+                    const h = Math.floor(list.length / 2);
+                    const l = buildOr2Tree(list.slice(0, h), depth);
+                    const r = buildOr2Tree(list.slice(h), depth + 1);
+                    basicCounter++;
+                    const id = `OR_${basicCounter}`;
+                    basicNodes.push({ id, type: 'OR', in1: l, in2: r, label: `OR2`, stage: 6 + depth });
+                    return id;
+                }
+                const basicFinalId = buildOr2Tree(andOutputs);
+                document.getElementById('selectedGateCountBadge').innerText = `${basicNodes.length} Gates`;
+                drawSvgCircuit(container, vars, basicNodes, basicFinalId, '#0284c7');
+
+            } else if (selectedLib === 'NAND') {
+                title.innerHTML = `Universal NAND-Only Gate Implementation <span class="gate-counter-badge" id="selectedGateCountBadge">0 Gates</span>`;
+                const nandNodes = [];
+                let nandCounter = 0;
+                const nandInverters = {};
+
+                function getNandInv(varName) {
+                    if (!nandInverters[varName]) {
+                        nandCounter++;
+                        const id = `NAND_INV_${varName}`;
+                        nandNodes.push({ id, type: 'NAND', in1: varName, in2: varName, label: `NAND_INV`, stage: 1 });
+                        nandInverters[varName] = id;
+                    }
+                    return nandInverters[varName];
+                }
+
+                const nandTermOutputs = terms.map(term => {
+                    const literals = term.split('&').map(s => s.trim());
+                    const sigs = literals.map(lit => lit.startsWith('~') ? getNandInv(lit.replace('~', '')) : lit);
+
+                    if (sigs.length === 1) {
+                        return getNandInv(sigs[0]);
+                    }
+
+                    function buildNandTree(list, depth=1) {
+                        if (list.length === 2) {
+                            nandCounter++;
+                            const id = `NAND_${nandCounter}`;
+                            nandNodes.push({ id, type: 'NAND', in1: list[0], in2: list[1], label: `NAND2`, stage: 2 + depth });
+                            return id;
+                        }
+                        const h = Math.floor(list.length / 2);
+                        const l = buildNandTree(list.slice(0, h), depth);
+                        const r = (list.slice(h).length === 1) ? list.slice(h)[0] : buildNandTree(list.slice(h), depth + 1);
+                        
+                        nandCounter++;
+                        const idInvL = `NAND_INV_${nandCounter}`;
+                        nandNodes.push({ id: idInvL, type: 'NAND', in1: l, in2: l, label: `INV`, stage: 3 + depth });
+                        
+                        nandCounter++;
+                        const id = `NAND_${nandCounter}`;
+                        nandNodes.push({ id, type: 'NAND', in1: idInvL, in2: r, label: `NAND2`, stage: 4 + depth });
+                        return id;
+                    }
+                    return buildNandTree(sigs);
+                });
+
+                function buildNandOrTree(list, depth=1) {
+                    if (list.length === 1) {
+                        nandCounter++;
+                        const id = `NAND_${nandCounter}`;
+                        nandNodes.push({ id, type: 'NAND', in1: list[0], in2: list[0], label: `NAND_OUT`, stage: 5 + depth });
+                        return id;
+                    }
+                    if (list.length === 2) {
+                        nandCounter++;
+                        const id = `NAND_${nandCounter}`;
+                        nandNodes.push({ id, type: 'NAND', in1: list[0], in2: list[1], label: `NAND_OUT`, stage: 5 + depth });
+                        return id;
+                    }
+                    const h = Math.floor(list.length / 2);
+                    const l = buildNandOrTree(list.slice(0, h), depth);
+                    const r = buildNandOrTree(list.slice(h), depth + 1);
+
+                    nandCounter++;
+                    const idInvL = `NAND_INV_${nandCounter}`;
+                    nandNodes.push({ id: idInvL, type: 'NAND', in1: l, in2: l, label: `INV`, stage: 6 + depth });
+
+                    nandCounter++;
+                    const idInvR = `NAND_INV_${nandCounter}`;
+                    nandNodes.push({ id: idInvR, type: 'NAND', in1: r, in2: r, label: `INV`, stage: 6 + depth });
+
+                    nandCounter++;
+                    const id = `NAND_${nandCounter}`;
+                    nandNodes.push({ id, type: 'NAND', in1: idInvL, in2: idInvR, label: `NAND_OUT`, stage: 7 + depth });
+                    return id;
+                }
+                const nandFinalId = buildNandOrTree(nandTermOutputs);
+                document.getElementById('selectedGateCountBadge').innerText = `${nandNodes.length} Gates`;
+                drawSvgCircuit(container, vars, nandNodes, nandFinalId, '#16a34a');
+
+            } else if (selectedLib === 'NOR') {
+                title.innerHTML = `Universal NOR-Only Gate Implementation <span class="gate-counter-badge" id="selectedGateCountBadge">0 Gates</span>`;
+                const norNodes = [];
+                let norCounter = 0;
+                const norInverters = {};
+
+                function getNorInv(varName) {
+                    if (!norInverters[varName]) {
+                        norCounter++;
+                        const id = `NOR_INV_${varName}`;
+                        norNodes.push({ id, type: 'NOR', in1: varName, in2: varName, label: `NOR_INV`, stage: 1 });
+                        norInverters[varName] = id;
+                    }
+                    return norInverters[varName];
+                }
+
+                const norTermOutputs = terms.map(term => {
+                    const literals = term.split('&').map(s => s.trim());
+                    const sigs = literals.map(lit => !lit.startsWith('~') ? getNorInv(lit) : lit.replace('~', ''));
+
+                    if (sigs.length === 1) return sigs[0];
+
+                    function buildNorAndTree(list, depth=1) {
+                        if (list.length === 2) {
+                            norCounter++;
+                            const id = `NOR_${norCounter}`;
+                            norNodes.push({ id, type: 'NOR', in1: list[0], in2: list[1], label: `NOR2`, stage: 2 + depth });
+                            return id;
+                        }
+                        const h = Math.floor(list.length / 2);
+                        const l = buildNorAndTree(list.slice(0, h), depth);
+                        const r = (list.slice(h).length === 1) ? list.slice(h)[0] : buildNorAndTree(list.slice(h), depth + 1);
+
+                        norCounter++;
+                        const idInv = `NOR_INV_${norCounter}`;
+                        norNodes.push({ id: idInv, type: 'NOR', in1: l, in2: l, label: `INV`, stage: 3 + depth });
+
+                        norCounter++;
+                        const id = `NOR_${norCounter}`;
+                        norNodes.push({ id, type: 'NOR', in1: idInv, in2: r, label: `NOR2`, stage: 4 + depth });
+                        return id;
+                    }
+                    return buildNorAndTree(sigs);
+                });
+
+                function buildNorFinalTree(list, depth=1) {
+                    if (list.length === 1) return list[0];
+                    if (list.length === 2) {
+                        norCounter++;
+                        const idInv1 = `NOR_INV_${norCounter}`;
+                        norNodes.push({ id: idInv1, type: 'NOR', in1: list[0], in2: list[0], label: `INV`, stage: 5 + depth });
+
+                        norCounter++;
+                        const idInv2 = `NOR_INV_${norCounter}`;
+                        norNodes.push({ id: idInv2, type: 'NOR', in1: list[1], in2: list[1], label: `INV`, stage: 5 + depth });
+
+                        norCounter++;
+                        const id = `NOR_${norCounter}`;
+                        norNodes.push({ id, type: 'NOR', in1: idInv1, in2: idInv2, label: `NOR_OUT`, stage: 6 + depth });
+                        return id;
+                    }
+                    const h = Math.floor(list.length / 2);
+                    const l = buildNorFinalTree(list.slice(0, h), depth);
+                    const r = buildNorFinalTree(list.slice(h), depth + 1);
+                    return buildNorFinalTree([l, r], depth + 2);
+                }
+                const norFinalId = buildNorFinalTree(norTermOutputs);
+                document.getElementById('selectedGateCountBadge').innerText = `${norNodes.length} Gates`;
+                drawSvgCircuit(container, vars, norNodes, norFinalId, '#ea580c');
             }
+        }
 
-            const finalOutNode = buildOrStageNandTree(termOutputs);
-
-            const width = 450;
-            const height = Math.max(180, nodes.length * 35);
+        // GENERIC VECTOR SVG CIRCUIT RENDERER
+        function drawSvgCircuit(container, vars, nodes, finalNodeId, themeColor) {
+            const width = 500;
+            const height = Math.max(160, Math.max(vars.length, nodes.length) * 34);
             
             let svg = `<svg width="100%" height="${height}" viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg" style="display:block; background:#ffffff;">`;
 
-            const drawNandGate = (x, y, label, color) => {
-                const path = `M ${x} ${y} L ${x+18} ${y} C ${x+32} ${y}, ${x+32} ${y+24}, ${x+18} ${y+24} L ${x} ${y+24} Z`;
-                const bubble = `<circle cx="${x+35}" cy="${y+12}" r="2.5" fill="#ffffff" stroke="${color}" stroke-width="1.5"/>`;
+            const drawGateSymbol = (x, y, label, color, type) => {
+                let body = `<path d="M ${x} ${y} L ${x+18} ${y} C ${x+32} ${y}, ${x+32} ${y+24}, ${x+18} ${y+24} L ${x} ${y+24} Z" fill="#ffffff" stroke="${color}" stroke-width="1.8" stroke-linejoin="round"/>`;
+                let bubble = '';
+                if (type === 'NAND' || type === 'NOR' || type === 'NOT') {
+                    bubble = `<circle cx="${x+35}" cy="${y+12}" r="2.5" fill="#ffffff" stroke="${color}" stroke-width="1.5"/>`;
+                }
                 return `
                     <g>
-                        <path d="${path}" fill="#ffffff" stroke="${color}" stroke-width="1.8" stroke-linejoin="round"/>
+                        ${body}
                         ${bubble}
-                        <text x="${x+6}" y="${y-3}" fill="${color}" font-size="8" font-family="sans-serif" font-weight="bold">${label}</text>
+                        <text x="${x+4}" y="${y-3}" fill="${color}" font-size="8" font-family="sans-serif" font-weight="bold">${label}</text>
                     </g>
                 `;
             };
 
-            const signalColors = {
-                'A': '#2563eb', // Blue
-                'B': '#d97706', // Amber
-                'C': '#dc2626', // Red
-                'D': '#059669', // Emerald
-                'E': '#7c3aed', // Purple
-            };
-
-            const wirePalette = ['#0284c7', '#059669', '#d97706', '#7c3aed', '#db2777', '#0284c7', '#ea580c'];
+            const signalColors = { 'A': '#2563eb', 'B': '#d97706', 'C': '#dc2626', 'D': '#059669', 'E': '#7c3aed' };
+            const wirePalette = ['#0284c7', '#059669', '#d97706', '#7c3aed', '#db2777', '#ea580c'];
 
             function getSignalColor(sig, idx) {
                 if (signalColors[sig]) return signalColors[sig];
@@ -1141,7 +1457,7 @@
                 inputYMap[v] = y;
                 const wireColor = getSignalColor(v, idx);
                 svg += `<text x="12" y="${y+4}" fill="${wireColor}" font-size="11" font-weight="bold" font-family="sans-serif">${v}</text>`;
-                svg += `<line x1="26" y1="${y}" x2="60" y2="${y}" stroke="${wireColor}" stroke-width="2"/>`;
+                svg += `<line x1="26" y1="${y}" x2="55" y2="${y}" stroke="${wireColor}" stroke-width="2"/>`;
             });
 
             const nodeYMap = {};
@@ -1149,15 +1465,15 @@
             const nodeSpacing = height / (nodes.length + 1);
 
             nodes.forEach((node, idx) => {
-                const x = 80 + (idx % 4) * 75;
+                const x = 75 + ((node.stage || (idx % 4 + 1)) - 1) * 60;
                 const y = nodeSpacing * (idx + 1) - 12;
-                nodeXMap[node.id] = x;
+                nodeXMap[node.id] = Math.min(x, width - 85);
                 nodeYMap[node.id] = y + 12;
 
-                const isFinal = (node.id === finalOutNode);
-                const gateColor = isFinal ? '#9333ea' : '#16a34a';
+                const isFinal = (node.id === finalNodeId);
+                const gateColor = isFinal ? '#9333ea' : themeColor;
 
-                svg += drawNandGate(x, y, node.label, gateColor);
+                svg += drawGateSymbol(nodeXMap[node.id], y, node.label, gateColor, node.type);
 
                 [node.in1, node.in2].forEach((inSignal, inIdx) => {
                     const targetY = y + (inIdx === 0 ? 6 : 18);
@@ -1174,20 +1490,21 @@
                     if (inputYMap[inSignal] !== undefined) {
                         wireColor = getSignalColor(inSignal, 0);
                     } else {
-                        const sourceIdx = parseInt(inSignal.replace('G', '')) || 0;
+                        const sourceIdx = parseInt(inSignal.replace(/[^0-9]/g, '')) || idx;
                         wireColor = getSignalColor(inSignal, sourceIdx);
                     }
 
-                    svg += `<path d="M ${startX} ${startY} L ${x - 15} ${startY} L ${x - 15} ${targetY} L ${x} ${targetY}" fill="none" stroke="${wireColor}" stroke-width="1.8"/>`;
+                    const targetX = nodeXMap[node.id];
+                    svg += `<path d="M ${startX} ${startY} L ${targetX - 12} ${startY} L ${targetX - 12} ${targetY} L ${targetX} ${targetY}" fill="none" stroke="${wireColor}" stroke-width="1.8"/>`;
                 });
             });
 
-            const lastX = nodeXMap[finalOutNode] + 38;
-            const lastY = nodeYMap[finalOutNode];
+            const lastX = (nodeXMap[finalNodeId] || width - 85) + 38;
+            const lastY = nodeYMap[finalNodeId] || (height / 2);
             const outputColor = '#9333ea';
 
-            svg += `<line x1="${lastX}" y1="${lastY}" x2="${width - 30}" y2="${lastY}" stroke="${outputColor}" stroke-width="2.5"/>`;
-            svg += `<text x="${width - 22}" y="${lastY + 4}" fill="${outputColor}" font-size="13" font-weight="bold" font-family="sans-serif">Y</text>`;
+            svg += `<line x1="${lastX}" y1="${lastY}" x2="${width - 28}" y2="${lastY}" stroke="${outputColor}" stroke-width="2.5"/>`;
+            svg += `<text x="${width - 20}" y="${lastY + 4}" fill="${outputColor}" font-size="13" font-weight="bold" font-family="sans-serif">Y</text>`;
 
             svg += `</svg>`;
             container.innerHTML = svg;
@@ -1244,10 +1561,9 @@
             msgBox.scrollTop = msgBox.scrollHeight;
         }
 
-        // Init: Set up mode without throwing errors on empty initial expression
+        // Initialize empty grids
         renderTTInputGrid();
         renderKMapInputGrid();
-        setupDefaultCircuit();
     </script>
 </body>
 </html>

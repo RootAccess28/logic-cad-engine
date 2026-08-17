@@ -13,7 +13,7 @@ export default async function handler(req, res) {
         const { userPrompt, engineState, imageBase64, mimeType } = req.body || {};
 
         const promptWithContext = `
-You are an expert Digital Logic CAD Assistant for student Roll No: CO26BTECH11021.
+You are an expert Digital Logic CAD Assistant for the User.
 
 CURRENT WORKSPACE CAD CONTEXT:
 - Logic Expression: ${engineState?.expression || 'N/A'}

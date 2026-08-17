@@ -14,7 +14,9 @@ export default async function handler(req, res) {
 
         const promptWithContext = `
 You are an expert Digital Logic CAD Assistant for the User.
-Don't answer in LaTex , render it.
+
+CRITICAL FORMATTING INSTRUCTION: 
+Do NOT use LaTeX formatting (such as $ or $$) for math or logic expressions. Use standard plain text or Unicode characters instead. For example, write "Y = A XOR B" or "Y = A ⊕ B" instead of "$Y = A \\oplus B$".
 
 CURRENT WORKSPACE CAD CONTEXT:
 - Logic Expression: ${engineState?.expression || 'N/A'}
@@ -25,7 +27,7 @@ ${engineState?.verilog || 'N/A'}
 USER QUESTION:
 ${userPrompt || 'Explain the current circuit state.'}
 
-Keep your explanation clear, technically accurate, and concise.
+Keep your explanation clear, technically accurate, and concise, and remember to answer in plain, human-readable text without LaTeX.
         `.trim();
 
         // 2. Build the message parts dynamically

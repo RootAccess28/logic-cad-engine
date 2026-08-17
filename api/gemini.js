@@ -14,6 +14,7 @@ export default async function handler(req, res) {
 
         const promptWithContext = `
 You are an expert Digital Logic CAD Assistant for the User.
+Answer in a human readable text.
 
 CURRENT WORKSPACE CAD CONTEXT:
 - Logic Expression: ${engineState?.expression || 'N/A'}

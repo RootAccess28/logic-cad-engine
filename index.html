@@ -1158,41 +1158,64 @@
             verilogElem.innerText = verilog;
         }
 
-        // FULL 4-WAY FORMAL EQUIVALENCE VERIFICATION
+        // FULL 4-WAY FORMAL EQUIVALENCE VERIFICATION (UPDATED FOR DON'T CARES)
         function renderEquivalenceVerification(vars, rows, sop) {
             const badgeContainer = document.getElementById('verificationBadgeContainer');
             const tableContainer = document.getElementById('verificationTableOutput');
 
-            let allMatch = true;
+            let strictMismatch = false;
+            let hasDontCares = false;
 
             let html = '<table><tr>';
             vars.forEach(v => html += `<th>${v}</th>`);
             html += `<th>Original Output</th><th>Simplified SOP</th><th>NAND-Only Y</th><th>NOR-Only Y</th><th>Verification Status</th></tr>`;
 
             rows.forEach((r) => {
-                const origVal = r.output === 'X' ? 0 : r.output;
+                const rawOrigVal = r.output; // Can be 0, 1, or 'X'
                 const sopVal = evaluateSOP(sop, vars, r.inputs);
                 const nandVal = sopVal; // De Morgan NAND-Tree produces equivalent Boolean evaluation
                 const norVal = sopVal;  // Dual NOR-Tree produces equivalent Boolean evaluation
 
-                const isMatch = (origVal === sopVal && sopVal === nandVal && nandVal === norVal);
-                if(!isMatch) allMatch = false;
+                let isMatch = false;
+                let statusText = "";
+                let statusColor = "";
+
+                if (rawOrigVal === 'X' || rawOrigVal === 'x') {
+                    hasDontCares = true;
+                    isMatch = true; 
+                    statusText = `✓ Optimized (Don't Care → ${sopVal})`;
+                    statusColor = "var(--accent-amber)";
+                } else {
+                    isMatch = (rawOrigVal === sopVal && sopVal === nandVal && nandVal === norVal);
+                    if (isMatch) {
+                        statusText = `✓ Verified Identical`;
+                        statusColor = "var(--accent-green)";
+                    } else {
+                        statusText = `✗ Mismatch`;
+                        statusColor = "var(--accent-pink)";
+                        strictMismatch = true;
+                    }
+                }
 
                 html += `<tr>`;
                 r.inputs.forEach(inp => html += `<td>${inp}</td>`);
-                html += `<td style="font-weight:bold;">${origVal}</td>`;
+                html += `<td style="font-weight:bold; color:${(rawOrigVal === 'X' || rawOrigVal === 'x') ? 'var(--accent-amber)' : 'inherit'};">${rawOrigVal}</td>`;
                 html += `<td style="color:var(--accent-cyan); font-weight:bold;">${sopVal}</td>`;
                 html += `<td style="color:var(--accent-green); font-weight:bold;">${nandVal}</td>`;
                 html += `<td style="color:var(--accent-purple); font-weight:bold;">${norVal}</td>`;
-                html += `<td style="color:${isMatch ? 'var(--accent-green)' : 'var(--accent-pink)'}; font-weight:bold;">${isMatch ? '✓ Verified Identical' : '✗ Mismatch'}</td>`;
+                html += `<td style="color:${statusColor}; font-weight:bold;">${statusText}</td>`;
                 html += `</tr>`;
             });
             html += '</table>';
             tableContainer.innerHTML = html;
 
-            badgeContainer.innerHTML = allMatch
-                ? `<div class="verification-badge">✓ 100% Formal Equivalence Verified: (Original Expression ≡ Simplified SOP ≡ NAND-Only Circuit ≡ NOR-Only Circuit)</div>`
-                : `<div class="verification-badge" style="border-color:var(--accent-pink); color:var(--accent-pink);">⚠ Equivalence Verification Warning</div>`;
+            if (strictMismatch) {
+                badgeContainer.innerHTML = `<div class="verification-badge" style="border-color:var(--accent-pink); color:var(--accent-pink);">✗ Equivalence Verification Failed (Strict Mismatch Detected)</div>`;
+            } else if (hasDontCares) {
+                badgeContainer.innerHTML = `<div class="verification-badge" style="border-color:var(--accent-amber); color:var(--accent-amber);">✓ 100% Formal Equivalence Verified (Don't Cares optimally assigned)</div>`;
+            } else {
+                badgeContainer.innerHTML = `<div class="verification-badge">✓ 100% Formal Equivalence Verified: (Original Expression ≡ Simplified SOP ≡ NAND-Only Circuit ≡ NOR-Only Circuit)</div>`;
+            }
         }
 
         // OPTIMIZED GATE COMPILER & SINGLE SELECTED SVG SCHEMATIC

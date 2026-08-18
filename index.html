@@ -655,7 +655,7 @@
             const file = fileInput.files[0];
             const statusText = document.getElementById('imageStatusText');
             statusText.style.color = "var(--accent-cyan)";
-            statusText.innerText = "Analyzing circuit image with AI Vision... please wait.";
+            statusText.innerText = "Analyzing image with AI Vision... please wait.";
             
             const reader = new FileReader();
             reader.onload = async function(e) {
@@ -663,12 +663,12 @@
                 const base64Data = e.target.result.split(',')[1];
                 
                 try {
-                    // Send to the existing Gemini endpoint (backend needs to pass imageBase64 to Vision API)
                     const response = await fetch('/api/gemini', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ 
-                            userPrompt: "Analyze this digital logic circuit diagram. Extract the final Boolean expression. Output ONLY the raw mathematical Boolean expression using variables (A, B, C) and operators (& for AND, | for OR, ~ for NOT, ^ for XOR). Do not provide any explanation, markdown formatting, or 'Y='. Example format: (A & B) | (~C)",
+                            // UPDATED PROMPT: Supports both Truth Tables and Circuit Diagrams
+                            userPrompt: "Analyze this image. It will either be a digital logic circuit diagram OR a truth table. Extract the final Boolean expression that represents the logic shown. Output ONLY the raw mathematical Boolean expression using variables (A, B, C, D) and operators (& for AND, | for OR, ~ for NOT, ^ for XOR). Do not provide any explanation, markdown formatting, or 'Y='. Example format: (A & B) | (~C)",
                             imageBase64: base64Data, 
                             mimeType: file.type,
                             engineState: {} 
@@ -679,7 +679,7 @@
                     
                     if (data.reply) {
                         // Clean up response to extract just the expression
-                        let expr = data.reply.replace(/`/g, '').replace(/Y\s*=\s*/i, '').trim();
+                        let expr = data.reply.replace(/`/g, '').replace(/Y\s*=\s*/i, '').replace(/F\s*=\s*/i, '').trim();
                         document.getElementById('exprInput').value = expr;
                         statusText.style.color = "var(--accent-green)";
                         statusText.innerText = "Extraction successful! Synthesizing pipeline...";
@@ -696,7 +696,7 @@
                     }
                 } catch (err) {
                     statusText.style.color = "var(--accent-pink)";
-                    statusText.innerText = `Network Error: ${err.message}. (Ensure backend supports imageBase64)`;
+                    statusText.innerText = `Network Error: ${err.message}.`;
                 }
             };
             reader.readAsDataURL(file);

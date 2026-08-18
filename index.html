@@ -533,7 +533,7 @@
 
         <!-- Mode 5 Panel: Circuit Image Upload -->
         <div id="mode-image" class="input-card mode-panel">
-            <label style="font-size: 0.9rem;"><b>Upload Circuit Diagram Image (JPG, PNG, WebP):</b></label>
+            <label style="font-size: 0.9rem;"><b>Upload Circuit Diagram or Truth Table Image (JPG, PNG, WebP):</b></label>
             <input type="file" id="circuitImageInput" accept="image/png, image/jpeg, image/jpg, image/webp" onchange="previewImage(event)" style="margin-bottom: 10px;">
             <div id="imagePreviewContainer" style="margin-top: 10px; text-align: center; display: none;">
                 <img id="circuitImagePreview" style="max-width: 100%; max-height: 280px; border-radius: 8px; border: 1px solid var(--border);">
@@ -622,8 +622,14 @@
             currentMode = modeId;
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             document.querySelectorAll('.mode-panel').forEach(p => p.classList.remove('active'));
-            event.target.classList.add('active');
-            document.getElementById(modeId).classList.add('active');
+            
+            // Safely map the tab button without relying on event.target
+            const activeBtn = Array.from(document.querySelectorAll('.tab-btn')).find(btn => btn.getAttribute('onclick').includes(modeId));
+            if (activeBtn) activeBtn.classList.add('active');
+            
+            const panel = document.getElementById(modeId);
+            if (panel) panel.classList.add('active');
+
             if(modeId === 'mode-tt') renderTTInputGrid();
             if(modeId === 'mode-kmap') renderKMapInputGrid();
         }
@@ -659,7 +665,6 @@
             
             const reader = new FileReader();
             reader.onload = async function(e) {
-                // Get raw base64 data without the data URL prefix
                 const base64Data = e.target.result.split(',')[1];
                 
                 try {
@@ -667,8 +672,7 @@
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ 
-                            // UPDATED PROMPT: Supports both Truth Tables and Circuit Diagrams
-                            userPrompt: "Analyze this image. It will either be a digital logic circuit diagram OR a truth table. Extract the final Boolean expression that represents the logic shown. Output ONLY the raw mathematical Boolean expression using variables (A, B, C, D) and operators (& for AND, | for OR, ~ for NOT, ^ for XOR). Do not provide any explanation, markdown formatting, or 'Y='. Example format: (A & B) | (~C)",
+                            userPrompt: "Analyze this image. It will either be a digital logic circuit diagram OR a truth table. Extract the final Boolean expression that represents the logic shown. Output ONLY the right-hand side mathematical Boolean expression using variables (A, B, C, D) and operators (& for AND, | for OR, ~ for NOT, ^ for XOR). DO NOT include 'Y=' or 'L=' or 'Output=' or any left-hand assignment. Do not provide any explanation, markdown formatting, or code blocks. Example format: (A & B) | (~C)",
                             imageBase64: base64Data, 
                             mimeType: file.type,
                             engineState: {} 
@@ -679,16 +683,15 @@
                     
                     if (data.reply) {
                         // Clean up response to extract just the expression
-                        let expr = data.reply.replace(/`/g, '').replace(/Y\s*=\s*/i, '').replace(/F\s*=\s*/i, '').trim();
+                        let expr = data.reply.replace(/`/g, '').replace(/^[A-Za-z0-9_]+\s*=\s*/, '').trim();
                         document.getElementById('exprInput').value = expr;
                         statusText.style.color = "var(--accent-green)";
                         statusText.innerText = "Extraction successful! Synthesizing pipeline...";
                         
-                        // Automatically switch to expression mode and synthesize
                         setTimeout(() => {
-                            setMode('mode-expr');
+                            // Automatically synthesize without leaving the image tab
                             synthesizePipeline();
-                            statusText.innerText = "";
+                            statusText.innerText = `Analysis Complete. Extracted Logic: Y = ${expr}`;
                         }, 800);
                     } else {
                         statusText.style.color = "var(--accent-pink)";
@@ -705,9 +708,9 @@
         // 1. EXPRESSION PARSER
         function parseAndEvalExpression() {
             const raw = document.getElementById('exprInput').value.trim();
-            if(!raw) throw new Error("Expression is empty");
+            if(!raw) throw new Error("Expression is empty.");
             const vars = Array.from(new Set(raw.match(/[A-Za-z0-9_]+/g) || [])).filter(v => !['NAND','NOR','AND','OR','NOT','XOR'].includes(v)).sort();
-            if(!vars.length) throw new Error("No variables found");
+            if(!vars.length) throw new Error("No logic variables found. Ensure correct formatting (A & B).");
 
             const rowsCount = Math.pow(2, vars.length);
             const rows = [];
@@ -1047,11 +1050,13 @@
         function synthesizePipeline() {
             let data;
             try {
-                if(currentMode === 'mode-expr') data = parseAndEvalExpression();
+                // If in image mode, parse the expression from exprInput just like mode-expr
+                if(currentMode === 'mode-expr' || currentMode === 'mode-image') data = parseAndEvalExpression();
                 else if(currentMode === 'mode-terms') data = parseTermsInput();
                 else if(currentMode === 'mode-tt') data = parseTTInput();
                 else if(currentMode === 'mode-kmap') data = parseKMapInput();
             } catch(e) {
+                alert("Execution Halted:\n" + e.message);
                 return;
             }
 

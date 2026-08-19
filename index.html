@@ -635,7 +635,6 @@
                     </div>
                 </div>
                 <div id="muxInputsContainer" style="margin-top: 16px;">
-                    <!-- Pre-filled default 2x1 to avoid visual flash -->
                     <div style="display: flex; gap: 8px; margin-top: 10px;">
                         <div style="flex:1"><label>D0 Input</label><input type="text" id="muxD0" value="0"></div>
                         <div style="flex:1"><label>D1 Input</label><input type="text" id="muxD1" value="1"></div>
@@ -1866,6 +1865,37 @@
                 return;
             }
 
+            // INTERCEPT SINGLE VARIABLE MINIMIZATION TO DRAW 0/1 GATE
+            if (terms.length === 1 && !terms[0].includes('&')) {
+                const lit = terms[0].replace(/[()]/g, '');
+                const isNeg = lit.startsWith('~');
+                const varName = isNeg ? lit.substring(1) : lit;
+                const themeColor = selectedLib === 'BASIC' ? '#2563eb' : (selectedLib === 'NAND' ? '#0d9488' : '#db2777');
+                
+                if (!isNeg) {
+                    badge.innerText = `0 Gates (Direct Wire Output)`;
+                    drawSvgCircuit(container, vars, [], varName, themeColor);
+                    return;
+                } else {
+                    const nodes = [];
+                    let id = '';
+                    if (selectedLib === 'BASIC') {
+                        id = `B_INV_OUT`;
+                        nodes.push({id, type: 'NOT', in1: varName, in2: varName, label: 'INV', stage: 1});
+                    } else if (selectedLib === 'NAND') {
+                        id = `NAND_INV_OUT`;
+                        nodes.push({id, type: 'NAND', in1: varName, in2: varName, label: 'N_INV', stage: 1});
+                    } else if (selectedLib === 'NOR') {
+                        id = `NOR_INV_OUT`;
+                        nodes.push({id, type: 'NOR', in1: varName, in2: varName, label: 'NOR_INV', stage: 1});
+                    }
+                    badge.innerText = `1 Gate`;
+                    drawSvgCircuit(container, vars, nodes, id, themeColor);
+                    return;
+                }
+            }
+
+
             // DETECT XOR FOR OPTIMAL 4-GATE NAND OR NOR MAPPING
             const isXOR = (vars.length === 2) && (sop === `(~${vars[0]} & ${vars[1]}) | (${vars[0]} & ~${vars[1]})` || sop === `(${vars[0]} & ~${vars[1]}) | (~${vars[0]} & ${vars[1]})`);
 
@@ -2090,14 +2120,67 @@
             }
         }
 
-        // GENERIC VECTOR SVG CIRCUIT RENDERER (Accurate NOR shapes)
+        // GENERIC VECTOR SVG CIRCUIT RENDERER WITH ORTHOGONAL MANHATTAN ROUTING
         function drawSvgCircuit(container, vars, nodes, finalNodeId, themeColor) {
-            const width = 600;
-            const height = Math.max(160, Math.max(vars.length, nodes.length) * 36);
+            const width = 750;
+            const wirePalette = ['#2563eb', '#0d9488', '#d97706', '#db2777', '#4f46e5', '#e11d48', '#16a34a', '#8b5cf6'];
+
+            function getSignalColor(sig, idx) { return wirePalette[idx % wirePalette.length]; }
+            function getInternalWireColor(nodeId) {
+                let hash = 0;
+                for (let i = 0; i < nodeId.length; i++) hash = nodeId.charCodeAt(i) + ((hash << 5) - hash);
+                return wirePalette[Math.abs(hash) % wirePalette.length];
+            }
+
+            const inputYMap = {};
+            const height = Math.max(200, vars.length * 80, nodes.length * 50);
+            const inputSpacing = height / (vars.length + 1);
             
+            vars.forEach((v, idx) => {
+                inputYMap[v] = inputSpacing * (idx + 1);
+            });
+
+            const nodeYMap = {};
+            const nodeXMap = {};
+            const stageOccupiedY = {};
+
+            nodes.forEach((node) => {
+                const stage = node.stage || 1;
+                const x = 90 + (stage - 1) * 110; 
+                nodeXMap[node.id] = Math.min(x, width - 100);
+                
+                let y1, y2;
+                if (inputYMap[node.in1] !== undefined) y1 = inputYMap[node.in1];
+                else y1 = nodeYMap[node.in1];
+
+                if (inputYMap[node.in2] !== undefined) y2 = inputYMap[node.in2];
+                else y2 = nodeYMap[node.in2];
+
+                let targetY;
+                if (y1 !== undefined && y2 !== undefined) {
+                    targetY = (y1 + y2) / 2;
+                } else if (y1 !== undefined) {
+                    targetY = y1;
+                } else {
+                    targetY = height / 2;
+                }
+
+                if (!stageOccupiedY[stage]) stageOccupiedY[stage] = [];
+                
+                let attempts = 0;
+                while (stageOccupiedY[stage].some(usedY => Math.abs(usedY - targetY) < 45) && attempts < 15) {
+                    targetY += 50;
+                    attempts++;
+                }
+                
+                stageOccupiedY[stage].push(targetY);
+                nodeYMap[node.id] = targetY;
+            });
+
             let svg = `<svg width="100%" height="${height}" viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg" style="display:block; background:transparent;">`;
 
-            const drawGateSymbol = (x, y, label, color, type) => {
+            const drawGateSymbol = (x, cy, label, color, type) => {
+                const y = cy - 12; // Base coordinates offset from visual center
                 let body = '';
                 if (type === 'OR' || type === 'NOR') {
                     body = `<path d="M ${x} ${y} Q ${x+12} ${y+12} ${x} ${y+24} Q ${x+22} ${y+24} ${x+32} ${y+12} Q ${x+22} ${y} ${x} ${y} Z" fill="var(--diagram-bg)" stroke="${color}" stroke-width="1.8" stroke-linejoin="round"/>`;
@@ -2110,77 +2193,120 @@
                 let bubble = '';
                 if (type === 'NAND' || type === 'NOR' || type === 'NOT' || type === 'INV') {
                     let cx = (type === 'NOT' || type === 'INV') ? x+31 : x+35;
-                    bubble = `<circle cx="${cx}" cy="${y+12}" r="2.5" fill="var(--diagram-bg)" stroke="${color}" stroke-width="1.5"/>`;
+                    bubble = `<circle cx="${cx}" cy="${cy}" r="2.5" fill="var(--diagram-bg)" stroke="${color}" stroke-width="1.5"/>`;
                 }
 
+                // Label moved higher to avoid overlap with upper wire
                 return `
                     <g>
                         ${body}
                         ${bubble}
-                        <text x="${x+4}" y="${y-3}" fill="${color}" font-size="8" font-family="sans-serif" font-weight="bold">${label}</text>
+                        <text x="${x}" y="${y-8}" fill="${color}" font-size="9" font-family="sans-serif" font-weight="bold">${label}</text>
                     </g>
                 `;
             };
 
-            const wirePalette = ['#2563eb', '#0d9488', '#d97706', '#db2777', '#4f46e5', '#e11d48'];
+            // Calculate max X per input for drawing continuous bus lines
+            const maxInputX = {};
+            vars.forEach(v => maxInputX[v] = 40);
 
-            function getSignalColor(sig, idx) {
-                return wirePalette[idx % wirePalette.length];
-            }
-
-            const inputYMap = {};
-            const inputSpacing = height / (vars.length + 1);
-            vars.forEach((v, idx) => {
-                const y = inputSpacing * (idx + 1);
-                inputYMap[v] = y;
-                const wireColor = getSignalColor(v, idx);
-                svg += `<text x="12" y="${y+4}" fill="${wireColor}" font-size="12" font-weight="bold" font-family="sans-serif">${v}</text>`;
-                svg += `<line x1="26" y1="${y}" x2="55" y2="${y}" stroke="${wireColor}" stroke-width="2"/>`;
-            });
-
-            const nodeYMap = {};
-            const nodeXMap = {};
-            const nodeSpacing = height / (nodes.length + 1);
-
-            nodes.forEach((node, idx) => {
-                const x = 75 + ((node.stage || (idx % 4 + 1)) - 1) * 65;
-                const y = nodeSpacing * (idx + 1) - 12;
-                nodeXMap[node.id] = Math.min(x, width - 85);
-                nodeYMap[node.id] = y + 12;
-
-                const isFinal = (node.id === finalNodeId);
-                const gateColor = isFinal ? '#4f46e5' : themeColor;
-
-                svg += drawGateSymbol(nodeXMap[node.id], y, node.label, gateColor, node.type);
-
-                [node.in1, node.in2].forEach((inSignal, inIdx) => {
-                    if(!inSignal) return; // Skip if gate has no 2nd input
-                    const targetY = y + (inIdx === 0 ? 6 : 18);
-                    let startX = 26, startY = targetY;
-
-                    if (inputYMap[inSignal] !== undefined) {
-                        startY = inputYMap[inSignal];
-                    } else if (nodeYMap[inSignal] !== undefined) {
-                        startX = nodeXMap[inSignal] + 38;
-                        startY = nodeYMap[inSignal];
+            nodes.forEach(node => {
+                const x = nodeXMap[node.id];
+                [node.in1, node.in2].forEach(sig => {
+                    if (inputYMap[sig] !== undefined) {
+                        maxInputX[sig] = Math.max(maxInputX[sig], x - 15);
                     }
-
-                    let wireColor = 'var(--text-sub)'; 
-                    if (inputYMap[inSignal] !== undefined) {
-                        wireColor = getSignalColor(inSignal, vars.indexOf(inSignal));
-                    }
-
-                    const targetX = nodeXMap[node.id];
-                    svg += `<path d="M ${startX} ${startY} L ${targetX - 12} ${startY} L ${targetX - 12} ${targetY} L ${targetX} ${targetY}" fill="none" stroke="${wireColor}" stroke-width="1.5"/>`;
                 });
             });
 
-            const lastX = (nodeXMap[finalNodeId] || width - 85) + 38;
-            const lastY = nodeYMap[finalNodeId] || (height / 2);
-            const outputColor = '#4f46e5';
+            // 1. Draw Starting Input Lines (Bus style)
+            vars.forEach((v, idx) => {
+                const y = inputYMap[v];
+                const wireColor = getSignalColor(v, idx);
+                svg += `<text x="12" y="${y+4}" fill="${wireColor}" font-size="12" font-weight="bold" font-family="sans-serif">${v}</text>`;
+                svg += `<line x1="26" y1="${y}" x2="${maxInputX[v]}" y2="${y}" stroke="${wireColor}" stroke-width="1.5"/>`;
+            });
 
-            svg += `<line x1="${lastX}" y1="${lastY}" x2="${width - 28}" y2="${lastY}" stroke="${outputColor}" stroke-width="2.5"/>`;
-            svg += `<text x="${width - 18}" y="${lastY + 4}" fill="${outputColor}" font-size="14" font-weight="bold" font-family="sans-serif">Y</text>`;
+            // 2. Draw Gates and Orthogonal Routing
+            nodes.forEach((node) => {
+                const x = nodeXMap[node.id];
+                const cy = nodeYMap[node.id];
+                const isFinal = (node.id === finalNodeId);
+                const gateColor = isFinal ? '#4f46e5' : themeColor;
+
+                svg += drawGateSymbol(x, cy, node.label, gateColor, node.type);
+
+                // Handle single-input routing (e.g. tying NAND inputs together to act as NOT)
+                if (node.in1 === node.in2 && node.in1) {
+                     const inSignal = node.in1;
+                     let startX = 40, startY = cy;
+                     if (inputYMap[inSignal] !== undefined) startY = inputYMap[inSignal];
+                     else if (nodeYMap[inSignal] !== undefined) { startX = nodeXMap[inSignal] + 38; startY = nodeYMap[inSignal]; }
+                     
+                     let wireColor = inputYMap[inSignal] !== undefined ? getSignalColor(inSignal, vars.indexOf(inSignal)) : getInternalWireColor(inSignal);
+                     
+                     const midX = x - 15;
+                     
+                     // Central orthogonal path
+                     svg += `<path d="M ${startX} ${startY} L ${midX} ${startY} L ${midX} ${cy} L ${x - 12} ${cy}" fill="none" stroke="${wireColor}" stroke-width="1.5"/>`;
+                     // Fork to inputs
+                     svg += `<path d="M ${x - 12} ${cy} L ${x - 12} ${cy - 6} L ${x} ${cy - 6}" fill="none" stroke="${wireColor}" stroke-width="1.5"/>`;
+                     svg += `<path d="M ${x - 12} ${cy} L ${x - 12} ${cy + 6} L ${x} ${cy + 6}" fill="none" stroke="${wireColor}" stroke-width="1.5"/>`;
+                     // Connector dot
+                     svg += `<circle cx="${x - 12}" cy="${cy}" r="2.5" fill="${wireColor}"/>`;
+                } else {
+                    // Normal two distinct inputs mapping
+                    let sigs = [node.in1, node.in2];
+                    let sY1 = inputYMap[node.in1] !== undefined ? inputYMap[node.in1] : nodeYMap[node.in1];
+                    let sY2 = inputYMap[node.in2] !== undefined ? inputYMap[node.in2] : nodeYMap[node.in2];
+                    
+                    // SWAP inputs if the first input comes from a lower position than the second
+                    // This naturally untangles crossing lines!
+                    if (sY1 !== undefined && sY2 !== undefined && sY1 > sY2) {
+                        sigs = [node.in2, node.in1];
+                    }
+
+                    sigs.forEach((inSignal, inIdx) => {
+                        if(!inSignal) return; 
+                        let startX, startY;
+                        const targetY = (inIdx === 0) ? cy - 6 : cy + 6;
+                        let wireColor;
+
+                        if (inputYMap[inSignal] !== undefined) {
+                            // Input from Bus
+                            startY = inputYMap[inSignal];
+                            startX = x - 15 - (inIdx * 4); 
+                            wireColor = getSignalColor(inSignal, vars.indexOf(inSignal));
+                            
+                            svg += `<path d="M ${startX} ${startY} L ${startX} ${targetY} L ${x} ${targetY}" fill="none" stroke="${wireColor}" stroke-width="1.5"/>`;
+                            svg += `<circle cx="${startX}" cy="${startY}" r="2.5" fill="${wireColor}"/>`;
+                        } else {
+                            // Internal wire from another gate
+                            startX = nodeXMap[inSignal] + 38;
+                            startY = nodeYMap[inSignal];
+                            wireColor = getInternalWireColor(inSignal);
+                            
+                            const midX = x - 15 - (inIdx * 4); 
+                            svg += `<path d="M ${startX} ${startY} L ${midX} ${startY} L ${midX} ${targetY} L ${x} ${targetY}" fill="none" stroke="${wireColor}" stroke-width="1.5"/>`;
+                        }
+                    });
+                }
+            });
+
+            // 3. Draw Output Final Wire
+            if (nodes.length === 0) {
+                 const startY = inputYMap[finalNodeId] || height/2;
+                 const wireColor = inputYMap[finalNodeId] !== undefined ? getSignalColor(finalNodeId, vars.indexOf(finalNodeId)) : '#4f46e5';
+                 svg += `<line x1="40" y1="${startY}" x2="${width - 40}" y2="${startY}" stroke="${wireColor}" stroke-width="2.5"/>`;
+                 svg += `<text x="${width - 30}" y="${startY + 4}" fill="${wireColor}" font-size="14" font-weight="bold" font-family="sans-serif">Y</text>`;
+            } else {
+                const lastX = nodeXMap[finalNodeId] + 38;
+                const lastY = nodeYMap[finalNodeId];
+                const outputColor = '#4f46e5';
+
+                svg += `<line x1="${lastX}" y1="${lastY}" x2="${width - 40}" y2="${lastY}" stroke="${outputColor}" stroke-width="2.5"/>`;
+                svg += `<text x="${width - 30}" y="${lastY + 4}" fill="${outputColor}" font-size="14" font-weight="bold" font-family="sans-serif">Y</text>`;
+            }
 
             svg += `</svg>`;
             container.innerHTML = svg;

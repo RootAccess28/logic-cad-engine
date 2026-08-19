@@ -82,7 +82,7 @@
             min-height: 100vh;
         }
 
-        /* Mobile Nav Bar (Hidden on Desktop) */
+        /* Mobile Nav Bar */
         .mobile-nav-bar {
             display: none;
             justify-content: space-between;
@@ -197,10 +197,6 @@
             background: rgba(37, 99, 235, 0.1);
             color: var(--accent-cyan);
         }
-        .tag.green {
-            background: rgba(34, 197, 94, 0.1);
-            color: var(--accent-green);
-        }
 
         .team-toggle-btn {
             background: transparent;
@@ -310,7 +306,7 @@
         }
         .btn-action:hover { background: #1d4ed8; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); }
 
-        /* Pipeline Grid Outputs */
+        /* Pipeline Grids */
         .pipeline-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -386,30 +382,23 @@
             transition: background 0.3s ease;
         }
 
+        .diagram-title { font-size: 0.9rem; font-weight: 700; color: var(--text-main); margin: 8px 0 10px 0; display: flex; align-items: center; }
+
         .kmap-container { display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 10px 0; overflow-x: auto; width: 100%;}
         .kmap-grid { display: grid; gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 8px; overflow: hidden;}
         .kmap-cell {
             background: var(--panel);
-            padding: 12px;
+            padding: 12px 16px;
             text-align: center;
             font-weight: 600;
             font-size: 0.9rem;
             transition: all 0.2s ease;
         }
-        .kmap-cell.active { background: rgba(34, 197, 94, 0.1); color: var(--accent-green); }
-        
-        .kmap-input-cell select {
-            background: var(--input-bg);
-            color: var(--text-main);
-            border: 1px solid var(--border);
-            padding: 6px;
-            font-weight: 600;
-            text-align: center;
-            border-radius: 6px;
-            cursor: pointer;
-            margin-top: 0;
+        .kmap-cell.active {
+            background: rgba(34, 197, 94, 0.1);
+            color: var(--accent-green);
         }
-
+        
         pre {
             background: var(--input-bg);
             padding: 16px;
@@ -425,19 +414,6 @@
             line-height: 1.5;
             transition: background 0.3s ease;
         }
-
-        .gate-row {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-            background: var(--input-bg);
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 8px;
-            border: 1px solid var(--border);
-            flex-wrap: wrap;
-        }
-        .gate-row select, .gate-row input { margin: 0; padding: 8px; width: 80px; }
 
         /* Floating AI Widget Styles */
         .ai-widget-btn {
@@ -499,25 +475,9 @@
         .chat-msg.user { background: var(--accent-cyan); color: #ffffff; align-self: flex-end; border-bottom-right-radius: 4px; }
         .chat-msg.ai { background: var(--input-bg); color: var(--text-main); border: 1px solid var(--border); align-self: flex-start; border-bottom-left-radius: 4px; }
 
-        .ai-chat-input {
-            display: flex;
-            border-top: 1px solid var(--border);
-            background: var(--panel);
-            padding: 12px;
-            gap: 8px;
-        }
+        .ai-chat-input { display: flex; border-top: 1px solid var(--border); background: var(--panel); padding: 12px; gap: 8px; }
         .ai-chat-input input { flex: 1; margin: 0; }
-        .ai-chat-input button {
-            background: var(--accent-cyan);
-            border: none;
-            color: #ffffff;
-            font-weight: 600;
-            padding: 0 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-family: inherit;
-        }
+        .ai-chat-input button { background: var(--accent-cyan); border: none; color: #ffffff; font-weight: 600; padding: 0 20px; border-radius: 8px; cursor: pointer; transition: all 0.2s ease; }
         .ai-chat-input button:hover { background: #1d4ed8; }
 
         /* Media Queries for Mobile Responsiveness */
@@ -528,25 +488,16 @@
             .main-content { padding: 16px; }
             
             .sidebar {
-                position: fixed;
-                top: 0;
-                left: -320px;
-                width: 300px;
-                height: 100vh;
-                background: var(--panel);
-                z-index: 2000;
-                transition: left 0.3s ease;
-                padding: 24px;
-                box-shadow: 4px 0 20px var(--shadow-color);
+                position: fixed; top: 0; left: -320px; width: 300px; height: 100vh;
+                background: var(--panel); z-index: 2000; transition: left 0.3s ease;
+                padding: 24px; box-shadow: 4px 0 20px var(--shadow-color);
             }
             .sidebar.active { left: 0; }
             .sidebar-overlay.active { display: block; }
             .close-sidebar-btn { display: block; }
-
             .input-card { padding: 16px; }
             .pipeline-grid { gap: 16px; grid-template-columns: 1fr; }
         }
-
         @media (max-width: 450px) {
             .ai-chat-drawer { width: calc(100vw - 32px); right: 16px; height: 60vh; }
             .diagram-container { padding: 8px; }
@@ -571,13 +522,12 @@
         <aside class="sidebar">
             <button class="close-sidebar-btn" onclick="toggleSidebar()">✕</button>
             <header>
-                <h1>⚡ Digital Logic CAD Engine</h1>
-                <p class="subtitle">Minimal Gate Synthesis & Universal Mapping Verification</p>
+                <h1>⚡ Digital Logic CAD</h1>
+                <p class="subtitle">Minimal Gate Synthesis & Universal Mapping</p>
             </header>
 
             <div class="project-badge">
                 <span class="tag">v3.1</span>
-                <span class="tag green">🔒 100% Offline</span>
             </div>
 
             <button class="team-toggle-btn" onclick="toggleTeamList()">👥 View Team Details</button>
@@ -597,17 +547,17 @@
                 <button class="tab-btn" onclick="setMode('mode-tt')">📊 Truth Table</button>
                 <button class="tab-btn" onclick="setMode('mode-kmap')">🧮 K-Map Matrix</button>
                 <button class="tab-btn" onclick="setMode('mode-image')">🖼️ Image Upload</button>
+                <button class="tab-btn" onclick="setMode('mode-arith')">➕ Arithmetic Ops</button>
             </div>
         </aside>
 
         <!-- Right Main Content Area -->
         <main class="main-content">
             
-            <!-- Mode 1 Panel: Expression Input -->
+            <!-- Mode 1: Expression Input -->
             <div id="mode-expr" class="input-card mode-panel active">
                 <label>Boolean Expression</label>
                 <input type="text" id="exprInput" placeholder="e.g., (A AND B) OR (~C AND D)" value="">
-                
                 <div class="syntax-guide">
                     <div class="syntax-item">AND: <code>&amp;</code></div>
                     <div class="syntax-item">OR: <code>|</code></div>
@@ -616,11 +566,10 @@
                     <div class="syntax-item">NAND: <code>~&amp;</code></div>
                     <div class="syntax-item">NOR: <code>~|</code></div>
                 </div>
-
                 <button class="btn-action" onclick="synthesizePipeline()">✨ Convert & Analyze</button>
             </div>
 
-            <!-- Mode 2 Panel: Minterms / Maxterms Input -->
+            <!-- Mode 2: Minterms / Maxterms Input -->
             <div id="mode-terms" class="input-card mode-panel">
                 <div style="display: flex; gap: 16px; flex-wrap: wrap;">
                     <div style="flex: 1; min-width: 200px;">
@@ -639,21 +588,18 @@
                         </select>
                     </div>
                 </div>
-
                 <div style="margin-top: 16px;">
                     <label>Indices List (comma separated)</label>
                     <input type="text" id="termsIndicesInput" placeholder="e.g. 1, 3, 5, 7">
                 </div>
-
                 <div style="margin-top: 16px;">
-                    <label>Don't Care Indices d(...)</label>
+                    <label>Don't Care Indices d(...) (optional)</label>
                     <input type="text" id="termsDontCareInput" placeholder="e.g. 0, 2">
                 </div>
-
                 <button class="btn-action" onclick="synthesizePipeline()">✨ Convert & Analyze</button>
             </div>
 
-            <!-- Mode 3 Panel: Truth Table -->
+            <!-- Mode 3: Truth Table -->
             <div id="mode-tt" class="input-card mode-panel">
                 <label>Inputs Count</label>
                 <select id="ttVarCount" style="width: 200px;" onchange="renderTTInputGrid()">
@@ -665,7 +611,7 @@
                 <button class="btn-action" onclick="synthesizePipeline()">✨ Convert & Analyze</button>
             </div>
 
-            <!-- Mode 4 Panel: K-Map -->
+            <!-- Mode 4: K-Map -->
             <div id="mode-kmap" class="input-card mode-panel">
                 <label>Select K-Map Dimension</label>
                 <select id="kmapVarCount" style="width: 200px;" onchange="renderKMapInputGrid()">
@@ -677,7 +623,7 @@
                 <button class="btn-action" onclick="synthesizePipeline()">✨ Convert & Analyze</button>
             </div>
 
-            <!-- Mode 5 Panel: Circuit Image Upload -->
+            <!-- Mode 5: Circuit Image Upload -->
             <div id="mode-image" class="input-card mode-panel">
                 <label>Upload Circuit Diagram or Truth Table (JPG, PNG)</label>
                 <input type="file" id="circuitImageInput" accept="image/png, image/jpeg, image/jpg, image/webp" onchange="previewImage(event)">
@@ -688,56 +634,119 @@
                 <p id="imageStatusText" style="font-size: 0.85rem; color: var(--accent-cyan); margin-top: 14px; font-weight: 600;"></p>
             </div>
 
-            <!-- Target Library Selection Dropdown Card -->
-            <div class="input-card" style="margin-bottom: 24px; padding: 16px 24px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px;">
-                <label style="margin: 0; min-width: max-content;">Target Implementation Library</label>
-                <select id="targetLibrarySelect" onchange="onLibraryChange()" style="margin: 0; width: auto; flex-grow: 1;">
-                    <option value="NAND">Universal NAND-Only Gate Implementation</option>
-                    <option value="NOR">Universal NOR-Only Gate Implementation</option>
-                    <option value="BASIC">Basic Gates Implementation (AND, OR, NOT)</option>
-                </select>
+            <!-- Mode 6: Arithmetic Operations -->
+            <div id="mode-arith" class="input-card mode-panel">
+                <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 200px;">
+                        <label>Arithmetic Operation</label>
+                        <select id="arithOp">
+                            <option value="add">Addition (A + B)</option>
+                            <option value="sub">Subtraction (A - B)</option>
+                            <option value="mul">Multiplication (A × B)</option>
+                            <option value="comp">Comparator (A ? B)</option>
+                        </select>
+                    </div>
+                    <div style="flex: 1; min-width: 200px;">
+                        <label>Bit Width</label>
+                        <select id="arithBits">
+                            <option value="1">1-Bit Inputs</option>
+                            <option value="2">2-Bit Inputs</option>
+                            <option value="3">3-Bit Inputs</option>
+                            <option value="4" selected>4-Bit Inputs</option>
+                        </select>
+                    </div>
+                </div>
+                <button class="btn-action" onclick="synthesizeArithmetic()">✨ Generate Architecture</button>
             </div>
 
-            <!-- Pipeline Outputs -->
-            <div class="pipeline-grid">
-                <div class="card">
-                    <h3>📊 Evaluated Truth Table</h3>
-                    <div id="truthTableOutput" class="table-wrapper"></div>
+            <!-- STANDARD PIPELINE UI (Visible for logic modes) -->
+            <div id="standardPipelineWrapper">
+                <div class="input-card" style="margin-bottom: 24px; padding: 16px 24px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px;">
+                    <label style="margin: 0; min-width: max-content;">Target Implementation Library</label>
+                    <select id="targetLibrarySelect" onchange="onLibraryChange()" style="margin: 0; width: auto; flex-grow: 1;">
+                        <option value="NAND">Universal NAND-Only Gate Implementation</option>
+                        <option value="NOR">Universal NOR-Only Gate Implementation</option>
+                        <option value="BASIC">Basic Gates Implementation (AND, OR, NOT)</option>
+                    </select>
                 </div>
 
-                <div class="card">
-                    <h3>🧮 Karnaugh Map & Minimization</h3>
-                    <div id="kmapOutput" class="kmap-container"></div>
-                    <label style="margin-top: 16px;">Minimal Sum-Of-Products (SOP)</label>
-                    <div id="minimizedExpr" style="font-family: monospace; font-weight: 700; font-size: 1.1rem; color: var(--text-main);">--</div>
-                </div>
+                <div class="pipeline-grid">
+                    <div class="card">
+                        <h3>📊 Evaluated Truth Table</h3>
+                        <div id="truthTableOutput" class="table-wrapper"></div>
+                    </div>
 
-                <div class="card">
-                    <h3 id="techTitle">⚙️ Target Technology Mapping</h3>
-                    <pre id="techMappingOutput">--</pre>
-                </div>
+                    <div class="card">
+                        <h3>🧮 Karnaugh Map & Minimization</h3>
+                        <div id="kmapOutput" class="kmap-container"></div>
+                        <label style="margin-top: 16px;">Minimal Sum-Of-Products (SOP)</label>
+                        <div id="minimizedExpr" style="font-family: monospace; font-weight: 700; font-size: 1.1rem; color: var(--text-main);">--</div>
+                    </div>
 
-                <div class="card">
-                    <h3>💻 Synthesizable Verilog RTL</h3>
-                    <pre id="verilogOutput">// Verilog Code</pre>
-                </div>
+                    <div class="card">
+                        <h3 id="techTitle">⚙️ Target Technology Mapping</h3>
+                        <pre id="techMappingOutput">--</pre>
+                    </div>
 
-                <!-- Step 5: Full Equivalence Verification -->
-                <div class="card full-width">
-                    <h3 id="verificationHeader">✅ Equivalence Verification (Original ≡ Simplified ≡ NAND-Only ≡ NOR-Only)</h3>
-                    <div id="verificationBadgeContainer"></div>
-                    <div id="verificationTableOutput" class="table-wrapper"></div>
-                </div>
+                    <div class="card">
+                        <h3>💻 Synthesizable Verilog RTL</h3>
+                        <pre id="verilogOutput">// Verilog Code</pre>
+                    </div>
 
-                <!-- Step 6: Circuit Diagram -->
-                <div class="card full-width">
-                    <h3 id="diagramHeaderTitle" style="display:flex; justify-content:space-between; flex-wrap: wrap; gap: 8px; border-bottom: none; padding-bottom: 0;">
-                        <span>📐 Circuit Implementation Diagram</span>
-                        <span class="gate-counter-badge" id="selectedGateCountBadge">0 Gates</span>
-                    </h3>
-                    <div id="selectedSchematicContainer" class="diagram-container"></div>
+                    <div class="card full-width">
+                        <h3 id="verificationHeader">✅ Equivalence Verification</h3>
+                        <div id="verificationBadgeContainer"></div>
+                        <div id="verificationTableOutput" class="table-wrapper"></div>
+                    </div>
+
+                    <div class="card full-width">
+                        <h3 id="diagramHeaderTitle" style="display:flex; justify-content:space-between; border-bottom: none; padding-bottom: 0;">
+                            <span>📐 Circuit Implementation Diagram</span>
+                            <span class="gate-counter-badge" id="selectedGateCountBadge">0 Gates</span>
+                        </h3>
+                        <div id="selectedSchematicContainer" class="diagram-container"></div>
+                    </div>
                 </div>
             </div>
+
+            <!-- ARITHMETIC PIPELINE UI (Visible for arithmetic mode) -->
+            <div id="arithmeticPipelineWrapper" style="display: none;">
+                <div class="pipeline-grid">
+                    
+                    <div class="card full-width" id="arithmeticRefCard">
+                        <h3>📚 Internal Reference Circuits (Gate Level)</h3>
+                        <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+                            <div style="flex: 1; min-width: 300px;">
+                                <div class="diagram-title">Half Adder (HA) NAND-Only Logic</div>
+                                <div id="refHAContainer" class="diagram-container" style="text-align: center;"></div>
+                            </div>
+                            <div style="flex: 1; min-width: 300px;">
+                                <div class="diagram-title">Full Adder (FA) Internal Logic</div>
+                                <div id="refFAContainer" class="diagram-container" style="text-align: center;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card full-width" id="arithmeticDiagramCard">
+                        <h3 style="display:flex; justify-content:space-between; border-bottom: none; padding-bottom: 0;">
+                            <span id="arithmeticDiagramTitle">📐 Arithmetic Block Diagram</span>
+                        </h3>
+                        <div id="arithmeticSchematicContainer" class="diagram-container" style="padding: 24px; text-align: center;"></div>
+                    </div>
+
+                    <div class="card full-width" id="comparatorLogicCard" style="display: none;">
+                        <h3>📝 Comparator Logic Expressions</h3>
+                        <pre id="comparatorExpressionsOutput" style="font-size: 1rem;"></pre>
+                    </div>
+
+                    <div class="card full-width">
+                        <h3>📊 Arithmetic Truth Table (Verification)</h3>
+                        <div id="arithmeticTTOutput" class="table-wrapper" style="max-height: 400px;"></div>
+                    </div>
+
+                </div>
+            </div>
+
         </main>
     </div>
 
@@ -750,7 +759,7 @@
             <span style="cursor:pointer; font-weight: normal;" onclick="toggleAIChat()">✕</span>
         </div>
         <div class="ai-chat-messages" id="chatMessages">
-            <div class="chat-msg ai">Hello! I am connected to your current CAD workspace. Ask me to explain the minimized K-Map, debug your logic expression, or explain universal gate optimization!</div>
+            <div class="chat-msg ai">Hello! I am connected to your current CAD workspace. Ask me to explain the minimized logic, debug expressions, or explain full adder architectures!</div>
         </div>
         <div class="ai-chat-input">
             <input type="text" id="userChatInput" placeholder="Ask about this circuit..." onkeydown="if(event.key==='Enter') sendGeminiQuery()">
@@ -800,7 +809,14 @@
             if(modeId === 'mode-tt') renderTTInputGrid();
             if(modeId === 'mode-kmap') renderKMapInputGrid();
 
-            // Auto-close sidebar on mobile after selection
+            if (modeId === 'mode-arith') {
+                document.getElementById('standardPipelineWrapper').style.display = 'none';
+                document.getElementById('arithmeticPipelineWrapper').style.display = 'block';
+            } else {
+                document.getElementById('standardPipelineWrapper').style.display = 'block';
+                document.getElementById('arithmeticPipelineWrapper').style.display = 'none';
+            }
+
             if(window.innerWidth <= 900) {
                 document.querySelector('.sidebar').classList.remove('active');
                 document.querySelector('.sidebar-overlay').classList.remove('active');
@@ -811,21 +827,329 @@
             synthesizePipeline();
         }
 
-        // IMAGE UPLOAD AND PREVIEW LOGIC
-        function previewImage(event) {
-            const file = event.target.files[0];
-            if(!file) return;
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                document.getElementById('circuitImagePreview').src = e.target.result;
-                document.getElementById('imagePreviewContainer').style.display = 'block';
-                document.getElementById('imageStatusText').innerText = ''; 
+        // ==========================================
+        // ARITHMETIC ARCHITECTURE ENGINE
+        // ==========================================
+        function drawReferenceAdders() {
+            const genNandGate = (x, y, lbl, col) => {
+                 let body = `<path d="M ${x} ${y} L ${x+18} ${y} C ${x+32} ${y}, ${x+32} ${y+24}, ${x+18} ${y+24} L ${x} ${y+24} Z" fill="var(--diagram-bg)" stroke="${col}" stroke-width="1.8"/>`;
+                 let bubble = `<circle cx="${x+35}" cy="${y+12}" r="2.5" fill="var(--diagram-bg)" stroke="${col}" stroke-width="1.5"/>`;
+                 return `<g>${body}${bubble}<text x="${x+4}" y="${y-3}" fill="${col}" font-size="8" font-weight="bold">${lbl}</text></g>`;
             };
-            reader.readAsDataURL(file);
+
+            // Improved HA (NAND ONLY Reference - 5 Gates total: 4 for XOR, 1 for Carry)
+            const haSvg = `
+                <svg width="100%" height="220" viewBox="0 0 450 220" style="background:transparent; max-width:500px; margin: 0 auto; display:block;">
+                    <text x="10" y="45" fill="var(--text-main)" font-size="14" font-weight="bold">A</text>
+                    <text x="10" y="155" fill="var(--text-main)" font-size="14" font-weight="bold">B</text>
+                    
+                    <!-- Input Lines -->
+                    <line x1="25" y1="40" x2="80" y2="40" stroke="var(--accent-cyan)" stroke-width="1.5"/>
+                    <line x1="25" y1="150" x2="80" y2="150" stroke="var(--accent-cyan)" stroke-width="1.5"/>
+                    
+                    <!-- Gate 1 (Center Left): NAND(A, B) -->
+                    ${genNandGate(80, 83, 'NAND', 'var(--accent-teal)')}
+                    <line x1="50" y1="40" x2="50" y2="88" stroke="var(--accent-cyan)" stroke-width="1.5"/>
+                    <line x1="50" y1="88" x2="80" y2="88" stroke="var(--accent-cyan)" stroke-width="1.5"/>
+                    <line x1="50" y1="150" x2="50" y2="102" stroke="var(--accent-cyan)" stroke-width="1.5"/>
+                    <line x1="50" y1="102" x2="80" y2="102" stroke="var(--accent-cyan)" stroke-width="1.5"/>
+
+                    <!-- Gate 2 (Top): NAND(A, G1) -->
+                    ${genNandGate(180, 20, 'NAND', 'var(--accent-teal)')}
+                    <line x1="60" y1="40" x2="180" y2="25" stroke="var(--accent-cyan)" stroke-width="1.5"/>
+                    <line x1="130" y1="95" x2="150" y2="95" stroke="var(--accent-teal)" stroke-width="1.5"/>
+                    <line x1="150" y1="95" x2="150" y2="39" stroke="var(--accent-teal)" stroke-width="1.5"/>
+                    <line x1="150" y1="39" x2="180" y2="39" stroke="var(--accent-teal)" stroke-width="1.5"/>
+
+                    <!-- Gate 3 (Bottom): NAND(B, G1) -->
+                    ${genNandGate(180, 140, 'NAND', 'var(--accent-teal)')}
+                    <line x1="150" y1="95" x2="150" y2="145" stroke="var(--accent-teal)" stroke-width="1.5"/>
+                    <line x1="150" y1="145" x2="180" y2="145" stroke="var(--accent-teal)" stroke-width="1.5"/>
+                    <line x1="60" y1="150" x2="180" y2="159" stroke="var(--accent-cyan)" stroke-width="1.5"/>
+
+                    <!-- Gate 4 (Right): NAND(G2, G3) -> SUM -->
+                    ${genNandGate(280, 83, 'NAND', 'var(--accent-purple)')}
+                    <line x1="230" y1="32" x2="250" y2="32" stroke="var(--accent-teal)" stroke-width="1.5"/>
+                    <line x1="250" y1="32" x2="250" y2="88" stroke="var(--accent-teal)" stroke-width="1.5"/>
+                    <line x1="250" y1="88" x2="280" y2="88" stroke="var(--accent-teal)" stroke-width="1.5"/>
+                    
+                    <line x1="230" y1="152" x2="250" y2="152" stroke="var(--accent-teal)" stroke-width="1.5"/>
+                    <line x1="250" y1="152" x2="250" y2="102" stroke="var(--accent-teal)" stroke-width="1.5"/>
+                    <line x1="250" y1="102" x2="280" y2="102" stroke="var(--accent-teal)" stroke-width="1.5"/>
+
+                    <!-- Gate 5 (Far Bottom): NAND(G1, G1) -> CARRY -->
+                    ${genNandGate(280, 180, 'NAND', 'var(--accent-green)')}
+                    <line x1="130" y1="95" x2="130" y2="185" stroke="var(--accent-teal)" stroke-width="1.5"/>
+                    <line x1="130" y1="185" x2="280" y2="185" stroke="var(--accent-teal)" stroke-width="1.5"/>
+                    <line x1="130" y1="199" x2="280" y2="199" stroke="var(--accent-teal)" stroke-width="1.5"/>
+                    <line x1="130" y1="185" x2="130" y2="199" stroke="var(--accent-teal)" stroke-width="1.5"/>
+
+                    <!-- Outputs -->
+                    <line x1="330" y1="95" x2="380" y2="95" stroke="var(--accent-purple)" stroke-width="2"/>
+                    <text x="385" y="100" fill="var(--accent-purple)" font-weight="bold">Sum (S)</text>
+
+                    <line x1="330" y1="192" x2="380" y2="192" stroke="var(--accent-green)" stroke-width="2"/>
+                    <text x="385" y="197" fill="var(--accent-green)" font-weight="bold">Carry (C)</text>
+                </svg>
+            `;
+            document.getElementById('refHAContainer').innerHTML = haSvg;
+
+            // FA Reference 
+            const faSvg = `
+                <svg width="100%" height="200" viewBox="0 0 340 180" style="background:transparent; max-width:400px; margin: 0 auto; display:block;">
+                    <text x="10" y="35" fill="var(--text-main)" font-size="12" font-weight="bold">A</text>
+                    <text x="10" y="65" fill="var(--text-main)" font-size="12" font-weight="bold">B</text>
+                    <text x="10" y="115" fill="var(--text-main)" font-size="12" font-weight="bold">Cin</text>
+                    
+                    <!-- HA 1 Block -->
+                    <rect x="40" y="20" width="60" height="60" rx="4" fill="var(--input-bg)" stroke="var(--accent-purple)" stroke-width="2"/>
+                    <text x="55" y="55" fill="var(--accent-purple)" font-size="12" font-weight="bold">HA 1</text>
+                    <line x1="25" y1="30" x2="40" y2="30" stroke="var(--accent-cyan)" stroke-width="2"/>
+                    <line x1="25" y1="60" x2="40" y2="60" stroke="var(--accent-cyan)" stroke-width="2"/>
+                    
+                    <!-- HA 2 Block -->
+                    <rect x="140" y="20" width="60" height="100" rx="4" fill="var(--input-bg)" stroke="var(--accent-purple)" stroke-width="2"/>
+                    <text x="155" y="75" fill="var(--accent-purple)" font-size="12" font-weight="bold">HA 2</text>
+                    
+                    <!-- Routing between HAs -->
+                    <line x1="100" y1="40" x2="140" y2="40" stroke="var(--text-main)" stroke-width="2"/>
+                    <text x="105" y="35" fill="var(--text-sub)" font-size="9">S1</text>
+                    <line x1="35" y1="110" x2="140" y2="110" stroke="var(--accent-cyan)" stroke-width="2"/>
+                    
+                    <!-- Output Sum -->
+                    <line x1="200" y1="60" x2="280" y2="60" stroke="var(--accent-purple)" stroke-width="2"/>
+                    <text x="285" y="65" fill="var(--accent-purple)" font-size="12" font-weight="bold">Sum (S)</text>
+                    
+                    <!-- Carry logic (OR gate) -->
+                    <line x1="100" y1="70" x2="120" y2="70" stroke="var(--accent-teal)" stroke-width="2"/>
+                    <line x1="120" y1="70" x2="120" y2="140" stroke="var(--accent-teal)" stroke-width="2"/>
+                    <line x1="120" y1="140" x2="220" y2="140" stroke="var(--accent-teal)" stroke-width="2"/>
+                    <text x="105" y="65" fill="var(--text-sub)" font-size="9">C1</text>
+                    
+                    <line x1="200" y1="100" x2="210" y2="100" stroke="var(--accent-teal)" stroke-width="2"/>
+                    <line x1="210" y1="100" x2="210" y2="120" stroke="var(--accent-teal)" stroke-width="2"/>
+                    <line x1="210" y1="120" x2="220" y2="120" stroke="var(--accent-teal)" stroke-width="2"/>
+                    <text x="205" y="95" fill="var(--text-sub)" font-size="9">C2</text>
+                    
+                    <!-- Valid OR Gate Shape -->
+                    <path d="M 220 110 Q 232 130, 220 150 Q 242 150, 255 130 Q 242 110, 220 110 Z" fill="var(--diagram-bg)" stroke="var(--accent-teal)" stroke-width="2"/>
+                    <line x1="255" y1="130" x2="280" y2="130" stroke="var(--accent-teal)" stroke-width="2"/>
+                    <text x="285" y="135" fill="var(--accent-teal)" font-size="12" font-weight="bold">Cout</text>
+                </svg>
+            `;
+            document.getElementById('refFAContainer').innerHTML = faSvg;
         }
 
-        // PROCESS IMAGE VIA GEMINI VISION
-        async function processImageInput() {
+        function synthesizeArithmetic() {
+            const op = document.getElementById('arithOp').value;
+            const bits = parseInt(document.getElementById('arithBits').value);
+            drawReferenceAdders();
+
+            const container = document.getElementById('arithmeticSchematicContainer');
+            const titleElem = document.getElementById('arithmeticDiagramTitle');
+            const refCard = document.getElementById('arithmeticRefCard');
+            const diaCard = document.getElementById('arithmeticDiagramCard');
+            const compCard = document.getElementById('comparatorLogicCard');
+
+            if (op === 'comp') {
+                refCard.style.display = 'none';
+                diaCard.style.display = 'none';
+                compCard.style.display = 'flex';
+                
+                let exprText = `For ${bits}-Bit Vectors A and B:\n\n`;
+                if(bits === 1) {
+                    exprText += `A > B = A & ~B\n`;
+                    exprText += `A < B = ~A & B\n`;
+                    exprText += `A = B = ~(A ^ B)  (XNOR)\n`;
+                } else {
+                    exprText += `Equality (A = B):\n  EQ = (A0 XNOR B0) & (A1 XNOR B1) ... & (An XNOR Bn)\n\n`;
+                    exprText += `Greater Than (A > B):\n  Evaluated sequentially from MSB to LSB using cascade logic.\n\n`;
+                    exprText += `Less Than (A < B):\n  Evaluated sequentially from MSB to LSB using cascade logic.`;
+                }
+                document.getElementById('comparatorExpressionsOutput').innerText = exprText;
+            } else {
+                refCard.style.display = 'flex';
+                diaCard.style.display = 'flex';
+                compCard.style.display = 'none';
+            }
+
+            // 1. Generate Truth Table
+            let ttHtml = '<table style="width:100%; border-collapse:collapse; text-align:center;"><tr>';
+            if (op === 'comp') {
+                ttHtml += `<th>A (Dec)</th><th>A (Bin)</th><th>B (Dec)</th><th>B (Bin)</th><th>A > B</th><th>A = B</th><th>A < B</th></tr>`;
+            } else if (bits === 1 && op === 'add') {
+                ttHtml += `<th>A</th><th>B</th><th>Sum (S)</th><th>Carry (C)</th></tr>`;
+            } else if (bits === 1 && op === 'sub') {
+                ttHtml += `<th>A</th><th>B</th><th>Difference (D)</th><th>Borrow (B_out)</th></tr>`;
+            } else {
+                ttHtml += `<th>A (Dec)</th><th>A (Bin)</th><th>B (Dec)</th><th>B (Bin)</th><th>Out (Dec)</th><th>Out (Bin)</th></tr>`;
+            }
+            
+            const maxVal = Math.pow(2, bits);
+            for(let a=0; a<maxVal; a++) {
+                for(let b=0; b<maxVal; b++) {
+                    let aBin = a.toString(2).padStart(bits, '0');
+                    let bBin = b.toString(2).padStart(bits, '0');
+                    
+                    if (op === 'comp') {
+                        let gt = a > b ? 1 : 0;
+                        let eq = a === b ? 1 : 0;
+                        let lt = a < b ? 1 : 0;
+                        ttHtml += `<tr><td>${a}</td><td style="color:var(--accent-cyan); font-family:monospace;">${aBin}</td><td>${b}</td><td style="color:var(--accent-cyan); font-family:monospace;">${bBin}</td>
+                        <td style="color:${gt?'var(--accent-green)':'var(--text-sub)'}; font-weight:bold;">${gt}</td>
+                        <td style="color:${eq?'var(--accent-cyan)':'var(--text-sub)'}; font-weight:bold;">${eq}</td>
+                        <td style="color:${lt?'var(--accent-pink)':'var(--text-sub)'}; font-weight:bold;">${lt}</td></tr>`;
+                    } else if (bits === 1 && op === 'add') {
+                        let sum = a ^ b;
+                        let carry = a & b;
+                        ttHtml += `<tr><td style="color:var(--accent-cyan); font-family:monospace; font-weight:bold;">${a}</td><td style="color:var(--accent-cyan); font-family:monospace; font-weight:bold;">${b}</td><td style="color:var(--accent-purple); font-weight:bold; font-family:monospace;">${sum}</td><td style="color:var(--accent-green); font-weight:bold; font-family:monospace;">${carry}</td></tr>`;
+                    } else if (bits === 1 && op === 'sub') {
+                        let diff = a ^ b;
+                        let borrow = ((~a) & 1) & b;
+                        ttHtml += `<tr><td style="color:var(--accent-cyan); font-family:monospace; font-weight:bold;">${a}</td><td style="color:var(--accent-cyan); font-family:monospace; font-weight:bold;">${b}</td><td style="color:var(--accent-purple); font-weight:bold; font-family:monospace;">${diff}</td><td style="color:var(--accent-pink); font-weight:bold; font-family:monospace;">${borrow}</td></tr>`;
+                    } else {
+                        let out;
+                        if(op === 'add') out = a + b;
+                        else if(op === 'sub') {
+                            out = a - b;
+                            if (out < 0) out = out & ((1 << bits) - 1); 
+                        }
+                        else if(op === 'mul') out = a * b;
+                        
+                        let outBits = (op === 'mul') ? bits*2 : (op === 'add' ? bits+1 : bits);
+                        let outBin = out.toString(2).padStart(outBits, '0');
+                        ttHtml += `<tr><td>${a}</td><td style="color:var(--accent-cyan); font-family:monospace;">${aBin}</td><td>${b}</td><td style="color:var(--accent-cyan); font-family:monospace;">${bBin}</td><td style="font-weight:bold; color:var(--text-main);">${out}</td><td style="color:var(--accent-green); font-weight:bold; font-family:monospace;">${outBin}</td></tr>`;
+                    }
+                }
+            }
+            ttHtml += '</table>';
+            document.getElementById('arithmeticTTOutput').innerHTML = ttHtml;
+
+            // 2. Generate Schematic
+            if (op === 'comp') return;
+
+            if (op === 'add' || op === 'sub') {
+                titleElem.innerText = `📐 ${bits}-Bit Ripple Carry ${op === 'add' ? 'Adder' : 'Subtractor'}`;
+                
+                const boxW = 60; const boxH = 70; const gap = 60;
+                const width = bits * (boxW + gap) + 100;
+                const height = 220;
+
+                let svg = `<svg width="100%" height="${height}" viewBox="0 0 ${width} ${height}" style="background:transparent; max-width:800px; margin: 0 auto; display: block;">`;
+
+                for (let i = 0; i < bits; i++) {
+                    const bitIndex = bits - 1 - i;
+                    const isLSB = (bitIndex === 0);
+                    const x = 40 + i * (boxW + gap);
+                    const y = 80;
+
+                    const blockType = (isLSB && op === 'add') ? 'HA' : 'FA';
+                    const bColor = blockType === 'HA' ? 'var(--accent-cyan)' : 'var(--accent-purple)';
+                    svg += `<rect x="${x}" y="${y}" width="${boxW}" height="${boxH}" rx="6" fill="var(--input-bg)" stroke="${bColor}" stroke-width="2"/>`;
+                    svg += `<text x="${x + 20}" y="${y + 40}" fill="${bColor}" font-size="14" font-weight="bold">${blockType}</text>`;
+
+                    // A Input
+                    svg += `<text x="${x + 15}" y="${y - 45}" fill="var(--text-main)" font-size="12" font-weight="bold">A${bitIndex}</text>`;
+                    svg += `<line x1="${x + 20}" y1="${y - 40}" x2="${x + 20}" y2="${y}" stroke="var(--text-sub)" stroke-width="2"/>`;
+
+                    // B Input
+                    svg += `<text x="${x + 35}" y="${y - 45}" fill="var(--text-main)" font-size="12" font-weight="bold">B${bitIndex}</text>`;
+                    
+                    if (op === 'sub') {
+                        svg += `<path d="M ${x+35} ${y-35} L ${x+45} ${y-20} L ${x+25} ${y-20} Z" fill="var(--input-bg)" stroke="var(--accent-pink)" stroke-width="1.5"/>`;
+                        svg += `<circle cx="${x+35}" cy="${y-17}" r="2" fill="var(--input-bg)" stroke="var(--accent-pink)"/>`;
+                        svg += `<line x1="${x+35}" y1="${y-40}" x2="${x+35}" y2="${y-35}" stroke="var(--text-sub)" stroke-width="2"/>`;
+                        svg += `<line x1="${x+35}" y1="${y-15}" x2="${x+35}" y2="${y}" stroke="var(--accent-pink)" stroke-width="2"/>`;
+                    } else {
+                        svg += `<line x1="${x + 40}" y1="${y - 40}" x2="${x + 40}" y2="${y}" stroke="var(--text-sub)" stroke-width="2"/>`;
+                    }
+
+                    // Sum Output
+                    svg += `<line x1="${x + 30}" y1="${y + boxH}" x2="${x + 30}" y2="${y + boxH + 30}" stroke="var(--accent-green)" stroke-width="2"/>`;
+                    svg += `<text x="${x + 22}" y="${y + boxH + 45}" fill="var(--accent-green)" font-weight="bold" font-size="14">${op === 'sub' ? 'D' : 'S'}${bitIndex}</text>`;
+
+                    // Carry connections with explicitly labeled carries
+                    if (isLSB) {
+                        if (op === 'sub') {
+                            svg += `<line x1="${x + boxW + 30}" y1="${y + 35}" x2="${x + boxW}" y2="${y + 35}" stroke="var(--accent-amber)" stroke-width="2"/>`;
+                            svg += `<text x="${x + boxW + 5}" y="${y + 25}" fill="var(--accent-amber)" font-weight="bold" font-size="10">Cin=1</text>`;
+                        }
+                    } else {
+                        svg += `<line x1="${x + boxW + gap}" y1="${y + 35}" x2="${x + boxW}" y2="${y + 35}" stroke="var(--text-sub)" stroke-width="2"/>`;
+                        svg += `<path d="M ${x + boxW} ${y+35} L ${x + boxW + 6} ${y+32} L ${x + boxW + 6} ${y+38} Z" fill="var(--text-sub)"/>`;
+                        svg += `<text x="${x + boxW + gap/2 - 5}" y="${y + 25}" fill="var(--text-sub)" font-weight="bold" font-size="12">${op === 'sub' ? 'B' : 'C'}${bitIndex}</text>`;
+                    }
+
+                    if (i === 0) { // MSB Cout
+                        svg += `<line x1="${x}" y1="${y + 35}" x2="${x - 30}" y2="${y + 35}" stroke="var(--accent-pink)" stroke-width="2"/>`;
+                        svg += `<text x="${x - 35}" y="${y + 40}" fill="var(--accent-pink)" font-weight="bold" font-size="12" text-anchor="end">${op === 'sub' ? 'B_out' : 'Cout'}</text>`;
+                    }
+                }
+                svg += `</svg>`;
+                container.innerHTML = svg;
+
+            } else if (op === 'mul') {
+                titleElem.innerText = `📐 ${bits}-Bit × ${bits}-Bit Array Multiplier`;
+                
+                if (bits > 4) {
+                    container.innerHTML = `<div style="padding:20px; color:var(--text-sub);">Multiplier diagram restricted to max 4-bit to prevent UI overlap.</div>`;
+                    return;
+                }
+
+                if (bits === 1) {
+                    container.innerHTML = `<div style="padding:20px; color:var(--text-sub); font-size:1.1rem; font-weight:bold;">1-Bit Multiplier is simply an AND gate: P0 = A0 & B0</div>`;
+                    return;
+                }
+
+                // Dynamic NxN Array Multiplier visualization grid
+                const dx = 100;
+                const dy = 100;
+                const width = bits * dx * 2;
+                const height = bits * dy + 100;
+                let svg = `<svg width="100%" height="${height}" viewBox="0 0 ${width} ${height}" style="background:transparent; max-width:1000px; margin: 0 auto; display: block;">`;
+                
+                for(let i=0; i<bits; i++) { // Row (B_i)
+                    for(let j=0; j<bits; j++) { // Col (A_j)
+                        const cx = width/2 + (j - i) * (dx/2);
+                        const cy = 40 + i * dy;
+                        
+                        svg += `<rect x="${cx-30}" y="${cy}" width="60" height="45" rx="4" fill="var(--input-bg)" stroke="var(--accent-cyan)" stroke-width="1.5"/>`;
+                        svg += `<text x="${cx}" y="${cy+15}" fill="var(--text-main)" font-size="10" font-weight="bold" text-anchor="middle">A${j}B${i}</text>`;
+                        
+                        if (i > 0) {
+                            const addType = (j === bits - 1 && i === 1) ? 'HA' : 'FA';
+                            svg += `<text x="${cx}" y="${cy+35}" fill="var(--accent-cyan)" font-size="12" font-weight="bold" text-anchor="middle">${addType}</text>`;
+                        } else {
+                            svg += `<text x="${cx}" y="${cy+35}" fill="var(--text-sub)" font-size="10" text-anchor="middle">AND</text>`;
+                        }
+                        
+                        // Vertical/Diagonal Sums
+                        if (i < bits - 1) {
+                            svg += `<line x1="${cx-10}" y1="${cy+45}" x2="${cx - dx/2 + 10}" y2="${cy+dy}" stroke="var(--accent-green)" stroke-width="1.5"/>`;
+                        } else {
+                            svg += `<line x1="${cx-10}" y1="${cy+45}" x2="${cx-10}" y2="${cy+65}" stroke="var(--accent-purple)" stroke-width="2"/>`;
+                            svg += `<text x="${cx-10}" y="${cy+80}" fill="var(--accent-purple)" font-weight="bold" font-size="12" text-anchor="middle">P${i+j}</text>`;
+                        }
+
+                        // Diagonal Carries
+                        if (i < bits - 1) {
+                            svg += `<line x1="${cx+10}" y1="${cy+45}" x2="${cx + dx/2 - 10}" y2="${cy+dy}" stroke="var(--accent-teal)" stroke-width="1.5"/>`;
+                        } else if (j === bits - 1) {
+                            svg += `<line x1="${cx+10}" y1="${cy+45}" x2="${cx+10}" y2="${cy+65}" stroke="var(--accent-purple)" stroke-width="2"/>`;
+                            svg += `<text x="${cx+10}" y="${cy+80}" fill="var(--accent-purple)" font-weight="bold" font-size="12" text-anchor="middle">P${i+j+1}</text>`;
+                        }
+                    }
+                }
+                svg += `</svg>`;
+                container.innerHTML = svg;
+            }
+        }
+
+
+        // ==========================================
+        // STANDARD PIPELINE ENGINE
+        // ==========================================
+        function processImageInput() {
             const fileInput = document.getElementById('circuitImageInput');
             if (!fileInput.files.length) {
                 alert("Please select an image file first.");
@@ -877,7 +1201,6 @@
             reader.readAsDataURL(file);
         }
 
-        // 1. EXPRESSION PARSER
         function parseAndEvalExpression() {
             const raw = document.getElementById('exprInput').value.trim();
             if(!raw) throw new Error("Expression is empty.");
@@ -921,7 +1244,6 @@
             }
         }
 
-        // 2. MINTERMS & MAXTERMS PARSER
         function parseTermsInput() {
             const n = parseInt(document.getElementById('termsVarCount').value);
             const format = document.getElementById('termsFormatType').value;
@@ -960,15 +1282,9 @@
 
                 rows.push({ inputs, output: outVal });
             }
-
-            const label = format === 'minterms' 
-                ? `Σm(${Array.from(inputIndices).join(', ')})` 
-                : `ΠM(${Array.from(inputIndices).join(', ')})`;
-
-            return { vars, rows, originalExpr: label };
+            return { vars, rows, originalExpr: "Minterms/Maxterms" };
         }
 
-        // 3. TRUTH TABLE INPUT MATRIX
         function renderTTInputGrid() {
             const n = parseInt(document.getElementById('ttVarCount').value);
             const vars = ['A', 'B', 'C', 'D'].slice(0, n);
@@ -1006,7 +1322,6 @@
             return { vars, rows, originalExpr: "Truth Table Direct Input" };
         }
 
-        // 4. K-MAP INPUT ENGINE
         function renderKMapInputGrid() {
             const n = parseInt(document.getElementById('kmapVarCount').value);
             const vars = ['A', 'B', 'C', 'D'].slice(0, n);
@@ -1071,7 +1386,6 @@
             return { vars, rows, originalExpr: "K-Map Matrix Direct Input" };
         }
 
-        // QUINE-MCCLUSKEY EXACT MINIMIZATION
         function quineMcCluskey(vars, rows) {
             const onSet = [];
             const dcSet = [];
@@ -1188,7 +1502,6 @@
             return essentialPIs.map(pi => `(${formatTerm(pi.mask)})`).join(' | ');
         }
 
-        // SOP EVALUATOR FOR FORMAL VERIFICATION
         function evaluateSOP(sop, vars, inputVector) {
             if(sop === "0") return 0;
             if(sop === "1") return 1;
@@ -1212,7 +1525,6 @@
             return 0;
         }
 
-        // CAD PIPELINE ORCHESTRATOR
         function synthesizePipeline() {
             let data;
             try {
@@ -1328,7 +1640,6 @@
             verilogElem.innerText = verilog;
         }
 
-        // FULL 4-WAY FORMAL EQUIVALENCE VERIFICATION
         function renderEquivalenceVerification(vars, rows, sop) {
             const badgeContainer = document.getElementById('verificationBadgeContainer');
             const tableContainer = document.getElementById('verificationTableOutput');
@@ -1353,12 +1664,12 @@
                 if (rawOrigVal === 'X' || rawOrigVal === 'x') {
                     hasDontCares = true;
                     isMatch = true; 
-                    statusText = `✓ Optimized (Don't Care → ${sopVal})`;
+                    statusText = `✓ Optimized (d → ${sopVal})`;
                     statusColor = "var(--accent-amber)";
                 } else {
                     isMatch = (rawOrigVal === sopVal && sopVal === nandVal && nandVal === norVal);
                     if (isMatch) {
-                        statusText = `✓ Verified Identical`;
+                        statusText = `✓ Verified`;
                         statusColor = "var(--accent-green)";
                     } else {
                         statusText = `✗ Mismatch`;
@@ -1380,24 +1691,37 @@
             tableContainer.innerHTML = html;
 
             if (strictMismatch) {
-                badgeContainer.innerHTML = `<div class="verification-badge" style="border-color:var(--accent-pink); background:rgba(239, 68, 68, 0.1); color:var(--accent-pink);">✗ Equivalence Verification Failed (Strict Mismatch Detected)</div>`;
+                badgeContainer.innerHTML = `<div class="verification-badge" style="border-color:var(--accent-pink); background:rgba(239, 68, 68, 0.1); color:var(--accent-pink);">✗ Equivalence Verification Failed</div>`;
             } else if (hasDontCares) {
-                badgeContainer.innerHTML = `<div class="verification-badge" style="border-color:var(--accent-amber); background:rgba(234, 179, 8, 0.1); color:var(--accent-amber);">✓ 100% Formal Equivalence Verified (Don't Cares optimally assigned)</div>`;
+                badgeContainer.innerHTML = `<div class="verification-badge" style="border-color:var(--accent-amber); background:rgba(234, 179, 8, 0.1); color:var(--accent-amber);">✓ 100% Formal Equivalence Verified (Don't Cares Assigned)</div>`;
             } else {
-                badgeContainer.innerHTML = `<div class="verification-badge">✓ 100% Formal Equivalence Verified: (Original ≡ Simplified SOP ≡ NAND-Only ≡ NOR-Only)</div>`;
+                badgeContainer.innerHTML = `<div class="verification-badge">✓ 100% Formal Equivalence Verified</div>`;
             }
         }
 
-        // OPTIMIZED GATE COMPILER & SINGLE SELECTED SVG SCHEMATIC
         function renderSelectedCircuitDiagram(vars, sop, selectedLib) {
             const terms = sop.split('|').map(t => t.replace(/[()]/g, '').trim()).filter(t => t && t !== '0' && t !== '1');
             const container = document.getElementById('selectedSchematicContainer');
             const badge = document.getElementById('selectedGateCountBadge');
-            const title = document.getElementById('diagramHeaderTitle');
 
             if (sop === "0" || sop === "1") {
                 container.innerHTML = `<div style="padding: 16px; color: var(--accent-cyan); font-weight:bold;">Constant Function Output Y = ${sop}</div>`;
                 badge.innerText = "0 Gates";
+                return;
+            }
+
+            // DETECT XOR FOR OPTIMAL 4-GATE NAND OR NOR MAPPING
+            const isXOR = (vars.length === 2) && (sop === `(~${vars[0]} & ${vars[1]}) | (${vars[0]} & ~${vars[1]})` || sop === `(${vars[0]} & ~${vars[1]}) | (~${vars[0]} & ${vars[1]})`);
+
+            if (selectedLib === 'NAND' && isXOR) {
+                const nandNodes = [];
+                nandNodes.push({id: 'N1', type: 'NAND', in1: vars[0], in2: vars[1], label: 'NAND', stage: 1});
+                nandNodes.push({id: 'N2', type: 'NAND', in1: vars[0], in2: 'N1', label: 'NAND', stage: 2});
+                nandNodes.push({id: 'N3', type: 'NAND', in1: vars[1], in2: 'N1', label: 'NAND', stage: 2});
+                nandNodes.push({id: 'NOUT', type: 'NAND', in1: 'N2', in2: 'N3', label: 'NAND', stage: 3});
+                
+                document.getElementById('selectedGateCountBadge').innerText = `4 Gates (Optimal XOR)`;
+                drawSvgCircuit(container, vars, nandNodes, 'NOUT', '#0d9488');
                 return;
             }
 
@@ -1410,7 +1734,7 @@
                     if (!basicInverters[varName]) {
                         basicCounter++;
                         const id = `B_INV_${varName}`;
-                        basicNodes.push({ id, type: 'NOT', in1: varName, in2: varName, label: `INV`, stage: 1 });
+                        basicNodes.push({ id, type: 'NOT', in1: varName, in2: varName, label: 'INV', stage: 1 });
                         basicInverters[varName] = id;
                     }
                     return basicInverters[varName];
@@ -1425,7 +1749,7 @@
                         if (list.length === 2) {
                             basicCounter++;
                             const id = `AND_${basicCounter}`;
-                            basicNodes.push({ id, type: 'AND', in1: list[0], in2: list[1], label: `AND2`, stage: 2 + depth });
+                            basicNodes.push({ id, type: 'AND', in1: list[0], in2: list[1], label: 'AND2', stage: 2 + depth });
                             return id;
                         }
                         const h = Math.floor(list.length / 2);
@@ -1433,7 +1757,7 @@
                         const r = buildAnd2Tree(list.slice(h), depth + 1);
                         basicCounter++;
                         const id = `AND_${basicCounter}`;
-                        basicNodes.push({ id, type: 'AND', in1: l, in2: r, label: `AND2`, stage: 3 + depth });
+                        basicNodes.push({ id, type: 'AND', in1: l, in2: r, label: 'AND2', stage: 3 + depth });
                         return id;
                     }
                     return buildAnd2Tree(sigs);
@@ -1444,7 +1768,7 @@
                     if (list.length === 2) {
                         basicCounter++;
                         const id = `OR_${basicCounter}`;
-                        basicNodes.push({ id, type: 'OR', in1: list[0], in2: list[1], label: `OR2`, stage: 5 + depth });
+                        basicNodes.push({ id, type: 'OR', in1: list[0], in2: list[1], label: 'OR2', stage: 5 + depth });
                         return id;
                     }
                     const h = Math.floor(list.length / 2);
@@ -1452,12 +1776,12 @@
                     const r = buildOr2Tree(list.slice(h), depth + 1);
                     basicCounter++;
                     const id = `OR_${basicCounter}`;
-                    basicNodes.push({ id, type: 'OR', in1: l, in2: r, label: `OR2`, stage: 6 + depth });
+                    basicNodes.push({ id, type: 'OR', in1: l, in2: r, label: 'OR2', stage: 6 + depth });
                     return id;
                 }
                 const basicFinalId = buildOr2Tree(andOutputs);
                 document.getElementById('selectedGateCountBadge').innerText = `${basicNodes.length} Gates`;
-                drawSvgCircuit(container, vars, basicNodes, basicFinalId, '#0284c7');
+                drawSvgCircuit(container, vars, basicNodes, basicFinalId, '#2563eb'); 
 
             } else if (selectedLib === 'NAND') {
                 const nandNodes = [];
@@ -1610,7 +1934,7 @@
             }
         }
 
-        // GENERIC VECTOR SVG CIRCUIT RENDERER
+        // GENERIC VECTOR SVG CIRCUIT RENDERER (Accurate NOR shapes)
         function drawSvgCircuit(container, vars, nodes, finalNodeId, themeColor) {
             const width = 600;
             const height = Math.max(160, Math.max(vars.length, nodes.length) * 36);
@@ -1618,11 +1942,21 @@
             let svg = `<svg width="100%" height="${height}" viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg" style="display:block; background:transparent;">`;
 
             const drawGateSymbol = (x, y, label, color, type) => {
-                let body = `<path d="M ${x} ${y} L ${x+18} ${y} C ${x+32} ${y}, ${x+32} ${y+24}, ${x+18} ${y+24} L ${x} ${y+24} Z" fill="var(--diagram-bg)" stroke="${color}" stroke-width="1.8" stroke-linejoin="round"/>`;
-                let bubble = '';
-                if (type === 'NAND' || type === 'NOR' || type === 'NOT') {
-                    bubble = `<circle cx="${x+35}" cy="${y+12}" r="2.5" fill="var(--diagram-bg)" stroke="${color}" stroke-width="1.5"/>`;
+                let body = '';
+                if (type === 'OR' || type === 'NOR') {
+                    body = `<path d="M ${x} ${y} Q ${x+12} ${y+12} ${x} ${y+24} Q ${x+22} ${y+24} ${x+32} ${y+12} Q ${x+22} ${y} ${x} ${y} Z" fill="var(--diagram-bg)" stroke="${color}" stroke-width="1.8" stroke-linejoin="round"/>`;
+                } else if (type === 'NOT' || type === 'INV') {
+                    body = `<polygon points="${x},${y} ${x+28},${y+12} ${x},${y+24}" fill="var(--diagram-bg)" stroke="${color}" stroke-width="1.8" stroke-linejoin="round"/>`;
+                } else {
+                    body = `<path d="M ${x} ${y} L ${x+18} ${y} C ${x+32} ${y}, ${x+32} ${y+24}, ${x+18} ${y+24} L ${x} ${y+24} Z" fill="var(--diagram-bg)" stroke="${color}" stroke-width="1.8" stroke-linejoin="round"/>`;
                 }
+
+                let bubble = '';
+                if (type === 'NAND' || type === 'NOR' || type === 'NOT' || type === 'INV') {
+                    let cx = (type === 'NOT' || type === 'INV') ? x+31 : x+35;
+                    bubble = `<circle cx="${cx}" cy="${y+12}" r="2.5" fill="var(--diagram-bg)" stroke="${color}" stroke-width="1.5"/>`;
+                }
+
                 return `
                     <g>
                         ${body}
@@ -1632,7 +1966,7 @@
                 `;
             };
 
-            const wirePalette = ['#0284c7', '#0d9488', '#d97706', '#db2777', '#4f46e5', '#e11d48'];
+            const wirePalette = ['#2563eb', '#0d9488', '#d97706', '#db2777', '#4f46e5', '#e11d48'];
 
             function getSignalColor(sig, idx) {
                 return wirePalette[idx % wirePalette.length];
@@ -1659,7 +1993,7 @@
                 nodeYMap[node.id] = y + 12;
 
                 const isFinal = (node.id === finalNodeId);
-                const gateColor = isFinal ? '#4f46e5' : themeColor; 
+                const gateColor = isFinal ? '#4f46e5' : themeColor;
 
                 svg += drawGateSymbol(nodeXMap[node.id], y, node.label, gateColor, node.type);
 
@@ -1674,7 +2008,7 @@
                         startY = nodeYMap[inSignal];
                     }
 
-                    let wireColor = '#94a3b8'; 
+                    let wireColor = 'var(--text-sub)'; 
                     if (inputYMap[inSignal] !== undefined) {
                         wireColor = getSignalColor(inSignal, vars.indexOf(inSignal));
                     }
@@ -1693,11 +2027,6 @@
 
             svg += `</svg>`;
             container.innerHTML = svg;
-        }
-
-        function toggleAIChat() {
-            const drawer = document.getElementById('aiChatDrawer');
-            drawer.style.display = (drawer.style.display === 'flex') ? 'none' : 'flex';
         }
 
         async function sendGeminiQuery() {
@@ -1746,9 +2075,15 @@
             msgBox.scrollTop = msgBox.scrollHeight;
         }
 
-        // Initialize empty grids
+        function toggleAIChat() {
+            const drawer = document.getElementById('aiChatDrawer');
+            drawer.style.display = (drawer.style.display === 'flex') ? 'none' : 'flex';
+        }
+
+        // Initialize grids
         renderTTInputGrid();
         renderKMapInputGrid();
+        synthesizeArithmetic();
     </script>
 </body>
 </html>

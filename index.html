@@ -9,7 +9,7 @@
         /* Baseline Dark Theme (Default) */
         :root {
             --bg: #0f172a;
-            --panel: rgba(30, 41, 59, 0.88);
+            --panel: #1e293b;
             --panel-solid: #1e293b;
             --border: #334155;
             --border-subtle: #475569;
@@ -22,40 +22,40 @@
             --accent-amber: #fcd34d;
             --code-text: #fef08a;
             --text-main: #f8fafc;
-            --text-sub: #cbd5e1;
-            --glass-bg: rgba(15, 23, 42, 0.7);
-            --input-bg: #090d16;
-            --element-bg: rgba(15, 23, 42, 0.9);
-            --table-th-bg: rgba(15, 23, 42, 0.95);
-            --shadow-color: rgba(0, 0, 0, 0.4);
-            --diagram-bg: #0b1120;
-            --body-gradient: radial-gradient(circle at 15% 15%, #1e1b4b 0%, var(--bg) 55%, #090d16 100%);
+            --text-sub: #94a3b8;
+            --glass-bg: #1e293b;
+            --input-bg: #0f172a;
+            --element-bg: #334155;
+            --table-th-bg: #0f172a;
+            --shadow-color: rgba(0, 0, 0, 0.3);
+            --diagram-bg: #0f172a;
+            --body-gradient: #0f172a;
         }
 
         /* Vibrant & Soft Light Theme */
         :root[data-theme="light"] {
-            --bg: #f8fafc;
-            --panel: rgba(255, 255, 255, 0.95);
+            --bg: #f0f2f5;
+            --panel: #ffffff;
             --panel-solid: #ffffff;
-            --border: #cbd5e1;
-            --border-subtle: #e2e8f0;
-            --accent-cyan: #0284c7; /* Darker cyan for text contrast */
+            --border: #d1d5db;
+            --border-subtle: #e5e7eb;
+            --accent-cyan: #2563eb; 
             --accent-teal: #0d9488;
-            --accent-green: #16a34a;
+            --accent-green: #22c55e;
             --accent-purple: #4f46e5;
             --accent-pink: #db2777;
             --accent-coral: #e11d48;
             --accent-amber: #d97706;
-            --code-text: #b45309;
-            --text-main: #0f172a;
-            --text-sub: #475569;
-            --glass-bg: rgba(255, 255, 255, 0.8);
-            --input-bg: #ffffff;
+            --code-text: #334155;
+            --text-main: #1e293b; 
+            --text-sub: #64748b; 
+            --glass-bg: #ffffff;
+            --input-bg: #f8fafc; 
             --element-bg: #f1f5f9;
-            --table-th-bg: #e2e8f0;
-            --shadow-color: rgba(0, 0, 0, 0.08);
-            --diagram-bg: #f8fafc;
-            --body-gradient: radial-gradient(circle at 15% 15%, #e0e7ff 0%, var(--bg) 55%, #f1f5f9 100%);
+            --table-th-bg: #f8fafc;
+            --shadow-color: rgba(0, 0, 0, 0.04);
+            --diagram-bg: #ffffff;
+            --body-gradient: #f0f2f5;
         }
 
         * { box-sizing: border-box; }
@@ -69,7 +69,7 @@
             color: var(--text-main);
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             min-height: 100vh;
-            transition: background 0.3s ease, color 0.3s ease;
+            transition: background 0.2s ease, color 0.2s ease;
         }
 
         /* App Layout */
@@ -82,8 +82,43 @@
             min-height: 100vh;
         }
 
+        /* Mobile Nav Bar (Hidden on Desktop) */
+        .mobile-nav-bar {
+            display: none;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 20px;
+            background: var(--panel);
+            border-bottom: 1px solid var(--border-subtle);
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            box-shadow: 0 2px 10px var(--shadow-color);
+        }
+        
+        .hamburger-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-main);
+            font-size: 1.25rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+        }
+
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1999;
+            backdrop-filter: blur(2px);
+        }
+
         .sidebar {
-            width: 280px;
+            width: 290px;
             flex-shrink: 0;
             position: sticky;
             top: 24px;
@@ -96,6 +131,18 @@
         
         .sidebar::-webkit-scrollbar { width: 6px; }
         .sidebar::-webkit-scrollbar-thumb { background-color: var(--border); border-radius: 4px; }
+        
+        .close-sidebar-btn {
+            display: none;
+            background: transparent;
+            border: none;
+            color: var(--text-main);
+            font-size: 1.5rem;
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            cursor: pointer;
+        }
 
         .main-content {
             flex-grow: 1;
@@ -106,71 +153,79 @@
 
         /* Theme Toggle */
         .theme-toggle-btn {
-            position: fixed;
-            top: 16px;
-            right: 24px;
             background: var(--panel-solid);
             color: var(--text-main);
-            border: 1px solid var(--border);
+            border: 1px solid var(--border-subtle);
             padding: 8px 16px;
-            border-radius: 20px;
+            border-radius: 8px;
             cursor: pointer;
-            font-weight: 700;
+            font-weight: 600;
             font-size: 0.85rem;
-            z-index: 1001;
-            box-shadow: 0 4px 12px var(--shadow-color);
+            box-shadow: 0 2px 8px var(--shadow-color);
             transition: all 0.2s ease;
             font-family: inherit;
         }
-        .theme-toggle-btn:hover { border-color: var(--accent-cyan); transform: translateY(-1px); }
+        .theme-toggle-btn:hover { border-color: var(--accent-cyan); background: var(--element-bg); }
+        .desktop-theme-btn { position: fixed; top: 16px; right: 24px; z-index: 1001; }
 
         /* Sidebar Elements */
-        header { margin-bottom: 24px; }
+        header { margin-bottom: 20px; }
         h1 { 
             margin: 0 0 10px 0; 
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple), var(--accent-pink));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: var(--accent-cyan);
             font-weight: 800; 
-            font-size: 1.6rem; 
+            font-size: 1.5rem; 
             line-height: 1.2;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
-        p.subtitle { margin: 0; color: var(--text-sub); font-size: 0.88rem; font-weight: 450; line-height: 1.5; }
+        p.subtitle { margin: 0; color: var(--text-sub); font-size: 0.85rem; font-weight: 500; line-height: 1.5; }
 
         .project-badge {
-            text-align: left;
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(236, 72, 153, 0.08));
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
             margin-bottom: 24px;
-            backdrop-filter: blur(10px);
+            flex-wrap: wrap;
         }
-        .project-badge .project-title { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1.2px; color: var(--accent-cyan); font-weight: 800; }
+        .tag {
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 6px;
+            background: rgba(37, 99, 235, 0.1);
+            color: var(--accent-cyan);
+        }
+        .tag.green {
+            background: rgba(34, 197, 94, 0.1);
+            color: var(--accent-green);
+        }
+
         .team-toggle-btn {
             background: transparent;
-            border: 1px solid var(--accent-purple);
-            color: var(--text-main);
-            padding: 6px 12px;
-            border-radius: 6px;
+            border: 1px solid var(--border);
+            color: var(--text-sub);
+            padding: 8px 12px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             font-weight: 600;
-            margin-top: 10px;
+            margin-top: 4px;
             transition: all 0.2s ease;
             width: 100%;
             text-align: left;
         }
-        .team-toggle-btn:hover { background: var(--accent-purple); color: #fff; border-color: var(--accent-purple); }
+        .team-toggle-btn:hover { background: var(--element-bg); color: var(--text-main); }
         .team-list-card { display: none; margin-top: 10px; padding-top: 8px; border-top: 1px dashed var(--border-subtle); }
         .team-list-card.active { display: block; }
-        .team-member { font-size: 0.8rem; display: flex; justify-content: space-between; padding: 4px; color: var(--text-sub); border-radius: 4px; }
-        .team-member .roll { color: var(--accent-pink); font-family: monospace; font-weight: 600; }
+        .team-member { font-size: 0.8rem; display: flex; justify-content: space-between; padding: 6px 4px; color: var(--text-sub); }
+        .team-member .roll { color: var(--accent-cyan); font-family: monospace; font-weight: 600; }
 
-        .tabs { display: flex; flex-direction: column; gap: 8px; }
+        .tabs { display: flex; flex-direction: column; gap: 8px; margin-top: 10px;}
         .tab-btn {
-            background: var(--panel);
-            border: 1px solid var(--border);
+            background: transparent;
+            border: none;
             color: var(--text-sub);
             padding: 12px 16px;
             cursor: pointer;
@@ -179,125 +234,145 @@
             font-size: 0.9rem;
             text-align: left;
             transition: all 0.2s ease;
-            backdrop-filter: blur(8px);
         }
-        .tab-btn:hover { color: var(--text-main); border-color: var(--accent-cyan); transform: translateX(2px); }
+        .tab-btn:hover { background: var(--element-bg); color: var(--text-main); }
         .tab-btn.active {
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
-            color: #ffffff;
-            border-color: transparent;
-            box-shadow: 0 4px 14px rgba(56, 189, 248, 0.25);
+            background: rgba(37, 99, 235, 0.1);
+            color: var(--accent-cyan);
+            font-weight: 700;
         }
 
         /* Main Content Controls */
         .input-card {
             background: var(--panel);
-            border: 1px solid var(--border);
-            padding: 20px;
+            border: 1px solid var(--border-subtle);
+            padding: 24px;
             border-radius: 12px;
             margin-bottom: 24px;
-            backdrop-filter: blur(12px);
-            box-shadow: 0 8px 24px var(--shadow-color);
-            transition: background 0.3s ease, border-color 0.3s ease;
+            box-shadow: 0 2px 10px var(--shadow-color);
         }
         .mode-panel { display: none; }
         .mode-panel.active { display: block; }
 
-        .syntax-guide {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-            gap: 8px;
-            background: var(--element-bg);
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px dashed var(--border);
-            margin: 12px 0;
+        label {
+            display: block;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 700;
+            color: var(--text-sub);
+            margin-bottom: 8px;
         }
-        .syntax-item { font-size: 0.82rem; color: var(--text-sub); }
-        .syntax-item code { color: var(--accent-pink); font-weight: bold; background: rgba(244, 114, 182, 0.14); padding: 2px 5px; border-radius: 4px; }
 
         input[type="text"], input[type="file"], select {
             width: 100%;
-            padding: 11px;
+            padding: 12px 16px;
             background: var(--input-bg);
             border: 1px solid var(--border);
             color: var(--text-main);
             border-radius: 8px;
-            font-family: inherit;
-            font-size: 0.92rem;
-            margin-top: 6px;
+            font-family: monospace;
+            font-size: 0.95rem;
             transition: all 0.2s ease;
         }
-        input[type="text"]:focus, select:focus { border-color: var(--accent-cyan); outline: none; box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15); }
+        input[type="text"]:focus, select:focus { 
+            border-color: var(--accent-cyan); 
+            outline: none; 
+            background: var(--panel);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); 
+        }
+
+        .syntax-guide {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 16px 0;
+            font-size: 0.8rem;
+            color: var(--text-sub);
+        }
+        .syntax-item code { color: var(--accent-cyan); font-weight: bold; background: var(--input-bg); padding: 2px 6px; border-radius: 4px; border: 1px solid var(--border-subtle); }
 
         .btn-action {
-            background: linear-gradient(135deg, var(--accent-teal), var(--accent-cyan));
-            color: #0f172a;
+            background: var(--accent-cyan);
+            color: #ffffff;
             border: none;
-            padding: 11px 22px;
-            font-weight: 700;
+            padding: 12px 24px;
+            font-weight: 600;
             border-radius: 8px;
             cursor: pointer;
-            margin-top: 14px;
+            margin-top: 8px;
             transition: all 0.2s ease;
-            box-shadow: 0 4px 12px rgba(45, 212, 191, 0.2);
             font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
         }
-        .btn-action:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(45, 212, 191, 0.35); }
+        .btn-action:hover { background: #1d4ed8; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); }
 
         /* Pipeline Grid Outputs */
         .pipeline-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
             width: 100%;
         }
 
         .card {
             background: var(--panel);
-            border: 1px solid var(--border);
+            border: 1px solid var(--border-subtle);
             border-radius: 12px;
-            padding: 20px;
+            padding: 24px;
             display: flex;
             flex-direction: column;
             min-width: 0;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 4px 16px var(--shadow-color);
+            box-shadow: 0 2px 10px var(--shadow-color);
             transition: background 0.3s ease, border-color 0.3s ease;
         }
         .card.full-width { grid-column: 1 / -1; }
-        .card h3 { margin: 0 0 14px 0; font-size: 1.05rem; color: var(--accent-cyan); display: flex; align-items: center; gap: 6px; }
+        .card h3 { 
+            margin: 0 0 16px 0; 
+            font-size: 0.9rem; 
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-sub); 
+            display: flex; 
+            align-items: center;
+            gap: 6px; 
+            border-bottom: 1px solid var(--border-subtle);
+            padding-bottom: 12px;
+        }
 
         .table-wrapper { max-height: 280px; overflow-y: auto; border: 1px solid var(--border); border-radius: 8px; }
         table { width: 100%; border-collapse: collapse; text-align: center; }
-        th, td { padding: 10px; border-bottom: 1px solid var(--border); font-size: 0.86rem; }
-        th { background: var(--table-th-bg); color: var(--accent-cyan); position: sticky; top: 0; }
+        th, td { padding: 12px; border-bottom: 1px solid var(--border); font-size: 0.86rem; }
+        th { background: var(--table-th-bg); color: var(--text-main); font-weight: 700; position: sticky; top: 0; }
 
         .verification-badge {
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            background: rgba(74, 222, 128, 0.1);
+            background: rgba(34, 197, 94, 0.1);
             border: 1px solid var(--accent-green);
             color: var(--accent-green);
-            padding: 6px 14px;
-            border-radius: 20px;
+            padding: 8px 16px;
+            border-radius: 8px;
             font-size: 0.85rem;
-            font-weight: bold;
-            margin-bottom: 14px;
+            font-weight: 600;
+            margin-bottom: 16px;
             align-self: flex-start;
         }
 
         .gate-counter-badge {
             display: inline-block;
-            background: rgba(56, 189, 248, 0.1);
-            border: 1px solid var(--accent-cyan);
-            color: var(--accent-cyan);
-            font-size: 0.78rem;
+            background: var(--input-bg);
+            border: 1px solid var(--border);
+            color: var(--text-sub);
+            font-size: 0.75rem;
             font-weight: bold;
-            padding: 3px 10px;
+            padding: 4px 10px;
             border-radius: 6px;
-            margin-left: 10px;
+            margin-left: auto;
         }
 
         .diagram-container {
@@ -311,31 +386,24 @@
             transition: background 0.3s ease;
         }
 
-        .diagram-title { font-size: 0.92rem; font-weight: 700; color: var(--accent-purple); margin: 8px 0 10px 0; display: flex; align-items: center; }
-
-        .kmap-container { display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 10px 0; }
-        .kmap-grid { display: grid; gap: 4px; background: var(--border); padding: 4px; border-radius: 8px; }
+        .kmap-container { display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 10px 0; overflow-x: auto; width: 100%;}
+        .kmap-grid { display: grid; gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 8px; overflow: hidden;}
         .kmap-cell {
-            background: var(--element-bg);
-            padding: 10px 14px;
+            background: var(--panel);
+            padding: 12px;
             text-align: center;
-            font-weight: bold;
-            font-size: 0.88rem;
-            border-radius: 5px;
+            font-weight: 600;
+            font-size: 0.9rem;
             transition: all 0.2s ease;
         }
-        .kmap-cell.active {
-            background: rgba(74, 222, 128, 0.15);
-            color: var(--accent-green);
-            border: 1px solid var(--accent-green);
-        }
+        .kmap-cell.active { background: rgba(34, 197, 94, 0.1); color: var(--accent-green); }
         
         .kmap-input-cell select {
             background: var(--input-bg);
-            color: var(--accent-cyan);
+            color: var(--text-main);
             border: 1px solid var(--border);
-            padding: 4px;
-            font-weight: bold;
+            padding: 6px;
+            font-weight: 600;
             text-align: center;
             border-radius: 6px;
             cursor: pointer;
@@ -343,8 +411,8 @@
         }
 
         pre {
-            background: var(--element-bg);
-            padding: 14px;
+            background: var(--input-bg);
+            padding: 16px;
             border-radius: 8px;
             border: 1px solid var(--border);
             color: var(--code-text);
@@ -360,34 +428,35 @@
 
         .gate-row {
             display: flex;
-            gap: 8px;
+            gap: 12px;
             align-items: center;
-            background: var(--glass-bg);
-            padding: 8px 10px;
+            background: var(--input-bg);
+            padding: 12px;
             border-radius: 8px;
             margin-bottom: 8px;
             border: 1px solid var(--border);
+            flex-wrap: wrap;
         }
-        .gate-row select, .gate-row input { margin: 0; padding: 6px; }
+        .gate-row select, .gate-row input { margin: 0; padding: 8px; width: 80px; }
 
         /* Floating AI Widget Styles */
         .ai-widget-btn {
             position: fixed;
             bottom: 24px;
             right: 24px;
-            background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
+            background: var(--accent-cyan);
             color: #ffffff;
             border: none;
             border-radius: 50px;
-            padding: 12px 24px;
-            font-weight: 700;
+            padding: 14px 24px;
+            font-weight: 600;
             font-family: inherit;
             cursor: pointer;
-            box-shadow: 0 6px 20px rgba(129, 140, 248, 0.35);
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
             z-index: 1000;
             transition: all 0.2s ease;
         }
-        .ai-widget-btn:hover { transform: translateY(-2px) scale(1.02); }
+        .ai-widget-btn:hover { background: #1d4ed8; transform: translateY(-2px); }
 
         .ai-chat-drawer {
             position: fixed;
@@ -397,10 +466,10 @@
             height: 520px;
             background: var(--panel-solid);
             border: 1px solid var(--border);
-            border-radius: 16px;
+            border-radius: 12px;
             display: none;
             flex-direction: column;
-            box-shadow: 0 16px 40px var(--shadow-color);
+            box-shadow: 0 10px 40px var(--shadow-color);
             z-index: 1000;
             overflow: hidden;
         }
@@ -410,7 +479,7 @@
             padding: 16px;
             border-bottom: 1px solid var(--border);
             font-weight: 700;
-            color: var(--accent-cyan);
+            color: var(--text-main);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -426,88 +495,108 @@
             gap: 12px;
         }
 
-        .chat-msg {
-            padding: 12px 16px;
-            border-radius: 12px;
-            max-width: 85%;
-            word-break: break-word;
-            line-height: 1.5;
-        }
-        .chat-msg.user { 
-            background: linear-gradient(135deg, #0284c7, #2563eb); 
-            color: #ffffff; 
-            align-self: flex-end; 
-            border-bottom-right-radius: 4px;
-        }
-        .chat-msg.ai { 
-            background: var(--element-bg); 
-            color: var(--text-main); 
-            border: 1px solid var(--border); 
-            align-self: flex-start; 
-            border-bottom-left-radius: 4px;
-        }
+        .chat-msg { padding: 12px 16px; border-radius: 12px; max-width: 85%; word-break: break-word; line-height: 1.5; }
+        .chat-msg.user { background: var(--accent-cyan); color: #ffffff; align-self: flex-end; border-bottom-right-radius: 4px; }
+        .chat-msg.ai { background: var(--input-bg); color: var(--text-main); border: 1px solid var(--border); align-self: flex-start; border-bottom-left-radius: 4px; }
 
         .ai-chat-input {
             display: flex;
             border-top: 1px solid var(--border);
-            background: var(--input-bg);
-            padding: 8px;
+            background: var(--panel);
+            padding: 12px;
+            gap: 8px;
         }
-        .ai-chat-input input {
-            flex: 1;
-            border: none;
-            background: transparent;
-            padding: 10px 12px;
-            color: var(--text-main);
-            margin-top: 0;
-            font-family: inherit;
-        }
-        .ai-chat-input input:focus { box-shadow: none; }
+        .ai-chat-input input { flex: 1; margin: 0; }
         .ai-chat-input button {
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            background: var(--accent-cyan);
             border: none;
             color: #ffffff;
-            font-weight: 700;
-            padding: 0 18px;
+            font-weight: 600;
+            padding: 0 20px;
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.2s ease;
             font-family: inherit;
         }
-        .ai-chat-input button:hover { opacity: 0.95; }
+        .ai-chat-input button:hover { background: #1d4ed8; }
+
+        /* Media Queries for Mobile Responsiveness */
+        @media (max-width: 900px) {
+            .app-wrapper { display: block; padding: 0; }
+            .mobile-nav-bar { display: flex; }
+            .desktop-theme-btn { display: none; }
+            .main-content { padding: 16px; }
+            
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: -320px;
+                width: 300px;
+                height: 100vh;
+                background: var(--panel);
+                z-index: 2000;
+                transition: left 0.3s ease;
+                padding: 24px;
+                box-shadow: 4px 0 20px var(--shadow-color);
+            }
+            .sidebar.active { left: 0; }
+            .sidebar-overlay.active { display: block; }
+            .close-sidebar-btn { display: block; }
+
+            .input-card { padding: 16px; }
+            .pipeline-grid { gap: 16px; grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 450px) {
+            .ai-chat-drawer { width: calc(100vw - 32px); right: 16px; height: 60vh; }
+            .diagram-container { padding: 8px; }
+        }
     </style>
 </head>
-<body>
+<body data-theme="light">
 
-    <button id="themeBtn" class="theme-toggle-btn" onclick="toggleTheme()">☀️ Light Mode</button>
+    <!-- Mobile Nav Bar -->
+    <div class="mobile-nav-bar">
+        <button class="hamburger-btn" onclick="toggleSidebar()">☰ Menu</button>
+        <button id="themeBtnMobile" class="theme-toggle-btn" onclick="toggleTheme()">🌙 Dark Mode</button>
+    </div>
+
+    <!-- Desktop Theme Toggle -->
+    <button id="themeBtnDesktop" class="theme-toggle-btn desktop-theme-btn" onclick="toggleTheme()">🌙 Dark Mode</button>
+
+    <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
 
     <div class="app-wrapper">
-        
         <!-- Left Sidebar Navigation -->
         <aside class="sidebar">
+            <button class="close-sidebar-btn" onclick="toggleSidebar()">✕</button>
             <header>
-                <h1>Digital Logic CAD Engine</h1>
-                <p class="subtitle">Minimal Gate Synthesis, Universal Mapping & Equivalence Verification</p>
+                <h1>⚡ Digital Logic CAD Engine</h1>
+                <p class="subtitle">Minimal Gate Synthesis & Universal Mapping Verification</p>
             </header>
 
             <div class="project-badge">
-                <div class="project-title">CAD Project System</div>
-                <button class="team-toggle-btn" onclick="toggleTeamList()">✦ View Team / Built By</button>
-                <div class="team-list-card" id="teamListCard">
-                    <div class="team-member"><span>NITIN</span><span class="roll">CO26BTECH11021</span></div>
-                    <div class="team-member"><span>VAIBHAV</span><span class="roll">CO26BTECH11031</span></div>
-                    <div class="team-member"><span>MAYANK</span><span class="roll">CO26BTECH11016</span></div>
-                    <div class="team-member"><span>SHIVANSI</span><span class="roll">CO26BTECH11027</span></div>
-                    <div class="team-member"><span>ANUSHKA</span><span class="roll">CO26BTECH11030</span></div>
-                </div>
+                <span class="tag">v3.1</span>
+                <span class="tag green">🔒 100% Offline</span>
             </div>
 
+            <button class="team-toggle-btn" onclick="toggleTeamList()">👥 View Team Details</button>
+            <div class="team-list-card" id="teamListCard">
+                <div class="team-member"><span>NITIN</span><span class="roll">CO26BTECH11021</span></div>
+                <div class="team-member"><span>VAIBHAV</span><span class="roll">CO26BTECH11031</span></div>
+                <div class="team-member"><span>MAYANK</span><span class="roll">CO26BTECH11016</span></div>
+                <div class="team-member"><span>SHIVANSI</span><span class="roll">CO26BTECH11027</span></div>
+                <div class="team-member"><span>ANUSHKA</span><span class="roll">CO26BTECH11030</span></div>
+            </div>
+
+            <hr style="border: 0; border-top: 1px solid var(--border-subtle); margin: 20px 0;">
+
             <div class="tabs">
-                <button class="tab-btn active" onclick="setMode('mode-expr')">1. Logic Expression</button>
-                <button class="tab-btn" onclick="setMode('mode-terms')">2. Minterms / Maxterms</button>
-                <button class="tab-btn" onclick="setMode('mode-tt')">3. Truth Table</button>
-                <button class="tab-btn" onclick="setMode('mode-kmap')">4. K-Map Matrix</button>
-                <button class="tab-btn" onclick="setMode('mode-image')">5. Image Upload</button>
+                <button class="tab-btn active" onclick="setMode('mode-expr')">📝 Logic Expression</button>
+                <button class="tab-btn" onclick="setMode('mode-terms')">🔢 Minterms/Maxterms</button>
+                <button class="tab-btn" onclick="setMode('mode-tt')">📊 Truth Table</button>
+                <button class="tab-btn" onclick="setMode('mode-kmap')">🧮 K-Map Matrix</button>
+                <button class="tab-btn" onclick="setMode('mode-image')">🖼️ Image Upload</button>
             </div>
         </aside>
 
@@ -516,26 +605,26 @@
             
             <!-- Mode 1 Panel: Expression Input -->
             <div id="mode-expr" class="input-card mode-panel active">
-                <label style="font-size: 0.95rem;"><b>Enter Boolean Logic Expression:</b></label>
-                <input type="text" id="exprInput" placeholder="Enter Your Expression Here" value="">
+                <label>Boolean Expression</label>
+                <input type="text" id="exprInput" placeholder="e.g., (A AND B) OR (~C AND D)" value="">
                 
                 <div class="syntax-guide">
-                    <div class="syntax-item"><b>AND:</b> <code>&amp;</code> <code>&amp;&amp;</code></div>
-                    <div class="syntax-item"><b>OR:</b> <code>|</code> <code>||</code></div>
-                    <div class="syntax-item"><b>NOT:</b> <code>~</code> <code>!</code></div>
-                    <div class="syntax-item"><b>XOR:</b> <code>^</code></div>
-                    <div class="syntax-item"><b>NAND:</b> <code>~&amp;</code> <code>!&amp;</code></div>
-                    <div class="syntax-item"><b>NOR:</b> <code>~|</code> <code>!|</code></div>
+                    <div class="syntax-item">AND: <code>&amp;</code></div>
+                    <div class="syntax-item">OR: <code>|</code></div>
+                    <div class="syntax-item">NOT: <code>~</code></div>
+                    <div class="syntax-item">XOR: <code>^</code></div>
+                    <div class="syntax-item">NAND: <code>~&amp;</code></div>
+                    <div class="syntax-item">NOR: <code>~|</code></div>
                 </div>
 
-                <button class="btn-action" onclick="synthesizePipeline()">Synthesize Pipeline</button>
+                <button class="btn-action" onclick="synthesizePipeline()">✨ Convert & Analyze</button>
             </div>
 
             <!-- Mode 2 Panel: Minterms / Maxterms Input -->
             <div id="mode-terms" class="input-card mode-panel">
                 <div style="display: flex; gap: 16px; flex-wrap: wrap;">
                     <div style="flex: 1; min-width: 200px;">
-                        <label style="font-size: 0.9rem;"><b>Variable Count:</b></label>
+                        <label>Variable Count</label>
                         <select id="termsVarCount">
                             <option value="2">2 Variables (A, B)</option>
                             <option value="3" selected>3 Variables (A, B, C)</option>
@@ -543,66 +632,66 @@
                         </select>
                     </div>
                     <div style="flex: 1; min-width: 200px;">
-                        <label style="font-size: 0.9rem;"><b>Input Format:</b></label>
+                        <label>Input Format</label>
                         <select id="termsFormatType">
-                            <option value="minterms" selected>Minterms: Σm(...) (SOP ON-set)</option>
-                            <option value="maxterms">Maxterms: ΠM(...) (POS OFF-set)</option>
+                            <option value="minterms" selected>Minterms: Σm(...)</option>
+                            <option value="maxterms">Maxterms: ΠM(...)</option>
                         </select>
                     </div>
                 </div>
 
-                <div style="margin-top: 14px;">
-                    <label style="font-size: 0.9rem;"><b>Indices List (comma or space separated):</b></label>
+                <div style="margin-top: 16px;">
+                    <label>Indices List (comma separated)</label>
                     <input type="text" id="termsIndicesInput" placeholder="e.g. 1, 3, 5, 7">
                 </div>
 
-                <div style="margin-top: 14px;">
-                    <label style="font-size: 0.9rem;"><b>Don't Care Indices d(...) (optional):</b></label>
+                <div style="margin-top: 16px;">
+                    <label>Don't Care Indices d(...)</label>
                     <input type="text" id="termsDontCareInput" placeholder="e.g. 0, 2">
                 </div>
 
-                <button class="btn-action" onclick="synthesizePipeline()">Synthesize Minterms / Maxterms</button>
+                <button class="btn-action" onclick="synthesizePipeline()">✨ Convert & Analyze</button>
             </div>
 
             <!-- Mode 3 Panel: Truth Table -->
             <div id="mode-tt" class="input-card mode-panel">
-                <label style="font-size: 0.9rem;"><b>Inputs Count:</b></label>
-                <select id="ttVarCount" style="width: auto; display: inline-block; margin-left: 6px;" onchange="renderTTInputGrid()">
+                <label>Inputs Count</label>
+                <select id="ttVarCount" style="width: 200px;" onchange="renderTTInputGrid()">
                     <option value="2">2 Variables (A, B)</option>
                     <option value="3" selected>3 Variables (A, B, C)</option>
                     <option value="4">4 Variables (A, B, C, D)</option>
                 </select>
-                <div id="ttGridContainer" style="margin-top: 14px;"></div>
-                <button class="btn-action" onclick="synthesizePipeline()">Synthesize Truth Table</button>
+                <div id="ttGridContainer" style="margin-top: 16px; overflow-x: auto;"></div>
+                <button class="btn-action" onclick="synthesizePipeline()">✨ Convert & Analyze</button>
             </div>
 
             <!-- Mode 4 Panel: K-Map -->
             <div id="mode-kmap" class="input-card mode-panel">
-                <label style="font-size: 0.9rem;"><b>Select K-Map Variable Dimension:</b></label>
-                <select id="kmapVarCount" style="width: auto; display: inline-block; margin-left: 6px;" onchange="renderKMapInputGrid()">
+                <label>Select K-Map Dimension</label>
+                <select id="kmapVarCount" style="width: 200px;" onchange="renderKMapInputGrid()">
                     <option value="2">2 Variables (A, B)</option>
                     <option value="3" selected>3 Variables (A, B, C)</option>
                     <option value="4">4 Variables (A, B, C, D)</option>
                 </select>
-                <div id="kmapInputGridContainer" class="kmap-container" style="margin-top: 14px;"></div>
-                <button class="btn-action" onclick="synthesizePipeline()">Synthesize K-Map Matrix</button>
+                <div id="kmapInputGridContainer" class="kmap-container" style="margin-top: 16px;"></div>
+                <button class="btn-action" onclick="synthesizePipeline()">✨ Convert & Analyze</button>
             </div>
 
             <!-- Mode 5 Panel: Circuit Image Upload -->
             <div id="mode-image" class="input-card mode-panel">
-                <label style="font-size: 0.95rem;"><b>Upload Circuit Diagram or Truth Table Image:</b></label>
-                <input type="file" id="circuitImageInput" accept="image/png, image/jpeg, image/jpg, image/webp" onchange="previewImage(event)" style="margin-bottom: 12px;">
-                <div id="imagePreviewContainer" style="margin-top: 14px; text-align: center; display: none; background: var(--element-bg); padding: 10px; border-radius: 8px;">
+                <label>Upload Circuit Diagram or Truth Table (JPG, PNG)</label>
+                <input type="file" id="circuitImageInput" accept="image/png, image/jpeg, image/jpg, image/webp" onchange="previewImage(event)">
+                <div id="imagePreviewContainer" style="margin-top: 16px; text-align: center; display: none; background: var(--input-bg); padding: 10px; border-radius: 8px;">
                     <img id="circuitImagePreview" style="max-width: 100%; max-height: 300px; border-radius: 4px; border: 1px solid var(--border);">
                 </div>
-                <button class="btn-action" onclick="processImageInput()" id="processImageBtn" style="display:block; width:100%; margin-top: 16px;">Analyze Image & Synthesize</button>
-                <p id="imageStatusText" style="font-size: 0.95rem; color: var(--accent-cyan); margin-top: 14px; font-weight: bold; text-align: center;"></p>
+                <button class="btn-action" onclick="processImageInput()" id="processImageBtn" style="margin-top: 16px;">✨ Analyze Image & Synthesize</button>
+                <p id="imageStatusText" style="font-size: 0.85rem; color: var(--accent-cyan); margin-top: 14px; font-weight: 600;"></p>
             </div>
 
             <!-- Target Library Selection Dropdown Card -->
-            <div class="input-card" style="margin-bottom: 24px; border-left: 4px solid var(--accent-purple);">
-                <label style="font-size: 0.95rem; font-weight: 700; color: var(--accent-cyan);"><b>Select Target Implementation Library:</b></label>
-                <select id="targetLibrarySelect" onchange="onLibraryChange()" style="margin-top: 10px;">
+            <div class="input-card" style="margin-bottom: 24px; padding: 16px 24px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px;">
+                <label style="margin: 0; min-width: max-content;">Target Implementation Library</label>
+                <select id="targetLibrarySelect" onchange="onLibraryChange()" style="margin: 0; width: auto; flex-grow: 1;">
                     <option value="NAND">Universal NAND-Only Gate Implementation</option>
                     <option value="NOR">Universal NOR-Only Gate Implementation</option>
                     <option value="BASIC">Basic Gates Implementation (AND, OR, NOT)</option>
@@ -612,40 +701,40 @@
             <!-- Pipeline Outputs -->
             <div class="pipeline-grid">
                 <div class="card">
-                    <h3>Step 1: Evaluated Truth Table</h3>
+                    <h3>📊 Evaluated Truth Table</h3>
                     <div id="truthTableOutput" class="table-wrapper"></div>
                 </div>
 
                 <div class="card">
-                    <h3>Step 2: Karnaugh Map & Minimization</h3>
+                    <h3>🧮 Karnaugh Map & Minimization</h3>
                     <div id="kmapOutput" class="kmap-container"></div>
-                    <p style="margin: 8px 0 0 0; font-size: 0.85rem;"><b>Minimal Sum-Of-Products (SOP):</b></p>
-                    <div id="minimizedExpr" style="color: var(--accent-green); font-family: monospace; font-weight: bold; font-size: 1rem; margin-top: 4px;">--</div>
+                    <label style="margin-top: 16px;">Minimal Sum-Of-Products (SOP)</label>
+                    <div id="minimizedExpr" style="font-family: monospace; font-weight: 700; font-size: 1.1rem; color: var(--text-main);">--</div>
                 </div>
 
                 <div class="card">
-                    <h3 id="techTitle">Step 3: Target Technology Mapping</h3>
+                    <h3 id="techTitle">⚙️ Target Technology Mapping</h3>
                     <pre id="techMappingOutput">--</pre>
                 </div>
 
                 <div class="card">
-                    <h3>Step 4: Synthesizable Verilog RTL</h3>
+                    <h3>💻 Synthesizable Verilog RTL</h3>
                     <pre id="verilogOutput">// Verilog Code</pre>
                 </div>
 
                 <!-- Step 5: Full Equivalence Verification -->
                 <div class="card full-width">
-                    <h3 id="verificationHeader">Step 5: Full Equivalence Verification (Original ≡ Simplified ≡ NAND-Only ≡ NOR-Only)</h3>
+                    <h3 id="verificationHeader">✅ Equivalence Verification (Original ≡ Simplified ≡ NAND-Only ≡ NOR-Only)</h3>
                     <div id="verificationBadgeContainer"></div>
                     <div id="verificationTableOutput" class="table-wrapper"></div>
                 </div>
 
                 <!-- Step 6: Circuit Diagram -->
                 <div class="card full-width">
-                    <div class="diagram-title" id="diagramHeaderTitle">
-                        Selected Circuit Implementation Diagram
+                    <h3 id="diagramHeaderTitle" style="display:flex; justify-content:space-between; flex-wrap: wrap; gap: 8px; border-bottom: none; padding-bottom: 0;">
+                        <span>📐 Circuit Implementation Diagram</span>
                         <span class="gate-counter-badge" id="selectedGateCountBadge">0 Gates</span>
-                    </div>
+                    </h3>
                     <div id="selectedSchematicContainer" class="diagram-container"></div>
                 </div>
             </div>
@@ -658,10 +747,10 @@
     <div class="ai-chat-drawer" id="aiChatDrawer">
         <div class="ai-chat-header">
             <span>AI Logic Assistant</span>
-            <span style="cursor:pointer;" onclick="toggleAIChat()">✕</span>
+            <span style="cursor:pointer; font-weight: normal;" onclick="toggleAIChat()">✕</span>
         </div>
         <div class="ai-chat-messages" id="chatMessages">
-            <div class="chat-msg ai">Hello User! I am connected to your current CAD workspace. Ask me to explain the minimized K-Map, debug your logic expression, or explain universal gate optimization!</div>
+            <div class="chat-msg ai">Hello! I am connected to your current CAD workspace. Ask me to explain the minimized K-Map, debug your logic expression, or explain universal gate optimization!</div>
         </div>
         <div class="ai-chat-input">
             <input type="text" id="userChatInput" placeholder="Ask about this circuit..." onkeydown="if(event.key==='Enter') sendGeminiQuery()">
@@ -675,16 +764,21 @@
         // THEME TOGGLE LOGIC
         function toggleTheme() {
             const root = document.documentElement;
-            // If the attribute doesn't exist, it's dark by default
             const isLight = root.getAttribute('data-theme') === 'light';
+            const newTheme = isLight ? 'dark' : 'light';
+            const btnText = isLight ? '☀️ Light Mode' : '🌙 Dark Mode';
             
-            if (isLight) {
-                root.removeAttribute('data-theme');
-                document.getElementById('themeBtn').innerText = '☀️ Light Mode';
-            } else {
-                root.setAttribute('data-theme', 'light');
-                document.getElementById('themeBtn').innerText = '🌙 Dark Mode';
-            }
+            root.setAttribute('data-theme', newTheme);
+            
+            const desktopBtn = document.getElementById('themeBtnDesktop');
+            const mobileBtn = document.getElementById('themeBtnMobile');
+            if (desktopBtn) desktopBtn.innerText = btnText;
+            if (mobileBtn) mobileBtn.innerText = btnText;
+        }
+
+        function toggleSidebar() {
+            document.querySelector('.sidebar').classList.toggle('active');
+            document.querySelector('.sidebar-overlay').classList.toggle('active');
         }
 
         function toggleTeamList() {
@@ -697,7 +791,6 @@
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             document.querySelectorAll('.mode-panel').forEach(p => p.classList.remove('active'));
             
-            // Safely map the tab button without relying on event.target
             const activeBtn = Array.from(document.querySelectorAll('.tab-btn')).find(btn => btn.getAttribute('onclick').includes(modeId));
             if (activeBtn) activeBtn.classList.add('active');
             
@@ -706,6 +799,12 @@
 
             if(modeId === 'mode-tt') renderTTInputGrid();
             if(modeId === 'mode-kmap') renderKMapInputGrid();
+
+            // Auto-close sidebar on mobile after selection
+            if(window.innerWidth <= 900) {
+                document.querySelector('.sidebar').classList.remove('active');
+                document.querySelector('.sidebar-overlay').classList.remove('active');
+            }
         }
 
         function onLibraryChange() {
@@ -720,7 +819,7 @@
             reader.onload = function(e) {
                 document.getElementById('circuitImagePreview').src = e.target.result;
                 document.getElementById('imagePreviewContainer').style.display = 'block';
-                document.getElementById('imageStatusText').innerText = ''; // clear status
+                document.getElementById('imageStatusText').innerText = ''; 
             };
             reader.readAsDataURL(file);
         }
@@ -763,7 +862,6 @@
                         statusText.innerText = "Extraction successful! Synthesizing pipeline...";
                         
                         setTimeout(() => {
-                            // Automatically synthesize without leaving the image tab
                             synthesizePipeline();
                             statusText.innerText = `Analysis Complete. Extracted Logic: Y = ${expr}`;
                         }, 800);
@@ -932,26 +1030,20 @@
             }
 
             let gridHtml = `<div class="kmap-grid" style="grid-template-columns: repeat(${colGray.length + 1}, 1fr);">`;
-            gridHtml += `<div class="kmap-cell" style="color:var(--accent-cyan);">${rowVars.join('')}\\${colVars.join('')}</div>`;
+            gridHtml += `<div class="kmap-cell" style="color:var(--text-main); border-bottom:1px solid var(--border); border-right:1px solid var(--border);">${rowVars.join('')}\\${colVars.join('')}</div>`;
 
             colGray.forEach(c => {
-                gridHtml += `<div class="kmap-cell" style="color:var(--text-sub);">${c.toString(2).padStart(colVars.length, '0')}</div>`;
+                gridHtml += `<div class="kmap-cell" style="color:var(--text-sub); border-bottom:1px solid var(--border);">${c.toString(2).padStart(colVars.length, '0')}</div>`;
             });
 
             rowGray.forEach(r => {
                 const rStr = r.toString(2).padStart(rowVars.length, '0');
-                gridHtml += `<div class="kmap-cell" style="color:var(--text-sub);">${rStr}</div>`;
+                gridHtml += `<div class="kmap-cell" style="color:var(--text-sub); border-right:1px solid var(--border);">${rStr}</div>`;
                 colGray.forEach(c => {
                     const cStr = c.toString(2).padStart(colVars.length, '0');
                     const mintermIdx = parseInt(rStr + cStr, 2);
-                    gridHtml += `
-                        <div class="kmap-cell kmap-input-cell">
-                            <select class="kmap-cell-val" data-minterm="${mintermIdx}">
-                                <option value="0">0</option>
-                                <option value="1">1</option>
-                                <option value="X">X</option>
-                            </select>
-                        </div>`;
+                    const cellVal = rows[mintermIdx] ? rows[mintermIdx].output : 0;
+                    gridHtml += `<div class="kmap-cell ${cellVal === 1 ? 'active' : ''}">${cellVal}</div>`;
                 });
             });
 
@@ -1184,15 +1276,15 @@
             }
 
             let gridHtml = `<div class="kmap-grid" style="grid-template-columns: repeat(${colGray.length + 1}, 1fr);">`;
-            gridHtml += `<div class="kmap-cell" style="color:var(--accent-cyan);">${rowVars.join('')}\\${colVars.join('')}</div>`;
+            gridHtml += `<div class="kmap-cell" style="color:var(--text-main); border-bottom:1px solid var(--border); border-right:1px solid var(--border);">${rowVars.join('')}\\${colVars.join('')}</div>`;
 
             colGray.forEach(c => {
-                gridHtml += `<div class="kmap-cell" style="color:var(--text-sub);">${c.toString(2).padStart(colVars.length, '0')}</div>`;
+                gridHtml += `<div class="kmap-cell" style="color:var(--text-sub); border-bottom:1px solid var(--border);">${c.toString(2).padStart(colVars.length, '0')}</div>`;
             });
 
             rowGray.forEach(r => {
                 const rStr = r.toString(2).padStart(rowVars.length, '0');
-                gridHtml += `<div class="kmap-cell" style="color:var(--text-sub);">${rStr}</div>`;
+                gridHtml += `<div class="kmap-cell" style="color:var(--text-sub); border-right:1px solid var(--border);">${rStr}</div>`;
                 colGray.forEach(c => {
                     const cStr = c.toString(2).padStart(colVars.length, '0');
                     const mintermIdx = parseInt(rStr + cStr, 2);
@@ -1214,13 +1306,13 @@
             const outputElem = document.getElementById('techMappingOutput');
 
             if(selectedLib === 'BASIC') {
-                titleElem.innerText = "Step 3: Basic Gates Technology Mapping";
+                titleElem.innerText = "⚙️ Basic Gates Technology Mapping";
                 outputElem.innerText = `OPTIMIZED BASIC GATES (AND, OR, NOT):\nEquation: Y = ${sop}\nRule: Inverters shared, 2-input AND tree feeding balanced OR tree.`;
             } else if(selectedLib === 'NAND') {
-                titleElem.innerText = "Step 3: Universal NAND-Only Technology Mapping";
+                titleElem.innerText = "⚙️ Universal NAND-Only Technology Mapping";
                 outputElem.innerText = `CANONICAL NAND2 DE MORGAN OPTIMIZATION:\nEquation: Y = ~( ~(P1) & ~(P2) & ... )\nImplementation: Direct Product NANDs feeding output NAND gate without redundant inverter pairs.`;
             } else if(selectedLib === 'NOR') {
-                titleElem.innerText = "Step 3: Universal NOR-Only Technology Mapping";
+                titleElem.innerText = "⚙️ Universal NOR-Only Technology Mapping";
                 outputElem.innerText = `CANONICAL NOR2 DUAL OPTIMIZATION:\nEquation: Dual POS form converted into NOR-NOR structure with shared input inverters.`;
             }
         }
@@ -1277,10 +1369,10 @@
 
                 html += `<tr>`;
                 r.inputs.forEach(inp => html += `<td>${inp}</td>`);
-                html += `<td style="font-weight:bold; color:${(rawOrigVal === 'X' || rawOrigVal === 'x') ? 'var(--accent-amber)' : 'inherit'};">${rawOrigVal}</td>`;
-                html += `<td style="color:var(--accent-cyan); font-weight:bold;">${sopVal}</td>`;
-                html += `<td style="color:var(--accent-green); font-weight:bold;">${nandVal}</td>`;
-                html += `<td style="color:var(--accent-purple); font-weight:bold;">${norVal}</td>`;
+                html += `<td style="font-weight:bold; color:${(rawOrigVal === 'X' || rawOrigVal === 'x') ? 'var(--accent-amber)' : 'var(--text-main)'};">${rawOrigVal}</td>`;
+                html += `<td style="color:var(--text-main); font-weight:bold;">${sopVal}</td>`;
+                html += `<td style="color:var(--text-main); font-weight:bold;">${nandVal}</td>`;
+                html += `<td style="color:var(--text-main); font-weight:bold;">${norVal}</td>`;
                 html += `<td style="color:${statusColor}; font-weight:bold;">${statusText}</td>`;
                 html += `</tr>`;
             });
@@ -1288,11 +1380,11 @@
             tableContainer.innerHTML = html;
 
             if (strictMismatch) {
-                badgeContainer.innerHTML = `<div class="verification-badge" style="border-color:var(--accent-pink); color:var(--accent-pink);">✗ Equivalence Verification Failed (Strict Mismatch Detected)</div>`;
+                badgeContainer.innerHTML = `<div class="verification-badge" style="border-color:var(--accent-pink); background:rgba(239, 68, 68, 0.1); color:var(--accent-pink);">✗ Equivalence Verification Failed (Strict Mismatch Detected)</div>`;
             } else if (hasDontCares) {
-                badgeContainer.innerHTML = `<div class="verification-badge" style="border-color:var(--accent-amber); color:var(--accent-amber);">✓ 100% Formal Equivalence Verified (Don't Cares optimally assigned)</div>`;
+                badgeContainer.innerHTML = `<div class="verification-badge" style="border-color:var(--accent-amber); background:rgba(234, 179, 8, 0.1); color:var(--accent-amber);">✓ 100% Formal Equivalence Verified (Don't Cares optimally assigned)</div>`;
             } else {
-                badgeContainer.innerHTML = `<div class="verification-badge">✓ 100% Formal Equivalence Verified: (Original Expression ≡ Simplified SOP ≡ NAND-Only Circuit ≡ NOR-Only Circuit)</div>`;
+                badgeContainer.innerHTML = `<div class="verification-badge">✓ 100% Formal Equivalence Verified: (Original ≡ Simplified SOP ≡ NAND-Only ≡ NOR-Only)</div>`;
             }
         }
 
@@ -1304,13 +1396,12 @@
             const title = document.getElementById('diagramHeaderTitle');
 
             if (sop === "0" || sop === "1") {
-                container.innerHTML = `<div style="padding: 16px; color: #0284c7; font-weight:bold;">Constant Function Output Y = ${sop}</div>`;
+                container.innerHTML = `<div style="padding: 16px; color: var(--accent-cyan); font-weight:bold;">Constant Function Output Y = ${sop}</div>`;
                 badge.innerText = "0 Gates";
                 return;
             }
 
             if (selectedLib === 'BASIC') {
-                title.innerHTML = `Basic Gates Implementation (AND, OR, NOT) <span class="gate-counter-badge" id="selectedGateCountBadge">0 Gates</span>`;
                 const basicNodes = [];
                 let basicCounter = 0;
                 const basicInverters = {};
@@ -1319,7 +1410,7 @@
                     if (!basicInverters[varName]) {
                         basicCounter++;
                         const id = `B_INV_${varName}`;
-                        basicNodes.push({ id, type: 'NOT', in1: varName, in2: varName, label: `INV(${varName})`, stage: 1 });
+                        basicNodes.push({ id, type: 'NOT', in1: varName, in2: varName, label: `INV`, stage: 1 });
                         basicInverters[varName] = id;
                     }
                     return basicInverters[varName];
@@ -1369,7 +1460,6 @@
                 drawSvgCircuit(container, vars, basicNodes, basicFinalId, '#0284c7');
 
             } else if (selectedLib === 'NAND') {
-                title.innerHTML = `Universal NAND-Only Gate Implementation <span class="gate-counter-badge" id="selectedGateCountBadge">0 Gates</span>`;
                 const nandNodes = [];
                 let nandCounter = 0;
                 const nandInverters = {};
@@ -1378,7 +1468,7 @@
                     if (!nandInverters[varName]) {
                         nandCounter++;
                         const id = `NAND_INV_${varName}`;
-                        nandNodes.push({ id, type: 'NAND', in1: varName, in2: varName, label: `NAND_INV`, stage: 1 });
+                        nandNodes.push({ id, type: 'NAND', in1: varName, in2: varName, label: `N_INV`, stage: 1 });
                         nandInverters[varName] = id;
                     }
                     return nandInverters[varName];
@@ -1419,13 +1509,13 @@
                     if (list.length === 1) {
                         nandCounter++;
                         const id = `NAND_${nandCounter}`;
-                        nandNodes.push({ id, type: 'NAND', in1: list[0], in2: list[0], label: `NAND_OUT`, stage: 5 + depth });
+                        nandNodes.push({ id, type: 'NAND', in1: list[0], in2: list[0], label: `N_OUT`, stage: 5 + depth });
                         return id;
                     }
                     if (list.length === 2) {
                         nandCounter++;
                         const id = `NAND_${nandCounter}`;
-                        nandNodes.push({ id, type: 'NAND', in1: list[0], in2: list[1], label: `NAND_OUT`, stage: 5 + depth });
+                        nandNodes.push({ id, type: 'NAND', in1: list[0], in2: list[1], label: `N_OUT`, stage: 5 + depth });
                         return id;
                     }
                     const h = Math.floor(list.length / 2);
@@ -1442,15 +1532,14 @@
 
                     nandCounter++;
                     const id = `NAND_${nandCounter}`;
-                    nandNodes.push({ id, type: 'NAND', in1: idInvL, in2: idInvR, label: `NAND_OUT`, stage: 7 + depth });
+                    nandNodes.push({ id, type: 'NAND', in1: idInvL, in2: idInvR, label: `N_OUT`, stage: 7 + depth });
                     return id;
                 }
                 const nandFinalId = buildNandOrTree(nandTermOutputs);
                 document.getElementById('selectedGateCountBadge').innerText = `${nandNodes.length} Gates`;
-                drawSvgCircuit(container, vars, nandNodes, nandFinalId, '#16a34a');
+                drawSvgCircuit(container, vars, nandNodes, nandFinalId, '#0d9488'); 
 
             } else if (selectedLib === 'NOR') {
-                title.innerHTML = `Universal NOR-Only Gate Implementation <span class="gate-counter-badge" id="selectedGateCountBadge">0 Gates</span>`;
                 const norNodes = [];
                 let norCounter = 0;
                 const norInverters = {};
@@ -1507,7 +1596,7 @@
 
                         norCounter++;
                         const id = `NOR_${norCounter}`;
-                        norNodes.push({ id, type: 'NOR', in1: idInv1, in2: idInv2, label: `NOR_OUT`, stage: 6 + depth });
+                        norNodes.push({ id, type: 'NOR', in1: idInv1, in2: idInv2, label: `N_OUT`, stage: 6 + depth });
                         return id;
                     }
                     const h = Math.floor(list.length / 2);
@@ -1517,14 +1606,14 @@
                 }
                 const norFinalId = buildNorFinalTree(norTermOutputs);
                 document.getElementById('selectedGateCountBadge').innerText = `${norNodes.length} Gates`;
-                drawSvgCircuit(container, vars, norNodes, norFinalId, '#ea580c');
+                drawSvgCircuit(container, vars, norNodes, norFinalId, '#db2777'); 
             }
         }
 
         // GENERIC VECTOR SVG CIRCUIT RENDERER
         function drawSvgCircuit(container, vars, nodes, finalNodeId, themeColor) {
-            const width = 500;
-            const height = Math.max(160, Math.max(vars.length, nodes.length) * 34);
+            const width = 600;
+            const height = Math.max(160, Math.max(vars.length, nodes.length) * 36);
             
             let svg = `<svg width="100%" height="${height}" viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg" style="display:block; background:transparent;">`;
 
@@ -1543,11 +1632,9 @@
                 `;
             };
 
-            const signalColors = { 'A': '#2563eb', 'B': '#d97706', 'C': '#dc2626', 'D': '#059669', 'E': '#7c3aed' };
-            const wirePalette = ['#0284c7', '#059669', '#d97706', '#7c3aed', '#db2777', '#ea580c'];
+            const wirePalette = ['#0284c7', '#0d9488', '#d97706', '#db2777', '#4f46e5', '#e11d48'];
 
             function getSignalColor(sig, idx) {
-                if (signalColors[sig]) return signalColors[sig];
                 return wirePalette[idx % wirePalette.length];
             }
 
@@ -1557,7 +1644,7 @@
                 const y = inputSpacing * (idx + 1);
                 inputYMap[v] = y;
                 const wireColor = getSignalColor(v, idx);
-                svg += `<text x="12" y="${y+4}" fill="${wireColor}" font-size="11" font-weight="bold" font-family="sans-serif">${v}</text>`;
+                svg += `<text x="12" y="${y+4}" fill="${wireColor}" font-size="12" font-weight="bold" font-family="sans-serif">${v}</text>`;
                 svg += `<line x1="26" y1="${y}" x2="55" y2="${y}" stroke="${wireColor}" stroke-width="2"/>`;
             });
 
@@ -1566,13 +1653,13 @@
             const nodeSpacing = height / (nodes.length + 1);
 
             nodes.forEach((node, idx) => {
-                const x = 75 + ((node.stage || (idx % 4 + 1)) - 1) * 60;
+                const x = 75 + ((node.stage || (idx % 4 + 1)) - 1) * 65;
                 const y = nodeSpacing * (idx + 1) - 12;
                 nodeXMap[node.id] = Math.min(x, width - 85);
                 nodeYMap[node.id] = y + 12;
 
                 const isFinal = (node.id === finalNodeId);
-                const gateColor = isFinal ? '#9333ea' : themeColor;
+                const gateColor = isFinal ? '#4f46e5' : themeColor; 
 
                 svg += drawGateSymbol(nodeXMap[node.id], y, node.label, gateColor, node.type);
 
@@ -1587,25 +1674,22 @@
                         startY = nodeYMap[inSignal];
                     }
 
-                    let wireColor = '#64748b';
+                    let wireColor = '#94a3b8'; 
                     if (inputYMap[inSignal] !== undefined) {
-                        wireColor = getSignalColor(inSignal, 0);
-                    } else {
-                        const sourceIdx = parseInt(inSignal.replace(/[^0-9]/g, '')) || idx;
-                        wireColor = getSignalColor(inSignal, sourceIdx);
+                        wireColor = getSignalColor(inSignal, vars.indexOf(inSignal));
                     }
 
                     const targetX = nodeXMap[node.id];
-                    svg += `<path d="M ${startX} ${startY} L ${targetX - 12} ${startY} L ${targetX - 12} ${targetY} L ${targetX} ${targetY}" fill="none" stroke="${wireColor}" stroke-width="1.8"/>`;
+                    svg += `<path d="M ${startX} ${startY} L ${targetX - 12} ${startY} L ${targetX - 12} ${targetY} L ${targetX} ${targetY}" fill="none" stroke="${wireColor}" stroke-width="1.5"/>`;
                 });
             });
 
             const lastX = (nodeXMap[finalNodeId] || width - 85) + 38;
             const lastY = nodeYMap[finalNodeId] || (height / 2);
-            const outputColor = '#9333ea';
+            const outputColor = '#4f46e5';
 
             svg += `<line x1="${lastX}" y1="${lastY}" x2="${width - 28}" y2="${lastY}" stroke="${outputColor}" stroke-width="2.5"/>`;
-            svg += `<text x="${width - 20}" y="${lastY + 4}" fill="${outputColor}" font-size="13" font-weight="bold" font-family="sans-serif">Y</text>`;
+            svg += `<text x="${width - 18}" y="${lastY + 4}" fill="${outputColor}" font-size="14" font-weight="bold" font-family="sans-serif">Y</text>`;
 
             svg += `</svg>`;
             container.innerHTML = svg;

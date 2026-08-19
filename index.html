@@ -206,7 +206,7 @@
             font-family: inherit;
         }
         .theme-toggle-btn:hover { border-color: var(--accent-cyan); background: var(--element-bg); }
-        .desktop-theme-btn { position: fixed; top: 24px; right: 24px; z-index: 1001; }
+        .desktop-theme-btn { position: fixed; top: 16px; right: 24px; z-index: 1001; }
 
         /* Sidebar Elements */
         header { margin-bottom: 20px; }
@@ -709,7 +709,7 @@
                 <div style="display: flex; gap: 16px; flex-wrap: wrap;">
                     <div style="flex: 1; min-width: 200px;">
                         <label>Arithmetic Operation</label>
-                        <select id="arithOp">
+                        <select id="arithOp" onchange="synthesizeArithmetic()">
                             <option value="add">Addition (A + B)</option>
                             <option value="sub">Subtraction (A - B)</option>
                             <option value="mul">Multiplication (A × B)</option>
@@ -718,7 +718,7 @@
                     </div>
                     <div style="flex: 1; min-width: 200px;">
                         <label>Bit Width</label>
-                        <select id="arithBits">
+                        <select id="arithBits" onchange="synthesizeArithmetic()">
                             <option value="1">1-Bit Inputs</option>
                             <option value="2">2-Bit Inputs</option>
                             <option value="3">3-Bit Inputs</option>
@@ -794,11 +794,11 @@
                         <h3>📚 Internal Reference Circuits (Gate Level)</h3>
                         <div style="display: flex; flex-wrap: wrap; gap: 20px;">
                             <div style="flex: 1; min-width: 300px;">
-                                <div class="diagram-title">Half Adder (HA) NAND-Only Logic</div>
+                                <div class="diagram-title" id="refHATitle">Half Adder (HA) Logic</div>
                                 <div id="refHAContainer" class="diagram-container" style="text-align: center;"></div>
                             </div>
                             <div style="flex: 1; min-width: 300px;">
-                                <div class="diagram-title">Full Adder (FA) Internal Logic</div>
+                                <div class="diagram-title" id="refFATitle">Full Adder (FA) Logic</div>
                                 <div id="refFAContainer" class="diagram-container" style="text-align: center;"></div>
                             </div>
                         </div>
@@ -836,7 +836,7 @@
             <span style="cursor:pointer; font-weight: normal;" onclick="toggleAIChat()">✕</span>
         </div>
         <div class="ai-chat-messages" id="chatMessages">
-            <div class="chat-msg ai">Hello! I am connected to your current CAD workspace. Ask me to explain the minimized logic, debug expressions, or explain full adder architectures!</div>
+            <div class="chat-msg ai">Hello! I am connected to your current CAD workspace. Ask me to explain the minimized logic, debug expressions, or explain architectures!</div>
         </div>
         <div class="ai-chat-input">
             <input type="text" id="userChatInput" placeholder="Ask about this circuit..." onkeydown="if(event.key==='Enter') sendGeminiQuery()">
@@ -903,6 +903,7 @@
             if (modeId === 'mode-arith') {
                 document.getElementById('standardPipelineWrapper').style.display = 'none';
                 document.getElementById('arithmeticPipelineWrapper').style.display = 'block';
+                synthesizeArithmetic();
             } else {
                 document.getElementById('standardPipelineWrapper').style.display = 'block';
                 document.getElementById('arithmeticPipelineWrapper').style.display = 'none';
@@ -1014,120 +1015,203 @@
         // ==========================================
         // ARITHMETIC ARCHITECTURE ENGINE
         // ==========================================
-        function drawReferenceAdders() {
+        function drawReferenceAdders(op) {
+            const isSub = (op === 'sub');
+            
+            document.getElementById('refHATitle').innerText = isSub ? "Half Subtractor (HS) NAND-Only Logic" : "Half Adder (HA) NAND-Only Logic";
+            document.getElementById('refFATitle').innerText = isSub ? "Full Subtractor (FS) Block Logic" : "Full Adder (FA) Block Logic";
+
             const genNandGate = (x, y, lbl, col) => {
                  let body = `<path d="M ${x} ${y} L ${x+18} ${y} C ${x+32} ${y}, ${x+32} ${y+24}, ${x+18} ${y+24} L ${x} ${y+24} Z" fill="var(--diagram-bg)" stroke="${col}" stroke-width="1.8"/>`;
                  let bubble = `<circle cx="${x+35}" cy="${y+12}" r="2.5" fill="var(--diagram-bg)" stroke="${col}" stroke-width="1.5"/>`;
                  return `<g>${body}${bubble}<text x="${x+4}" y="${y-3}" fill="${col}" font-size="8" font-weight="bold">${lbl}</text></g>`;
             };
 
-            // Improved HA (NAND ONLY Reference - 5 Gates total: 4 for XOR, 1 for Carry)
-            const haSvg = `
-                <svg width="100%" height="220" viewBox="0 0 450 220" style="background:transparent; max-width:500px; margin: 0 auto; display:block;">
-                    <text x="10" y="45" fill="var(--text-main)" font-size="14" font-weight="bold">A</text>
-                    <text x="10" y="155" fill="var(--text-main)" font-size="14" font-weight="bold">B</text>
-                    
+            let haSvg = '';
+            if (!isSub) {
+                // HA NAND-ONLY (Original 5-Gate design)
+                haSvg = `
+                    <svg width="100%" height="240" viewBox="0 0 450 240" style="background:transparent; max-width:500px; margin: 0 auto; display:block;">
+                        <text x="10" y="38" fill="var(--text-main)" font-size="14" font-weight="bold">A</text>
+                        <text x="10" y="170" fill="var(--text-main)" font-size="14" font-weight="bold">B</text>
+
+                        <!-- Input Lines -->
+                        <path d="M 25 34 L 200 34" fill="none" stroke="var(--accent-cyan)" stroke-width="1.5"/>
+                        <path d="M 60 34 L 60 94 L 100 94" fill="none" stroke="var(--accent-cyan)" stroke-width="1.5"/>
+                        <circle cx="60" cy="34" r="2.5" fill="var(--accent-cyan)"/>
+
+                        <path d="M 25 166 L 200 166" fill="none" stroke="var(--accent-cyan)" stroke-width="1.5"/>
+                        <path d="M 60 166 L 60 106 L 100 106" fill="none" stroke="var(--accent-cyan)" stroke-width="1.5"/>
+                        <circle cx="60" cy="166" r="2.5" fill="var(--accent-cyan)"/>
+
+                        <!-- Gate 1 (Center Left): NAND(A, B) -->
+                        ${genNandGate(100, 88, 'NAND', 'var(--accent-teal)')}
+
+                        <!-- Gate 2 (Top): NAND(A, G1) -->
+                        ${genNandGate(200, 28, 'NAND', 'var(--accent-teal)')}
+                        <path d="M 138 100 L 160 100 L 160 46 L 200 46" fill="none" stroke="var(--accent-teal)" stroke-width="1.5"/>
+
+                        <!-- Gate 3 (Bottom): NAND(B, G1) -->
+                        ${genNandGate(200, 148, 'NAND', 'var(--accent-teal)')}
+                        <path d="M 160 100 L 160 154 L 200 154" fill="none" stroke="var(--accent-teal)" stroke-width="1.5"/>
+                        <circle cx="160" cy="100" r="2.5" fill="var(--accent-teal)"/>
+
+                        <!-- Gate 4 (Right): NAND(G2, G3) -> SUM -->
+                        ${genNandGate(300, 88, 'NAND', 'var(--accent-purple)')}
+                        <path d="M 238 40 L 260 40 L 260 94 L 300 94" fill="none" stroke="var(--accent-teal)" stroke-width="1.5"/>
+                        <path d="M 238 160 L 260 160 L 260 106 L 300 106" fill="none" stroke="var(--accent-teal)" stroke-width="1.5"/>
+
+                        <!-- Gate 5 (Far Bottom): NAND(G1, G1) -> CARRY -->
+                        ${genNandGate(300, 188, 'NAND', 'var(--accent-green)')}
+                        <path d="M 145 100 L 145 200 L 280 200" fill="none" stroke="var(--accent-teal)" stroke-width="1.5"/>
+                        <path d="M 280 200 L 280 194 L 300 194" fill="none" stroke="var(--accent-teal)" stroke-width="1.5"/>
+                        <path d="M 280 200 L 280 206 L 300 206" fill="none" stroke="var(--accent-teal)" stroke-width="1.5"/>
+                        <circle cx="145" cy="100" r="2.5" fill="var(--accent-teal)"/>
+
+                        <!-- Outputs -->
+                        <line x1="338" y1="100" x2="380" y2="100" stroke="var(--accent-purple)" stroke-width="2"/>
+                        <text x="385" y="104" fill="var(--accent-purple)" font-weight="bold">Sum (S)</text>
+
+                        <line x1="338" y1="200" x2="380" y2="200" stroke="var(--accent-green)" stroke-width="2"/>
+                        <text x="385" y="204" fill="var(--accent-green)" font-weight="bold">Carry (C)</text>
+                    </svg>
+                `;
+            } else {
+                // HS NAND-ONLY Reference
+                haSvg = `
+                <svg width="100%" height="240" viewBox="0 0 450 240" style="background:transparent; max-width:500px; margin: 0 auto; display:block;">
+                    <text x="10" y="38" fill="var(--text-main)" font-size="14" font-weight="bold">A</text>
+                    <text x="10" y="170" fill="var(--text-main)" font-size="14" font-weight="bold">B</text>
+
                     <!-- Input Lines -->
-                    <line x1="25" y1="40" x2="80" y2="40" stroke="var(--accent-cyan)" stroke-width="1.5"/>
-                    <line x1="25" y1="150" x2="80" y2="150" stroke="var(--accent-cyan)" stroke-width="1.5"/>
-                    
+                    <path d="M 25 34 L 200 34" fill="none" stroke="var(--accent-cyan)" stroke-width="1.5"/>
+                    <path d="M 60 34 L 60 94 L 100 94" fill="none" stroke="var(--accent-cyan)" stroke-width="1.5"/>
+                    <circle cx="60" cy="34" r="2.5" fill="var(--accent-cyan)"/>
+
+                    <path d="M 25 166 L 200 166" fill="none" stroke="var(--accent-cyan)" stroke-width="1.5"/>
+                    <path d="M 60 166 L 60 106 L 100 106" fill="none" stroke="var(--accent-cyan)" stroke-width="1.5"/>
+                    <circle cx="60" cy="166" r="2.5" fill="var(--accent-cyan)"/>
+
                     <!-- Gate 1 (Center Left): NAND(A, B) -->
-                    ${genNandGate(80, 83, 'NAND', 'var(--accent-teal)')}
-                    <line x1="50" y1="40" x2="50" y2="88" stroke="var(--accent-cyan)" stroke-width="1.5"/>
-                    <line x1="50" y1="88" x2="80" y2="88" stroke="var(--accent-cyan)" stroke-width="1.5"/>
-                    <line x1="50" y1="150" x2="50" y2="102" stroke="var(--accent-cyan)" stroke-width="1.5"/>
-                    <line x1="50" y1="102" x2="80" y2="102" stroke="var(--accent-cyan)" stroke-width="1.5"/>
+                    ${genNandGate(100, 88, 'NAND', 'var(--accent-teal)')}
 
                     <!-- Gate 2 (Top): NAND(A, G1) -->
-                    ${genNandGate(180, 20, 'NAND', 'var(--accent-teal)')}
-                    <line x1="60" y1="40" x2="180" y2="25" stroke="var(--accent-cyan)" stroke-width="1.5"/>
-                    <line x1="130" y1="95" x2="150" y2="95" stroke="var(--accent-teal)" stroke-width="1.5"/>
-                    <line x1="150" y1="95" x2="150" y2="39" stroke="var(--accent-teal)" stroke-width="1.5"/>
-                    <line x1="150" y1="39" x2="180" y2="39" stroke="var(--accent-teal)" stroke-width="1.5"/>
+                    ${genNandGate(200, 28, 'NAND', 'var(--accent-teal)')}
+                    <path d="M 138 100 L 160 100 L 160 46 L 200 46" fill="none" stroke="var(--accent-teal)" stroke-width="1.5"/>
 
                     <!-- Gate 3 (Bottom): NAND(B, G1) -->
-                    ${genNandGate(180, 140, 'NAND', 'var(--accent-teal)')}
-                    <line x1="150" y1="95" x2="150" y2="145" stroke="var(--accent-teal)" stroke-width="1.5"/>
-                    <line x1="150" y1="145" x2="180" y2="145" stroke="var(--accent-teal)" stroke-width="1.5"/>
-                    <line x1="60" y1="150" x2="180" y2="159" stroke="var(--accent-cyan)" stroke-width="1.5"/>
+                    ${genNandGate(200, 148, 'NAND', 'var(--accent-teal)')}
+                    <path d="M 160 100 L 160 154 L 200 154" fill="none" stroke="var(--accent-teal)" stroke-width="1.5"/>
+                    <circle cx="160" cy="100" r="2.5" fill="var(--accent-teal)"/>
 
-                    <!-- Gate 4 (Right): NAND(G2, G3) -> SUM -->
-                    ${genNandGate(280, 83, 'NAND', 'var(--accent-purple)')}
-                    <line x1="230" y1="32" x2="250" y2="32" stroke="var(--accent-teal)" stroke-width="1.5"/>
-                    <line x1="250" y1="32" x2="250" y2="88" stroke="var(--accent-teal)" stroke-width="1.5"/>
-                    <line x1="250" y1="88" x2="280" y2="88" stroke="var(--accent-teal)" stroke-width="1.5"/>
-                    
-                    <line x1="230" y1="152" x2="250" y2="152" stroke="var(--accent-teal)" stroke-width="1.5"/>
-                    <line x1="250" y1="152" x2="250" y2="102" stroke="var(--accent-teal)" stroke-width="1.5"/>
-                    <line x1="250" y1="102" x2="280" y2="102" stroke="var(--accent-teal)" stroke-width="1.5"/>
+                    <!-- Gate 4 (Right): NAND(G2, G3) -> DIFF -->
+                    ${genNandGate(300, 88, 'NAND', 'var(--accent-purple)')}
+                    <path d="M 238 40 L 260 40 L 260 94 L 300 94" fill="none" stroke="var(--accent-teal)" stroke-width="1.5"/>
+                    <path d="M 238 160 L 260 160 L 260 106 L 300 106" fill="none" stroke="var(--accent-teal)" stroke-width="1.5"/>
 
-                    <!-- Gate 5 (Far Bottom): NAND(G1, G1) -> CARRY -->
-                    ${genNandGate(280, 180, 'NAND', 'var(--accent-green)')}
-                    <line x1="130" y1="95" x2="130" y2="185" stroke="var(--accent-teal)" stroke-width="1.5"/>
-                    <line x1="130" y1="185" x2="280" y2="185" stroke="var(--accent-teal)" stroke-width="1.5"/>
-                    <line x1="130" y1="199" x2="280" y2="199" stroke="var(--accent-teal)" stroke-width="1.5"/>
-                    <line x1="130" y1="185" x2="130" y2="199" stroke="var(--accent-teal)" stroke-width="1.5"/>
+                    <!-- Gate 5 (Far Bottom): NAND(G3, G3) -> BORROW -->
+                    <!-- Borrow for HS is ~(~A & B) NAND ~(~A & B) = G3 NAND G3 -->
+                    ${genNandGate(300, 188, 'NAND', 'var(--accent-green)')}
+                    <path d="M 245 160 L 245 200 L 280 200" fill="none" stroke="var(--accent-teal)" stroke-width="1.5"/>
+                    <path d="M 280 200 L 280 194 L 300 194" fill="none" stroke="var(--accent-teal)" stroke-width="1.5"/>
+                    <path d="M 280 200 L 280 206 L 300 206" fill="none" stroke="var(--accent-teal)" stroke-width="1.5"/>
+                    <circle cx="245" cy="160" r="2.5" fill="var(--accent-teal)"/>
 
                     <!-- Outputs -->
-                    <line x1="330" y1="95" x2="380" y2="95" stroke="var(--accent-purple)" stroke-width="2"/>
-                    <text x="385" y="100" fill="var(--accent-purple)" font-weight="bold">Sum (S)</text>
+                    <line x1="338" y1="100" x2="380" y2="100" stroke="var(--accent-purple)" stroke-width="2"/>
+                    <text x="385" y="104" fill="var(--accent-purple)" font-weight="bold">Diff (D)</text>
 
-                    <line x1="330" y1="192" x2="380" y2="192" stroke="var(--accent-green)" stroke-width="2"/>
-                    <text x="385" y="197" fill="var(--accent-green)" font-weight="bold">Carry (C)</text>
+                    <line x1="338" y1="200" x2="380" y2="200" stroke="var(--accent-green)" stroke-width="2"/>
+                    <text x="385" y="204" fill="var(--accent-green)" font-weight="bold">Borrow (B_out)</text>
                 </svg>
-            `;
+                `;
+            }
             document.getElementById('refHAContainer').innerHTML = haSvg;
 
-            // FA Reference 
-            const faSvg = `
-                <svg width="100%" height="200" viewBox="0 0 340 180" style="background:transparent; max-width:400px; margin: 0 auto; display:block;">
-                    <text x="10" y="35" fill="var(--text-main)" font-size="12" font-weight="bold">A</text>
-                    <text x="10" y="65" fill="var(--text-main)" font-size="12" font-weight="bold">B</text>
-                    <text x="10" y="115" fill="var(--text-main)" font-size="12" font-weight="bold">Cin</text>
-                    
-                    <!-- HA 1 Block -->
-                    <rect x="40" y="20" width="60" height="60" rx="4" fill="var(--input-bg)" stroke="var(--accent-purple)" stroke-width="2"/>
-                    <text x="55" y="55" fill="var(--accent-purple)" font-size="12" font-weight="bold">HA 1</text>
-                    <line x1="25" y1="30" x2="40" y2="30" stroke="var(--accent-cyan)" stroke-width="2"/>
-                    <line x1="25" y1="60" x2="40" y2="60" stroke="var(--accent-cyan)" stroke-width="2"/>
-                    
-                    <!-- HA 2 Block -->
-                    <rect x="140" y="20" width="60" height="100" rx="4" fill="var(--input-bg)" stroke="var(--accent-purple)" stroke-width="2"/>
-                    <text x="155" y="75" fill="var(--accent-purple)" font-size="12" font-weight="bold">HA 2</text>
-                    
-                    <!-- Routing between HAs -->
-                    <line x1="100" y1="40" x2="140" y2="40" stroke="var(--text-main)" stroke-width="2"/>
-                    <text x="105" y="35" fill="var(--text-sub)" font-size="9">S1</text>
-                    <line x1="35" y1="110" x2="140" y2="110" stroke="var(--accent-cyan)" stroke-width="2"/>
-                    
-                    <!-- Output Sum -->
-                    <line x1="200" y1="60" x2="280" y2="60" stroke="var(--accent-purple)" stroke-width="2"/>
-                    <text x="285" y="65" fill="var(--accent-purple)" font-size="12" font-weight="bold">Sum (S)</text>
-                    
-                    <!-- Carry logic (OR gate) -->
-                    <line x1="100" y1="70" x2="120" y2="70" stroke="var(--accent-teal)" stroke-width="2"/>
-                    <line x1="120" y1="70" x2="120" y2="140" stroke="var(--accent-teal)" stroke-width="2"/>
-                    <line x1="120" y1="140" x2="220" y2="140" stroke="var(--accent-teal)" stroke-width="2"/>
-                    <text x="105" y="65" fill="var(--text-sub)" font-size="9">C1</text>
-                    
-                    <line x1="200" y1="100" x2="210" y2="100" stroke="var(--accent-teal)" stroke-width="2"/>
-                    <line x1="210" y1="100" x2="210" y2="120" stroke="var(--accent-teal)" stroke-width="2"/>
-                    <line x1="210" y1="120" x2="220" y2="120" stroke="var(--accent-teal)" stroke-width="2"/>
-                    <text x="205" y="95" fill="var(--text-sub)" font-size="9">C2</text>
-                    
-                    <!-- Valid OR Gate Shape -->
-                    <path d="M 220 110 Q 232 130, 220 150 Q 242 150, 255 130 Q 242 110, 220 110 Z" fill="var(--diagram-bg)" stroke="var(--accent-teal)" stroke-width="2"/>
-                    <line x1="255" y1="130" x2="280" y2="130" stroke="var(--accent-teal)" stroke-width="2"/>
-                    <text x="285" y="135" fill="var(--accent-teal)" font-size="12" font-weight="bold">Cout</text>
-                </svg>
-            `;
+            // FA/FS Reference 
+            let faSvg = '';
+            if (!isSub) {
+                faSvg = `
+                    <svg width="100%" height="200" viewBox="0 0 340 180" style="background:transparent; max-width:400px; margin: 0 auto; display:block;">
+                        <text x="10" y="35" fill="var(--text-main)" font-size="12" font-weight="bold">A</text>
+                        <text x="10" y="65" fill="var(--text-main)" font-size="12" font-weight="bold">B</text>
+                        <text x="10" y="115" fill="var(--text-main)" font-size="12" font-weight="bold">Cin</text>
+                        
+                        <rect x="40" y="20" width="60" height="60" rx="4" fill="var(--input-bg)" stroke="var(--accent-purple)" stroke-width="2"/>
+                        <text x="55" y="55" fill="var(--accent-purple)" font-size="12" font-weight="bold">HA 1</text>
+                        <line x1="25" y1="30" x2="40" y2="30" stroke="var(--accent-cyan)" stroke-width="2"/>
+                        <line x1="25" y1="60" x2="40" y2="60" stroke="var(--accent-cyan)" stroke-width="2"/>
+                        
+                        <rect x="140" y="20" width="60" height="100" rx="4" fill="var(--input-bg)" stroke="var(--accent-purple)" stroke-width="2"/>
+                        <text x="155" y="75" fill="var(--accent-purple)" font-size="12" font-weight="bold">HA 2</text>
+                        
+                        <line x1="100" y1="40" x2="140" y2="40" stroke="var(--text-main)" stroke-width="2"/>
+                        <text x="105" y="35" fill="var(--text-sub)" font-size="9">S1</text>
+                        <line x1="35" y1="110" x2="140" y2="110" stroke="var(--accent-cyan)" stroke-width="2"/>
+                        
+                        <line x1="200" y1="60" x2="280" y2="60" stroke="var(--accent-purple)" stroke-width="2"/>
+                        <text x="285" y="65" fill="var(--accent-purple)" font-size="12" font-weight="bold">Sum (S)</text>
+                        
+                        <line x1="100" y1="70" x2="120" y2="70" stroke="var(--accent-teal)" stroke-width="2"/>
+                        <line x1="120" y1="70" x2="120" y2="140" stroke="var(--accent-teal)" stroke-width="2"/>
+                        <line x1="120" y1="140" x2="220" y2="140" stroke="var(--accent-teal)" stroke-width="2"/>
+                        <text x="105" y="65" fill="var(--text-sub)" font-size="9">C1</text>
+                        
+                        <line x1="200" y1="100" x2="210" y2="100" stroke="var(--accent-teal)" stroke-width="2"/>
+                        <line x1="210" y1="100" x2="210" y2="120" stroke="var(--accent-teal)" stroke-width="2"/>
+                        <line x1="210" y1="120" x2="220" y2="120" stroke="var(--accent-teal)" stroke-width="2"/>
+                        <text x="205" y="95" fill="var(--text-sub)" font-size="9">C2</text>
+                        
+                        <path d="M 220 110 Q 232 130, 220 150 Q 242 150, 255 130 Q 242 110, 220 110 Z" fill="var(--diagram-bg)" stroke="var(--accent-teal)" stroke-width="2"/>
+                        <line x1="255" y1="130" x2="280" y2="130" stroke="var(--accent-teal)" stroke-width="2"/>
+                        <text x="285" y="135" fill="var(--accent-teal)" font-size="12" font-weight="bold">Cout</text>
+                    </svg>
+                `;
+            } else {
+                faSvg = `
+                    <svg width="100%" height="200" viewBox="0 0 340 180" style="background:transparent; max-width:400px; margin: 0 auto; display:block;">
+                        <text x="10" y="35" fill="var(--text-main)" font-size="12" font-weight="bold">A</text>
+                        <text x="10" y="65" fill="var(--text-main)" font-size="12" font-weight="bold">B</text>
+                        <text x="10" y="115" fill="var(--text-main)" font-size="12" font-weight="bold">Bin</text>
+                        
+                        <rect x="40" y="20" width="60" height="60" rx="4" fill="var(--input-bg)" stroke="var(--accent-purple)" stroke-width="2"/>
+                        <text x="55" y="55" fill="var(--accent-purple)" font-size="12" font-weight="bold">HS 1</text>
+                        <line x1="25" y1="30" x2="40" y2="30" stroke="var(--accent-cyan)" stroke-width="2"/>
+                        <line x1="25" y1="60" x2="40" y2="60" stroke="var(--accent-cyan)" stroke-width="2"/>
+                        
+                        <rect x="140" y="20" width="60" height="100" rx="4" fill="var(--input-bg)" stroke="var(--accent-purple)" stroke-width="2"/>
+                        <text x="155" y="75" fill="var(--accent-purple)" font-size="12" font-weight="bold">HS 2</text>
+                        
+                        <line x1="100" y1="40" x2="140" y2="40" stroke="var(--text-main)" stroke-width="2"/>
+                        <text x="105" y="35" fill="var(--text-sub)" font-size="9">D1</text>
+                        <line x1="35" y1="110" x2="140" y2="110" stroke="var(--accent-cyan)" stroke-width="2"/>
+                        
+                        <line x1="200" y1="60" x2="280" y2="60" stroke="var(--accent-purple)" stroke-width="2"/>
+                        <text x="285" y="65" fill="var(--accent-purple)" font-size="12" font-weight="bold">Diff (D)</text>
+                        
+                        <line x1="100" y1="70" x2="120" y2="70" stroke="var(--accent-teal)" stroke-width="2"/>
+                        <line x1="120" y1="70" x2="120" y2="140" stroke="var(--accent-teal)" stroke-width="2"/>
+                        <line x1="120" y1="140" x2="220" y2="140" stroke="var(--accent-teal)" stroke-width="2"/>
+                        <text x="105" y="65" fill="var(--text-sub)" font-size="9">B1</text>
+                        
+                        <line x1="200" y1="100" x2="210" y2="100" stroke="var(--accent-teal)" stroke-width="2"/>
+                        <line x1="210" y1="100" x2="210" y2="120" stroke="var(--accent-teal)" stroke-width="2"/>
+                        <line x1="210" y1="120" x2="220" y2="120" stroke="var(--accent-teal)" stroke-width="2"/>
+                        <text x="205" y="95" fill="var(--text-sub)" font-size="9">B2</text>
+                        
+                        <path d="M 220 110 Q 232 130, 220 150 Q 242 150, 255 130 Q 242 110, 220 110 Z" fill="var(--diagram-bg)" stroke="var(--accent-teal)" stroke-width="2"/>
+                        <line x1="255" y1="130" x2="280" y2="130" stroke="var(--accent-teal)" stroke-width="2"/>
+                        <text x="285" y="135" fill="var(--accent-teal)" font-size="12" font-weight="bold">Bout</text>
+                    </svg>
+                `;
+            }
             document.getElementById('refFAContainer').innerHTML = faSvg;
         }
 
         function synthesizeArithmetic() {
             const op = document.getElementById('arithOp').value;
             const bits = parseInt(document.getElementById('arithBits').value);
-            drawReferenceAdders();
+            drawReferenceAdders(op);
 
             const container = document.getElementById('arithmeticSchematicContainer');
             const titleElem = document.getElementById('arithmeticDiagramTitle');
@@ -2176,7 +2260,7 @@
             }
         }
 
-        // GENERIC VECTOR SVG CIRCUIT RENDERER WITH ORTHOGONAL MANHATTAN ROUTING
+        // GENERIC VECTOR SVG CIRCUIT RENDERER (Orthogonal & Symmetrical layout)
         function drawSvgCircuit(container, vars, nodes, finalNodeId, themeColor) {
             const width = 750;
             const wirePalette = ['#2563eb', '#0d9488', '#d97706', '#db2777', '#4f46e5', '#e11d48', '#16a34a', '#8b5cf6'];
@@ -2224,7 +2308,7 @@
                 if (!stageOccupiedY[stage]) stageOccupiedY[stage] = [];
                 
                 let attempts = 0;
-                // Expanded collision detection margin to 50px
+                // Expanded collision detection margin to prevent ANY overlapping texts
                 while (stageOccupiedY[stage].some(usedY => Math.abs(usedY - targetY) < 50) && attempts < 10) {
                     targetY += 50;
                     attempts++;
@@ -2253,7 +2337,7 @@
                     bubble = `<circle cx="${cx}" cy="${cy}" r="2.5" fill="var(--diagram-bg)" stroke="${color}" stroke-width="1.5"/>`;
                 }
 
-                // Label moved higher (-10 instead of -6) to avoid overlap with upper wire
+                // Increased label height spacing to prevent crossing wires
                 return `
                     <g>
                         ${body}

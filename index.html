@@ -80,6 +80,7 @@
             padding: 24px;
             gap: 28px;
             min-height: 100vh;
+            transition: gap 0.3s ease;
         }
 
         /* Mobile Nav Bar */
@@ -117,6 +118,28 @@
             backdrop-filter: blur(2px);
         }
 
+        /* Desktop Toggle Button */
+        .desktop-toggle-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: sticky;
+            top: 24px;
+            height: 40px;
+            width: 40px;
+            flex-shrink: 0;
+            background: var(--panel-solid);
+            color: var(--text-main);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            box-shadow: 0 2px 8px var(--shadow-color);
+            transition: all 0.2s ease;
+            z-index: 1000;
+        }
+        .desktop-toggle-btn:hover { border-color: var(--accent-cyan); background: var(--element-bg); color: var(--accent-cyan); }
+
         .sidebar {
             width: 290px;
             flex-shrink: 0;
@@ -144,6 +167,23 @@
             cursor: pointer;
         }
 
+        /* Desktop Collapse Animation Logic */
+        @media (min-width: 901px) {
+            .sidebar {
+                transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease, padding 0.3s ease;
+                overflow-x: hidden;
+            }
+            .sidebar.collapsed {
+                width: 0 !important;
+                padding-right: 0 !important;
+                opacity: 0;
+                pointer-events: none;
+            }
+            .app-wrapper.sidebar-collapsed {
+                gap: 16px;
+            }
+        }
+
         .main-content {
             flex-grow: 1;
             display: flex;
@@ -166,7 +206,7 @@
             font-family: inherit;
         }
         .theme-toggle-btn:hover { border-color: var(--accent-cyan); background: var(--element-bg); }
-        .desktop-theme-btn { position: fixed; top: 16px; right: 24px; z-index: 1001; }
+        .desktop-theme-btn { position: fixed; top: 24px; right: 24px; z-index: 1001; }
 
         /* Sidebar Elements */
         header { margin-bottom: 20px; }
@@ -179,6 +219,7 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            white-space: nowrap;
         }
         p.subtitle { margin: 0; color: var(--text-sub); font-size: 0.85rem; font-weight: 500; line-height: 1.5; }
 
@@ -196,6 +237,7 @@
             border-radius: 6px;
             background: rgba(37, 99, 235, 0.1);
             color: var(--accent-cyan);
+            white-space: nowrap;
         }
 
         .team-toggle-btn {
@@ -211,11 +253,12 @@
             transition: all 0.2s ease;
             width: 100%;
             text-align: left;
+            white-space: nowrap;
         }
         .team-toggle-btn:hover { background: var(--element-bg); color: var(--text-main); }
         .team-list-card { display: none; margin-top: 10px; padding-top: 8px; border-top: 1px dashed var(--border-subtle); }
         .team-list-card.active { display: block; }
-        .team-member { font-size: 0.8rem; display: flex; justify-content: space-between; padding: 6px 4px; color: var(--text-sub); }
+        .team-member { font-size: 0.8rem; display: flex; justify-content: space-between; padding: 6px 4px; color: var(--text-sub); white-space: nowrap;}
         .team-member .roll { color: var(--accent-cyan); font-family: monospace; font-weight: 600; }
 
         .tabs { display: flex; flex-direction: column; gap: 8px; margin-top: 10px;}
@@ -230,6 +273,7 @@
             font-size: 0.9rem;
             text-align: left;
             transition: all 0.2s ease;
+            white-space: nowrap;
         }
         .tab-btn:hover { background: var(--element-bg); color: var(--text-main); }
         .tab-btn.active {
@@ -485,6 +529,7 @@
             .app-wrapper { display: block; padding: 0; }
             .mobile-nav-bar { display: flex; }
             .desktop-theme-btn { display: none; }
+            .desktop-toggle-btn { display: none; }
             .main-content { padding: 16px; }
             .sidebar {
                 position: fixed; top: 0; left: -320px; width: 300px; height: 100vh;
@@ -507,19 +552,23 @@
 
     <!-- Mobile Nav Bar -->
     <div class="mobile-nav-bar">
-        <button class="hamburger-btn" onclick="toggleSidebar()">☰ Menu</button>
+        <button class="hamburger-btn" onclick="toggleMobileSidebar()">☰ Menu</button>
         <button id="themeBtnMobile" class="theme-toggle-btn" onclick="toggleTheme()">🌙 Dark Mode</button>
     </div>
 
     <!-- Desktop Theme Toggle -->
     <button id="themeBtnDesktop" class="theme-toggle-btn desktop-theme-btn" onclick="toggleTheme()">🌙 Dark Mode</button>
 
-    <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
+    <div class="sidebar-overlay" onclick="toggleMobileSidebar()"></div>
 
     <div class="app-wrapper">
+
+        <!-- Desktop Sidebar Toggle Button -->
+        <button class="desktop-toggle-btn" onclick="toggleDesktopSidebar()" title="Toggle Sidebar">☰</button>
+
         <!-- Left Sidebar Navigation -->
-        <aside class="sidebar">
-            <button class="close-sidebar-btn" onclick="toggleSidebar()">✕</button>
+        <aside class="sidebar" id="mainSidebar">
+            <button class="close-sidebar-btn" onclick="toggleMobileSidebar()">✕</button>
             <header>
                 <h1>⚡ Digital Logic CAD</h1>
                 <p class="subtitle">Minimal Gate Synthesis & Universal Mapping</p>
@@ -813,7 +862,13 @@
             if (mobileBtn) mobileBtn.innerText = btnText;
         }
 
-        function toggleSidebar() {
+        // DESKTOP & MOBILE SIDEBAR TOGGLES
+        function toggleDesktopSidebar() {
+            document.getElementById('mainSidebar').classList.toggle('collapsed');
+            document.querySelector('.app-wrapper').classList.toggle('sidebar-collapsed');
+        }
+
+        function toggleMobileSidebar() {
             document.querySelector('.sidebar').classList.toggle('active');
             document.querySelector('.sidebar-overlay').classList.toggle('active');
         }
@@ -853,6 +908,7 @@
                 document.getElementById('arithmeticPipelineWrapper').style.display = 'none';
             }
 
+            // Close mobile sidebar on selection if in mobile view
             if(window.innerWidth <= 900) {
                 document.querySelector('.sidebar').classList.remove('active');
                 document.querySelector('.sidebar-overlay').classList.remove('active');
@@ -2133,7 +2189,7 @@
             }
 
             const inputYMap = {};
-            const height = Math.max(200, vars.length * 80, nodes.length * 50);
+            const height = Math.max(200, vars.length * 80, nodes.length * 60);
             const inputSpacing = height / (vars.length + 1);
             
             vars.forEach((v, idx) => {
@@ -2168,7 +2224,8 @@
                 if (!stageOccupiedY[stage]) stageOccupiedY[stage] = [];
                 
                 let attempts = 0;
-                while (stageOccupiedY[stage].some(usedY => Math.abs(usedY - targetY) < 45) && attempts < 15) {
+                // Expanded collision detection margin to 50px
+                while (stageOccupiedY[stage].some(usedY => Math.abs(usedY - targetY) < 50) && attempts < 10) {
                     targetY += 50;
                     attempts++;
                 }
@@ -2196,17 +2253,16 @@
                     bubble = `<circle cx="${cx}" cy="${cy}" r="2.5" fill="var(--diagram-bg)" stroke="${color}" stroke-width="1.5"/>`;
                 }
 
-                // Label moved higher to avoid overlap with upper wire
+                // Label moved higher (-10 instead of -6) to avoid overlap with upper wire
                 return `
                     <g>
                         ${body}
                         ${bubble}
-                        <text x="${x}" y="${y-8}" fill="${color}" font-size="9" font-family="sans-serif" font-weight="bold">${label}</text>
+                        <text x="${x}" y="${y-10}" fill="${color}" font-size="9" font-family="sans-serif" font-weight="bold">${label}</text>
                     </g>
                 `;
             };
 
-            // Calculate max X per input for drawing continuous bus lines
             const maxInputX = {};
             vars.forEach(v => maxInputX[v] = 40);
 
